@@ -8,8 +8,10 @@ import Toast from 'primevue/toast';
 
 <template>
   <Toast position="bottom-left" group="bl" />
-    <Appbar />
-    <IntroSection />
+    <Appbar ref="appbarRef" />
+    <main>
+      <IntroSection />
+    </main>
     <Contacts />
   
 </template>
