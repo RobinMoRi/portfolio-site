@@ -36,8 +36,8 @@ const education = ref([
     school: "KTH (Royal Institute of Technology)",
     title: "M.Sc. in Mechatronics and Robotics Engineering",
     description: [
-      "Degree program covering subjects such as mathematics, mechanics, electronics and programming.\nExchange student at Universidad de Chile, Santiago de Chile (2015).",
-      "Bachelor Thesis: Heat following robot - degree project in Mechatronics.",
+      "Degree program covering subjects such as embedded systems, applied mathematics and artificial intelligence.",
+      "Master Thesis: Comparative study of fault-tolerant strategies for cooperative adaptive cruise control: Subject to autonomous driving in platoon.",
     ],
     start: "Aug. 2016",
     end: "Jun. 2018",
@@ -46,7 +46,11 @@ const education = ref([
   {
     school: "KTH (Royal Institute of Technology)",
     title: "B.Sc. in Mechanical Engineering",
-    description: "B.Sc. in Mechanical Engineering",
+    description: [
+      "Degree program covering subjects such as mathematics, mechanics, electronics and programming.",
+      "Exchange student at Universidad de Chile, Santiago de Chile (2015).",
+      "Bachelor Thesis: Heat following robot - degree project in Mechatronics.",
+    ],
     start: "Aug. 2013",
     end: "Jun. 2016",
     icon: "pi pi-cog",
@@ -55,7 +59,7 @@ const education = ref([
 </script>
 
 <template>
-  <div id="skills" class="w-screen p-4">
+  <div id="resume" class="w-screen p-4">
     <div id="title-group col-12">
       <p class="name-title my-2">Resume</p>
     </div>
@@ -133,6 +137,8 @@ const education = ref([
   clip-path: circle();
 }
 .p-card-content {
+  max-height: 150px;
+  overflow-y: scroll;
   font-size: 12px;
 }
 </style>
