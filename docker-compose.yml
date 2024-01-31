@@ -13,3 +13,13 @@ services:
       - "8000:8000"
     environment:
       - NODE_ENV=dev
+
+  frontend-deploy:
+    build:
+      context: .
+      dockerfile: Deploy.Dockerfile
+    container_name: portfolio-frontend-prod
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=prod

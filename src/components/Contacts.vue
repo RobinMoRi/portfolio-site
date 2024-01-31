@@ -32,42 +32,48 @@ async function copyToClipboard(text: string) {
 </script>
 
 <template>
-  <div id="contact">
-    <Toolbar>
+  <div id="contacts">
+    <Toolbar style="border: none">
       <template #center>
-        <div>
-          <Button
-            rounded
-            v-tooltip.top="{ value: 'Linkedin', autoHide: false }"
-            class="mr-1"
-            size="small"
-            icon="pi pi-linkedin"
-            @click="openUrl('https://www.linkedin.com/in/romori/')"
-          />
-          <Button
-            rounded
-            v-tooltip.top="{ value: 'Github', autoHide: false }"
-            class="mr-1"
-            size="small"
-            icon="pi pi-github"
-            @click="openUrl('https://github.com/RobinMoRi')"
-          />
-          <Button
-            rounded
-            v-tooltip.top="{ value: 'Email', autoHide: false }"
-            class="mr-1"
-            size="small"
-            icon="pi pi-envelope"
-            @click="openUrl('mailto:robin.moreno.rinding@gmail.com')"
-          />
-          <Button
-            rounded
-            v-tooltip.top="{ value: 'Copy number', autoHide: false }"
-            class="mr-1"
-            size="small"
-            icon="pi pi-phone"
-            @click="copyToClipboard('+46737514695')"
-          />
+        <div class="flex justify-content-center align-items-center">
+          <div class="grid gap-4">
+            <Button
+              rounded
+              v-tooltip.top="{ value: 'Linkedin', autoHide: false }"
+              class="mr-1"
+              size="small"
+              icon="pi pi-linkedin"
+              @click="openUrl('https://www.linkedin.com/in/romori/')"
+              outlined
+            />
+            <Button
+              rounded
+              v-tooltip.top="{ value: 'Github', autoHide: false }"
+              class="mr-1"
+              size="small"
+              icon="pi pi-github"
+              @click="openUrl('https://github.com/RobinMoRi')"
+              outlined
+            />
+            <Button
+              rounded
+              v-tooltip.top="{ value: 'Email', autoHide: false }"
+              class="mr-1"
+              size="small"
+              icon="pi pi-envelope"
+              @click="openUrl('mailto:robin.moreno.rinding@gmail.com')"
+              outlined
+            />
+            <Button
+              rounded
+              v-tooltip.top="{ value: 'Copy number', autoHide: false }"
+              class="mr-1"
+              size="small"
+              icon="pi pi-phone"
+              @click="copyToClipboard('+46737514695')"
+              outlined
+            />
+          </div>
         </div>
       </template>
     </Toolbar>
