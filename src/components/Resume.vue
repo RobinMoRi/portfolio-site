@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Timeline from "primevue/timeline";
 import Card from "primevue/card";
+import FlipCard from "@/components/FlipCard.vue";
 import { ref } from "vue";
 
 const workExperience = ref([
@@ -32,18 +33,23 @@ const workExperience = ref([
 
 const education = ref([
   {
-    status: "Ordered",
-    start: "15/10/2020 10:30",
-    end: "15/10/2020 10:30",
+    school: "KTH (Royal Institute of Technology)",
+    title: "M.Sc. in Mechatronics and Robotics Engineering",
+    description: [
+      "Degree program covering subjects such as mathematics, mechanics, electronics and programming.\nExchange student at Universidad de Chile, Santiago de Chile (2015).",
+      "Bachelor Thesis: Heat following robot - degree project in Mechatronics.",
+    ],
+    start: "Aug. 2016",
+    end: "Jun. 2018",
     icon: "pi pi-shopping-cart",
-    color: "#9C27B0",
   },
   {
-    status: "Processing",
-    start: "15/10/2020 14:00",
-    end: "15/10/2020 14:00",
+    school: "KTH (Royal Institute of Technology)",
+    title: "B.Sc. in Mechanical Engineering",
+    description: "B.Sc. in Mechanical Engineering",
+    start: "Aug. 2013",
+    end: "Jun. 2016",
     icon: "pi pi-cog",
-    color: "#673AB7",
   },
 ]);
 </script>
@@ -64,21 +70,52 @@ const education = ref([
           </template>
 
           <template #content="slotProps">
-            <Card class="mb-3">
-              <template #title>Företagsnamn</template>
-              <template #subtitle>Roll</template>
-            </Card>
+            <div class="mb-3">
+              <FlipCard>
+                <template #front>
+                  <Card class="h-full">
+                    <template #subtitle>{{ slotProps.item.school }}</template>
+                    <template #content>{{ slotProps.item.title }}</template>
+                  </Card>
+                </template>
+                <template #back>
+                  <Card class="h-full">
+                    <template #content>
+                      <div class="p-card-content">
+                        <li v-for="item in slotProps.item.description">
+                          {{ item }}
+                        </li>
+                      </div>
+                    </template>
+                  </Card>
+                </template>
+              </FlipCard>
+            </div>
           </template>
         </Timeline>
       </div>
       <div class="card col-12 md:col-6">
         <div class="my-4">Work Experience</div>
         <Timeline :value="workExperience">
-          <template #opposite="slotProps">
+          <template #content="slotProps">
             <small class="p-text-secondary">{{ slotProps.item.date }}</small>
           </template>
-          <template #content="slotProps">
-            {{ slotProps.item.status }}
+          <template #opposite="slotProps">
+            <div class="mb-3">
+              <FlipCard>
+                <template #front>
+                  <Card class="h-full">
+                    <template #subtitle>{{ slotProps.item.school }}</template>
+                    <template #content>{{ slotProps.item.title }}</template>
+                  </Card>
+                </template>
+                <template #back>
+                  <Card class="h-full">
+                    <template #content>{{ slotProps.item.item }}</template>
+                  </Card>
+                </template>
+              </FlipCard>
+            </div>
           </template>
         </Timeline>
       </div>
@@ -86,7 +123,7 @@ const education = ref([
   </div>
 </template>
 
-<style>
+<style scoped>
 .name-title {
   font-family: "Inter";
   letter-spacing: 2px;
@@ -94,5 +131,8 @@ const education = ref([
 }
 .image {
   clip-path: circle();
+}
+.p-card-content {
+  font-size: 12px;
 }
 </style>

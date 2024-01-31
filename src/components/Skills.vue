@@ -14,14 +14,18 @@ import Tag from "primevue/tag";
           <template #title>Technical skills</template>
 
           <template #content>
-            <div class="grid grid-gutter">
-              <Tag icon="pi pi-user" value="Typescript/Javascript"></Tag>
-              <Tag icon="pi pi-user" value="Python"></Tag>
-              <Tag icon="pi pi-user" value="Django/DRF"></Tag>
-              <Tag icon="pi pi-user" value="Docker"></Tag>
-              <Tag icon="pi pi-user" value="Celery"></Tag>
-              <Tag icon="pi pi-user" value="Scikit-learn"></Tag>
-              <Tag icon="pi pi-user" value="Primary"></Tag>
+            <div class="grid">
+              <Tag
+                class="col-3"
+                icon="pi pi-user"
+                value="Typescript/Javascript"
+              />
+              <Tag icon="pi pi-user" value="Python" />
+              <Tag icon="pi pi-user" value="Django/DRF" />
+              <Tag icon="pi pi-user" value="Docker" />
+              <Tag icon="pi pi-user" value="Celery" />
+              <Tag icon="pi pi-user" value="Scikit-learn" />
+              <Tag icon="pi pi-user" value="Primary" />
             </div>
           </template>
         </Card>
