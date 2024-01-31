@@ -1,39 +1,75 @@
 <script setup lang="ts">
-import Toolbar from 'primevue/toolbar';
-import Button from 'primevue/button';
+import Toolbar from "primevue/toolbar";
+import Button from "primevue/button";
 import { useToast } from "primevue/usetoast";
 
 const toast = useToast();
 
-function openUrl(url: string, target="_blank"){
-      window.open(url, target);
+function openUrl(url: string, target = "_blank") {
+  window.open(url, target);
 }
 
-
 async function copyToClipboard(text: string) {
-      try {
-        await navigator.clipboard.writeText(text);
-        toast.add({ severity: 'success', summary: 'Clipboard', detail: 'Number copied to clipboard', life: 3000, group: "bl" });
-      } catch (err) {
-        toast.add({ severity: 'error', summary: 'Clipboard', detail: 'Could not copy to clipboard', life: 3000, group: "bl" });
-      }
-    }
+  try {
+    await navigator.clipboard.writeText(text);
+    toast.add({
+      severity: "success",
+      summary: "Clipboard",
+      detail: "Number copied to clipboard",
+      life: 3000,
+      group: "bl",
+    });
+  } catch (err) {
+    toast.add({
+      severity: "error",
+      summary: "Clipboard",
+      detail: "Could not copy to clipboard",
+      life: 3000,
+      group: "bl",
+    });
+  }
+}
 </script>
 
 <template>
-<div id="contact">
-    
-    <Toolbar >
-      <template #center >
+  <div id="contact">
+    <Toolbar>
+      <template #center>
         <div>
-            <Button rounded v-tooltip.bottom="{ value: 'Linkedin', autoHide: false }" class="mr-1" size="small" icon="pi pi-linkedin" @click="openUrl('https://www.linkedin.com/in/romori/')"/>
-            <Button rounded v-tooltip.bottom="{ value: 'Github', autoHide: false }" class="mr-1" size="small" icon="pi pi-github" @click="openUrl('https://github.com/RobinMoRi')" />
-            <Button rounded v-tooltip.bottom="{ value: 'Email', autoHide: false }" class="mr-1" size="small" icon="pi pi-envelope" @click="openUrl('mailto:robin.moreno.rinding@gmail.com')" />
-            <Button rounded v-tooltip.bottom="{ value: 'Copy number', autoHide: false }" class="mr-1" size="small" icon="pi pi-phone" @click="copyToClipboard('+46737514695')" />
+          <Button
+            rounded
+            v-tooltip.top="{ value: 'Linkedin', autoHide: false }"
+            class="mr-1"
+            size="small"
+            icon="pi pi-linkedin"
+            @click="openUrl('https://www.linkedin.com/in/romori/')"
+          />
+          <Button
+            rounded
+            v-tooltip.top="{ value: 'Github', autoHide: false }"
+            class="mr-1"
+            size="small"
+            icon="pi pi-github"
+            @click="openUrl('https://github.com/RobinMoRi')"
+          />
+          <Button
+            rounded
+            v-tooltip.top="{ value: 'Email', autoHide: false }"
+            class="mr-1"
+            size="small"
+            icon="pi pi-envelope"
+            @click="openUrl('mailto:robin.moreno.rinding@gmail.com')"
+          />
+          <Button
+            rounded
+            v-tooltip.top="{ value: 'Copy number', autoHide: false }"
+            class="mr-1"
+            size="small"
+            icon="pi pi-phone"
+            @click="copyToClipboard('+46737514695')"
+          />
         </div>
       </template>
-
-      </Toolbar>
-      
-</div>
+    </Toolbar>
+  </div>
 </template>
