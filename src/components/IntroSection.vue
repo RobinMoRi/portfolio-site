@@ -2,10 +2,29 @@
 import Image from "primevue/image";
 import Button from "primevue/button";
 
-function scrollToSection(id: string) {
-  const section = document.getElementById(id);
-  if (section) {
-    section.scrollIntoView({ behavior: "smooth" });
+function scrollToDivWithOffset(id: string) {
+  const element = document.getElementById(id);
+  const offset = getNavbarHeight();
+  if (element) {
+    const elementPosition =
+      element.getBoundingClientRect().top + window.pageYOffset;
+    const offsetPosition = elementPosition - offset;
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  } else {
+    console.error("Element with ID " + id + " not found.");
+  }
+}
+
+function getNavbarHeight() {
+  const navbar = document.getElementById("appbar");
+  if (navbar) {
+    return navbar.offsetHeight;
+  } else {
+    console.error("Navbar not found.");
+    return 0;
   }
 }
 </script>
@@ -33,7 +52,7 @@ function scrollToSection(id: string) {
       </div>
       <div class="w-full flex justify-content-center">
         <Button
-          @click="scrollToSection('about-me')"
+          @click="scrollToDivWithOffset('about-me')"
           icon="pi pi-chevron-down"
           size="small"
           class="my-4"
