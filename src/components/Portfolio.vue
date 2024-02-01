@@ -4,6 +4,7 @@ import Button from "primevue/button";
 import ProgressBar from "primevue/progressbar";
 import Tag from "primevue/tag";
 import { onMounted, ref } from "vue";
+import ScrollPanel from "primevue/scrollpanel";
 
 type Repo = {
   id: number;
@@ -17,6 +18,7 @@ type Repo = {
 
 const repos = ref<Repo[]>([]);
 const loading = ref(false);
+const loadingContent = ref<number[]>([]);
 
 async function getRepos() {
   loading.value = true;
@@ -29,11 +31,6 @@ async function getRepos() {
     },
   });
   const data: Repo[] = await res.json();
-  for (let idx in data) {
-    let repo = data[idx];
-    const lang = await getLanguages(repo.languages_url);
-    data[idx] = { ...repo, languges: Object.keys(lang) };
-  }
   repos.value = data
     .filter((el) => el.name !== "RobinMoRi")
     .sort((a, b) => {
@@ -42,6 +39,15 @@ async function getRepos() {
       return bDate - aDate;
     });
   loading.value = false;
+
+  for (let idx in repos.value) {
+    let repo = repos.value[idx];
+    const lang = await getLanguages(repo.languages_url);
+    repos.value[idx] = { ...repo, languges: Object.keys(lang) };
+    loadingContent.value.push(repo.id);
+    // await new Promise((r) => setTimeout(r, 500)); //Mock sleep
+  }
+
   console.log({ data });
 }
 
@@ -70,38 +76,52 @@ onMounted(() => {
     <div id="title-group col-12">
       <p class="name-title my-2">Portfolio</p>
     </div>
-    <div v-if="!loading" class="grid">
-      <div v-for="repo in repos" class="col-12 md:col-4 sm:col-6">
-        <Card class="h-full">
-          <template #title>
-            <Button
-              @click="openRepo(repo.html_url)"
-              link
-              v-tooltip.top="{ value: repo.html_url, autoHide: false }"
-              >{{ repo.name }}</Button
-            >
-          </template>
-          <template #subtitle>
-            <div>
-              Created:
-              {{ new Date(repo.created_at).toLocaleDateString("sv-SE") }}
-            </div>
-          </template>
-          <template #content>
-            <div>
-              {{ repo.description }}
-            </div>
-          </template>
-          <template #footer>
-            <div class="flex flex-wrap">
-              <div v-for="lang in repo.languges" class="mr-1">
-                <Tag :value="lang" />
+    <ScrollPanel v-if="!loading" style="width: 100%; height: 600px">
+      <div class="grid">
+        <div v-for="repo in repos" class="col-12 md:col-4 sm:col-6">
+          <Card class="h-full">
+            <template #title>
+              <Button
+                @click="openRepo(repo.html_url)"
+                link
+                v-tooltip.top="{ value: repo.html_url, autoHide: false }"
+                >{{ repo.name }}</Button
+              >
+            </template>
+            <template #subtitle>
+              <div>
+                Created:
+                {{ new Date(repo.created_at).toLocaleDateString("sv-SE") }}
               </div>
-            </div>
-          </template>
-        </Card>
+            </template>
+            <template #content>
+              <div>
+                {{ repo.description }}
+              </div>
+            </template>
+            <template #footer>
+              <div class="flex flex-wrap">
+                <div
+                  v-if="loadingContent.includes(repo.id)"
+                  v-for="lang in repo.languges"
+                  class="mr-1 mb-1"
+                >
+                  <Tag :value="lang" />
+                </div>
+
+                <div v-else class="card">
+                  <ProgressBar
+                    mode="indeterminate"
+                    style="height: 6px"
+                  ></ProgressBar>
+                </div>
+              </div>
+            </template>
+          </Card>
+        </div>
       </div>
-    </div>
+    </ScrollPanel>
+
     <div v-else class="card">
       <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar>
     </div>

@@ -3,16 +3,35 @@ import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import Avatar from "primevue/avatar";
 
-function scrollToSection(id: string) {
-  const section = document.getElementById(id);
-  if (section) {
-    section.scrollIntoView({ behavior: "smooth" });
+function scrollToDivWithOffset(id: string) {
+  const element = document.getElementById(id);
+  const offset = getNavbarHeight();
+  if (element) {
+    const elementPosition =
+      element.getBoundingClientRect().top + window.pageYOffset;
+    const offsetPosition = elementPosition - offset;
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  } else {
+    console.error("Element with ID " + id + " not found.");
+  }
+}
+
+function getNavbarHeight() {
+  const navbar = document.getElementById("appbar");
+  if (navbar) {
+    return navbar.offsetHeight;
+  } else {
+    console.error("Navbar not found.");
+    return 0;
   }
 }
 </script>
 
 <template>
-  <div class="sticky-toolbar">
+  <div class="sticky-toolbar" id="appbar">
     <Toolbar>
       <template #start>
         <Avatar class="mr-2" size="normal" shape="circle" image="robin.png" />
@@ -21,7 +40,7 @@ function scrollToSection(id: string) {
         <Button
           v-tooltip.bottom="{ value: 'About Me', autoHide: false }"
           text
-          @click="scrollToSection('about-me')"
+          @click="scrollToDivWithOffset('about-me')"
           class="mr-2"
           icon="pi pi-user"
           size="small"
@@ -30,7 +49,7 @@ function scrollToSection(id: string) {
         <Button
           v-tooltip.bottom="{ value: 'Skills', autoHide: false }"
           text
-          @click="scrollToSection('skills')"
+          @click="scrollToDivWithOffset('skills')"
           class="mr-2"
           icon="pi pi-code"
           size="small"
@@ -39,7 +58,7 @@ function scrollToSection(id: string) {
         <Button
           v-tooltip.bottom="{ value: 'Resume', autoHide: false }"
           text
-          @click="scrollToSection('resume')"
+          @click="scrollToDivWithOffset('resume')"
           class="mr-2"
           icon="pi pi-file"
           size="small"
@@ -48,7 +67,7 @@ function scrollToSection(id: string) {
         <Button
           v-tooltip.bottom="{ value: 'Portfolio', autoHide: false }"
           text
-          @click="scrollToSection('portfolio')"
+          @click="scrollToDivWithOffset('portfolio')"
           class="mr-2"
           icon="pi pi-folder-open"
           size="small"
@@ -56,7 +75,7 @@ function scrollToSection(id: string) {
         />
         <Button
           v-tooltip.bottom="{ value: 'Contacts', autoHide: false }"
-          @click="scrollToSection('contacts')"
+          @click="scrollToDivWithOffset('contacts')"
           class="mr-2"
           icon="pi pi-id-card"
           size="small"

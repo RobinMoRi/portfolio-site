@@ -4,7 +4,7 @@ import Tag from "primevue/tag";
 </script>
 
 <template>
-  <div id="skills" class="grid w-screen align-items-start p-4">
+  <div id="skills" class="grid w-screen align-items-start p-4 surface-50">
     <div id="title-group col-12">
       <p class="name-title my-2">Skills</p>
     </div>

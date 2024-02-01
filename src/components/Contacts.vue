@@ -34,13 +34,14 @@ async function copyToClipboard(text: string) {
 <template>
   <div id="contacts">
     <Toolbar style="border: none">
-      <template #center>
-        <div class="flex justify-content-center align-items-center">
-          <div class="grid gap-4">
+      <template #start>
+        <div>
+          <div
+            class="grid gap-4 justify-content-center align-items-center ml-4"
+          >
             <Button
               rounded
               v-tooltip.top="{ value: 'Linkedin', autoHide: false }"
-              class="mr-1"
               size="small"
               icon="pi pi-linkedin"
               @click="openUrl('https://www.linkedin.com/in/romori/')"
@@ -49,7 +50,6 @@ async function copyToClipboard(text: string) {
             <Button
               rounded
               v-tooltip.top="{ value: 'Github', autoHide: false }"
-              class="mr-1"
               size="small"
               icon="pi pi-github"
               @click="openUrl('https://github.com/RobinMoRi')"
@@ -58,7 +58,6 @@ async function copyToClipboard(text: string) {
             <Button
               rounded
               v-tooltip.top="{ value: 'Email', autoHide: false }"
-              class="mr-1"
               size="small"
               icon="pi pi-envelope"
               @click="openUrl('mailto:robin.moreno.rinding@gmail.com')"
@@ -67,13 +66,28 @@ async function copyToClipboard(text: string) {
             <Button
               rounded
               v-tooltip.top="{ value: 'Copy number', autoHide: false }"
-              class="mr-1"
               size="small"
               icon="pi pi-phone"
               @click="copyToClipboard('+46737514695')"
               outlined
             />
           </div>
+        </div>
+      </template>
+      <template #end>
+        <div class="text-xs text-200 mr-1">
+          This page is built by Robin Moreno Rinding using Vue3, PrimeVue,
+          PrimeFlex. Portfolio is integrated with
+        </div>
+        <a
+          class="text-xs text-200 mr-1"
+          href="https://docs.github.com/en/rest?apiVersion=2022-11-28"
+          target="_blank"
+        >
+          Github API.</a
+        >
+        <div class="text-xs text-200 mr-1">
+          Illustrations are done in Figma.
         </div>
       </template>
     </Toolbar>

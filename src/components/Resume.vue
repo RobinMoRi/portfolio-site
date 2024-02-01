@@ -98,7 +98,7 @@ const education = ref([
 </script>
 
 <template>
-  <div id="resume" class="w-screen p-4">
+  <div id="resume" class="w-screen p-4 surface-0">
     <div id="title-group col-12">
       <p class="name-title my-2">Resume</p>
     </div>
@@ -116,13 +116,13 @@ const education = ref([
             <div class="mb-3">
               <FlipCard>
                 <template #front>
-                  <Card class="h-full">
+                  <Card class="h-full surface-100">
                     <template #subtitle>{{ slotProps.item.school }}</template>
                     <template #content>{{ slotProps.item.title }}</template>
                   </Card>
                 </template>
                 <template #back>
-                  <Card class="h-full">
+                  <Card class="h-full surface-100">
                     <template #content>
                       <div class="p-card-content">
                         <li
@@ -144,17 +144,21 @@ const education = ref([
         <div class="my-4">Work Experience</div>
         <Timeline :value="workExperience">
           <template #content="slotProps">
-            <small class="p-text-secondary">{{ slotProps.item.date }}</small>
+            <small class="p-text-secondary"
+              >{{ slotProps.item.start }} - {{ slotProps.item.end }}</small
+            >
           </template>
           <template #opposite="slotProps">
             <div class="mb-3">
               <FlipCard>
                 <template #front>
-                  <Card class="h-full">
+                  <Card class="h-full surface-100">
                     <template #subtitle>{{ slotProps.item.company }}</template>
                     <template #content>{{ slotProps.item.title }}</template>
                     <template #footer>
-                      <div class="flex gap-1 mt-1 justify-content-center">
+                      <div
+                        class="flex flex-wrap gap-1 mt-1 justify-content-center"
+                      >
                         <Tag v-for="item in slotProps.item.skills" class="mb-2">
                           {{ item }}
                         </Tag>
@@ -163,7 +167,7 @@ const education = ref([
                   </Card>
                 </template>
                 <template #back>
-                  <Card class="h-full w-full">
+                  <Card class="h-full w-full surface-100">
                     <template #content>
                       <div class="p-card-content">
                         <li
