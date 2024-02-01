@@ -34,7 +34,13 @@ async function getRepos() {
     const lang = await getLanguages(repo.languages_url);
     data[idx] = { ...repo, languges: Object.keys(lang) };
   }
-  repos.value = data;
+  repos.value = data
+    .filter((el) => el.name !== "RobinMoRi")
+    .sort((a, b) => {
+      const aDate = new Date(a.created_at).getTime();
+      const bDate = new Date(b.created_at).getTime();
+      return bDate - aDate;
+    });
   loading.value = false;
   console.log({ data });
 }
