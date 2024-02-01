@@ -14,7 +14,7 @@ import Tag from "primevue/tag";
           <template #title>Technical skills</template>
 
           <template #content>
-            <div class="grid">
+            <div class="flex flex-wrap gap-1">
               <Tag
                 class="col-3"
                 icon="pi pi-user"
@@ -34,7 +34,7 @@ import Tag from "primevue/tag";
         <Card>
           <template #title>Soft skills</template>
           <template #content>
-            <div class="grid">
+            <div class="flex flex-wrap gap-1">
               <Tag icon="pi pi-user" value="Primary"></Tag>
               <Tag icon="pi pi-user" value="Primary"></Tag>
             </div>

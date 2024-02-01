@@ -3,31 +3,70 @@ import Timeline from "primevue/timeline";
 import Card from "primevue/card";
 import FlipCard from "@/components/FlipCard.vue";
 import { ref } from "vue";
+import Tag from "primevue/tag";
 
 const workExperience = ref([
   {
-    status: "Ordered",
-    date: "15/10/2020 10:30",
+    company: "Morpheus Tribe",
+    title: "Fullstack Developer",
+    description: [
+      "Degree program covering subjects such as embedded systems, applied mathematics and artificial intelligence.",
+      "Master Thesis: Comparative study of fault-tolerant strategies for cooperative adaptive cruise control: Subject to autonomous driving in platoon.",
+    ],
+    start: "Aug. 2016",
+    end: "Jun. 2018",
     icon: "pi pi-shopping-cart",
-    color: "#9C27B0",
+    skills: [
+      "Typescript",
+      "Javscript",
+      "React",
+      "Esbuild",
+      "Python",
+      "Django/DRF",
+      "Scikit-Learn",
+      "PostgreSQL",
+      "Docker",
+      "Docker Compose",
+      "Celery",
+    ],
   },
   {
-    status: "Processing",
-    date: "15/10/2020 14:00",
+    company: "Capgemini",
+    title: "Senior Applications Consultant",
+    description: [
+      "Degree program covering subjects such as mathematics, mechanics, electronics and programming.",
+      "Exchange student at Universidad de Chile, Santiago de Chile (2015).",
+      "Bachelor Thesis: Heat following robot - degree project in Mechatronics.",
+    ],
+    start: "Aug. 2013",
+    end: "Jun. 2016",
     icon: "pi pi-cog",
-    color: "#673AB7",
+    skills: ["javascript", "react", "typescript"],
   },
   {
-    status: "Shipped",
-    date: "15/10/2020 16:15",
+    company: "KPMG",
+    title: "Technical Associate",
+    description: [
+      "Degree program covering subjects such as embedded systems, applied mathematics and artificial intelligence.",
+      "Master Thesis: Comparative study of fault-tolerant strategies for cooperative adaptive cruise control: Subject to autonomous driving in platoon.",
+    ],
+    start: "Aug. 2016",
+    end: "Jun. 2018",
     icon: "pi pi-shopping-cart",
-    color: "#FF9800",
+    skills: ["javascript", "react", "typescript"],
   },
   {
-    status: "Delivered",
-    date: "16/10/2020 10:00",
-    icon: "pi pi-check",
-    color: "#607D8B",
+    company: "Alten",
+    title: "Embedded Software Engineer",
+    description: [
+      "Degree program covering subjects such as mathematics, mechanics, electronics and programming.",
+      "Exchange student at Universidad de Chile, Santiago de Chile (2015).",
+      "Bachelor Thesis: Heat following robot - degree project in Mechatronics.",
+    ],
+    start: "Aug. 2013",
+    end: "Jun. 2016",
+    icon: "pi pi-cog",
+    skills: ["javascript", "react", "typescript"],
   },
 ]);
 
@@ -86,7 +125,10 @@ const education = ref([
                   <Card class="h-full">
                     <template #content>
                       <div class="p-card-content">
-                        <li v-for="item in slotProps.item.description">
+                        <li
+                          v-for="item in slotProps.item.description"
+                          class="mb-2"
+                        >
                           {{ item }}
                         </li>
                       </div>
@@ -109,13 +151,29 @@ const education = ref([
               <FlipCard>
                 <template #front>
                   <Card class="h-full">
-                    <template #subtitle>{{ slotProps.item.school }}</template>
+                    <template #subtitle>{{ slotProps.item.company }}</template>
                     <template #content>{{ slotProps.item.title }}</template>
+                    <template #footer>
+                      <div class="flex gap-1 mt-1 justify-content-center">
+                        <Tag v-for="item in slotProps.item.skills" class="mb-2">
+                          {{ item }}
+                        </Tag>
+                      </div>
+                    </template>
                   </Card>
                 </template>
                 <template #back>
-                  <Card class="h-full">
-                    <template #content>{{ slotProps.item.item }}</template>
+                  <Card class="h-full w-full">
+                    <template #content>
+                      <div class="p-card-content">
+                        <li
+                          v-for="item in slotProps.item.description"
+                          class="mb-2"
+                        >
+                          {{ item }}
+                        </li>
+                      </div>
+                    </template>
                   </Card>
                 </template>
               </FlipCard>
@@ -137,8 +195,10 @@ const education = ref([
   clip-path: circle();
 }
 .p-card-content {
+  width: 100%;
   max-height: 150px;
   overflow-y: scroll;
   font-size: 12px;
+  text-align: start;
 }
 </style>

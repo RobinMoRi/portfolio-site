@@ -48,7 +48,7 @@ function scrollToSection(id: string) {
         <Button
           v-tooltip.bottom="{ value: 'Portfolio', autoHide: false }"
           text
-          @click="scrollToSection('intro-section')"
+          @click="scrollToSection('portfolio')"
           class="mr-2"
           icon="pi pi-folder-open"
           size="small"

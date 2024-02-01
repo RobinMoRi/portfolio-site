@@ -6,6 +6,7 @@ import AboutMe from "@/components/AboutMe.vue";
 import Skills from "@/components/Skills.vue";
 import Resume from "@/components/Resume.vue";
 import Toast from "primevue/toast";
+import Portfolio from "./components/Portfolio.vue";
 </script>
 
 <template>
@@ -16,6 +17,7 @@ import Toast from "primevue/toast";
     <AboutMe />
     <Skills />
     <Resume />
+    <Portfolio />
   </main>
   <Contacts />
 </template>
