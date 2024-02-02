@@ -20,7 +20,6 @@ import {
   faVuejs,
   faGitAlt,
   faDocker,
-  faNode,
   faNodeJs,
 } from "@fortawesome/free-brands-svg-icons";
 import {
