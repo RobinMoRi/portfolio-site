@@ -17,6 +17,13 @@ const techSkills = ref([
   { icon: "fa-solid fa-code", name: "Celery" },
   { icon: "fa-brands fa-node-js", name: "Nodejs" },
 ]);
+
+const softSkills = ref([
+  { icon: "fa-brands fa-python", name: "Analytical" },
+  { icon: "fa-brands fa-js", name: "Adaptable" },
+  { icon: "fa-brands fa-react", name: "Team player" },
+  { icon: "fa-brands fa-vuejs", name: "Problem solver" },
+]);
 </script>
 <template>
   <div id="skills" class="grid w-screen align-items-start p-4 surface-50">
@@ -48,8 +55,15 @@ const techSkills = ref([
           <template #title>Soft skills</template>
           <template #content>
             <div class="flex flex-wrap gap-1">
-              <Tag icon="pi pi-user" value="Primary"></Tag>
-              <Tag icon="pi pi-user" value="Primary"></Tag>
+              <Tag v-for="item in softSkills" :value="item.name">
+                <template #icon>
+                  <font-awesome-icon
+                    :icon="item.icon"
+                    slot="icon"
+                    class="mr-1"
+                  ></font-awesome-icon>
+                </template>
+              </Tag>
             </div>
           </template>
         </Card>
