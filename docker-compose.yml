@@ -15,9 +15,8 @@ services:
       - NODE_ENV=dev
 
   frontend-deploy:
-    build:
-      context: .
-      dockerfile: Deploy.Dockerfile
+    platform: linux/x86_64
+    image: romori1993/portfolio-site-frontend-deploy:latest
     container_name: portfolio-frontend-prod
     ports:
       - "80:80"
