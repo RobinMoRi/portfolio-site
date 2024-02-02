@@ -1,18 +1,17 @@
-# Vue 3 + TypeScript + Vite
+# Portfolio site for Robin Moreno Rinding
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This portfolio site is built using the following languages and tools:
 
-## Recommended IDE Setup
+- Typescript
+- Vue3
+- Vite
+- PrimeVue, PrimeFlex, PrimeIcons, Fontawesome
+- Docker and docker compose for setting up a dev environment
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+The app is deployed using the following tools:
 
-## Type Support For `.vue` Imports in TS
+- Docker, Dockerhub
+- Github workflows
+- Hosted at Digital Ocean
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+My portfolio can be found here: [www.romori.se](https://orca-app-3goy3.ondigitalocean.app/)
