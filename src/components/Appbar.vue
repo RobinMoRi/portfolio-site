@@ -2,10 +2,14 @@
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import Avatar from "primevue/avatar";
+import { inject, onMounted, onUnmounted } from "vue";
+import { GlobalState } from "@/types";
+
+const globalState = inject("globalState") as GlobalState;
 
 function scrollToDivWithOffset(id: string) {
   const element = document.getElementById(id);
-  const offset = getNavbarHeight();
+  const offset = globalState.appbar.height;
   if (element) {
     const elementPosition =
       element.getBoundingClientRect().top + window.pageYOffset;
@@ -19,15 +23,22 @@ function scrollToDivWithOffset(id: string) {
   }
 }
 
-function getNavbarHeight() {
-  const navbar = document.getElementById("appbar");
-  if (navbar) {
-    return navbar.offsetHeight;
-  } else {
-    console.error("Navbar not found.");
-    return 0;
+function updateAppbarDimensions() {
+  const appbarElement = document.getElementById("appbar");
+  if (appbarElement) {
+    globalState.appbar.height = appbarElement.offsetHeight;
+    globalState.appbar.width = appbarElement.offsetWidth;
   }
 }
+
+onMounted(() => {
+  updateAppbarDimensions();
+  window.addEventListener("resize", updateAppbarDimensions);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateAppbarDimensions);
+});
 </script>
 
 <template>

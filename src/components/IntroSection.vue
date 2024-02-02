@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import Image from "primevue/image";
 import Button from "primevue/button";
+import { GlobalState } from "../types";
+import { inject } from "vue";
+
+const globalState = inject("globalState") as GlobalState;
 
 function scrollToDivWithOffset(id: string) {
   const element = document.getElementById(id);
-  const offset = getNavbarHeight();
+  const offset = globalState.appbar.height;
   if (element) {
     const elementPosition =
       element.getBoundingClientRect().top + window.pageYOffset;
@@ -15,16 +19,6 @@ function scrollToDivWithOffset(id: string) {
     });
   } else {
     console.error("Element with ID " + id + " not found.");
-  }
-}
-
-function getNavbarHeight() {
-  const navbar = document.getElementById("appbar");
-  if (navbar) {
-    return navbar.offsetHeight;
-  } else {
-    console.error("Navbar not found.");
-    return 0;
   }
 }
 </script>
