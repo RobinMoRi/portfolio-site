@@ -22,11 +22,16 @@ const loadingContent = ref<number[]>([]);
 
 async function getRepos() {
   loading.value = true;
+  let api_token = import.meta.env.VITE_GITHUB_API_TOKEN;
+  if (import.meta.env.VITE_ENV !== "dev") {
+    api_token = process.env.VITE_GITHUB_API_TOKEN;
+  }
+
   const url = "https://api.github.com/user/repos";
   const res = await fetch(url, {
     headers: {
       accept: "application/vnd.github+json",
-      authorization: `Bearer ${import.meta.env.VITE_GITHUB_API_TOKEN}`,
+      authorization: `Bearer ${api_token}`,
       "X-GitHub-Api-Version": "2022-11-28",
     },
   });
