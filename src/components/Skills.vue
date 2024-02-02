@@ -23,6 +23,7 @@ const softSkills = ref([
   { icon: "fa-brands fa-js", name: "Adaptable" },
   { icon: "fa-brands fa-react", name: "Team player" },
   { icon: "fa-brands fa-vuejs", name: "Problem solver" },
+  { icon: "fa-brands fa-vuejs", name: "Curious about learning" },
 ]);
 </script>
 <template>
