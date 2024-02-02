@@ -1,8 +1,23 @@
 <script setup lang="ts">
 import Card from "primevue/card";
 import Tag from "primevue/tag";
-</script>
+import { ref } from "vue";
 
+const techSkills = ref([
+  { icon: "fa-brands fa-python", name: "Python" },
+  { icon: "fa-brands fa-js", name: "Javascript/Typescript" },
+  { icon: "fa-brands fa-react", name: "React" },
+  { icon: "fa-brands fa-vuejs", name: "Vue" },
+  { icon: "fa-solid fa-code", name: "Django/DRF" },
+  { icon: "fa-brands fa-git-alt", name: "Git" },
+  { icon: "fa-solid fa-screwdriver-wrench", name: "Esbuild" },
+  { icon: "fa-solid fa-database", name: "PostgreSQL" },
+  { icon: "fa-brands fa-docker", name: "Docker" },
+  { icon: "fa-solid fa-chart-simple", name: "Scikit-Learn" },
+  { icon: "fa-solid fa-code", name: "Celery" },
+  { icon: "fa-brands fa-node-js", name: "Nodejs" },
+]);
+</script>
 <template>
   <div id="skills" class="grid w-screen align-items-start p-4 surface-50">
     <div id="title-group col-12">
@@ -15,17 +30,15 @@ import Tag from "primevue/tag";
 
           <template #content>
             <div class="flex flex-wrap gap-1">
-              <Tag
-                class="col-3"
-                icon="pi pi-user"
-                value="Typescript/Javascript"
-              />
-              <Tag icon="pi pi-user" value="Python" />
-              <Tag icon="pi pi-user" value="Django/DRF" />
-              <Tag icon="pi pi-user" value="Docker" />
-              <Tag icon="pi pi-user" value="Celery" />
-              <Tag icon="pi pi-user" value="Scikit-learn" />
-              <Tag icon="pi pi-user" value="Primary" />
+              <Tag v-for="item in techSkills" :value="item.name">
+                <template #icon>
+                  <font-awesome-icon
+                    :icon="item.icon"
+                    slot="icon"
+                    class="mr-1"
+                  ></font-awesome-icon>
+                </template>
+              </Tag>
             </div>
           </template>
         </Card>
