@@ -23,13 +23,6 @@ const loadingContent = ref<number[]>([]);
 async function getRepos() {
   loading.value = true;
   let api_token = import.meta.env.VITE_GITHUB_API_TOKEN;
-  // if (process && process.env.NODE_ENV === "prod") {
-  //   api_token = process.env.GITHUB_API_TOKEN;
-  //   console.log("From prod");
-  // }
-  console.log({ api_token });
-  console.log({ env: process.env.NODE_ENV });
-  console.log({ gh: import.meta.env.VITE_GITHUB_API_TOKEN });
 
   const url = "https://api.github.com/user/repos";
   const res = await fetch(url, {
