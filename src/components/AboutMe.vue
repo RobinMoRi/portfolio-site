@@ -26,10 +26,8 @@ import Image from "primevue/image";
         <p class="p-text-secondary">
           Outside of my professional life, I find great joy in running,
           especially over long distances. In addition to this, I have a deep
-          love for playing padel, hitting the gym, and exploring everything
-          related to food. These interests complement my dedication to fullstack
-          development, as they underscore my commitment to both personal growth
-          and the pursuit of excellence in my chosen field.
+          love for hitting the gym, traveling and exploring everything related
+          to food.
         </p>
       </div>
       <div class="mt-2 col-4 flex justify-content-center align-items-center">
