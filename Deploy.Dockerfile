@@ -1,4 +1,5 @@
 # build stage
+ARG VITE_GITHUB_API_TOKEN
 FROM node:18-alpine AS build-stage
 WORKDIR /app
 COPY package.json ./

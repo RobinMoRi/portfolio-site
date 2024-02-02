@@ -15,10 +15,12 @@ services:
       - NODE_ENV=dev
 
   frontend-deploy:
-    platform: linux/x86_64
-    image: romori1993/portfolio-site-frontend-deploy:latest
+    build:
+      context: .
+      dockerfile: Deploy.Dockerfile
     container_name: portfolio-frontend-prod
     ports:
       - "80:80"
     environment:
       - NODE_ENV=prod
+      - GITHUB_API_TOKEN=sometokenhere
