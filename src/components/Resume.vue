@@ -126,7 +126,7 @@ const education = ref([
 
 function downloadCV() {
   window.open(
-    "https://www.overleaf.com/download/project/602545ce719b742df0e41b8b/build/18d70f0500b-ced9b1e1919f6ac7/output/output.pdf?compileGroup=standard&clsiserverid=clsi-pre-emp-n2d-b-f-swmr&enable_pdf_caching=true&popupDownload=true",
+    "https://drive.usercontent.google.com/uc?id=1PvwN_ImQx2JK-es-hp2kAd3qv87IHzLI&export=download",
     "_blank"
   );
 }
@@ -138,15 +138,13 @@ function downloadCV() {
       <p class="name-title my-2">Resume</p>
     </div>
     <div class="col-12">
-      <div class="grid align-items-center gap-2">
-        <div class="text-400">Download CV</div>
-        <Button
-          size="small"
-          icon="pi pi-download"
-          @click="downloadCV"
-          outlined
-        />
-      </div>
+      <Button
+        label="Download CV"
+        size="small"
+        icon="pi pi-download"
+        @click="downloadCV"
+        outlined
+      />
     </div>
     <div class="grid mt-2">
       <div class="card col-12 md:col-6">
