@@ -5,9 +5,9 @@ import Button from "primevue/button";
 import FlipCard from "@/components/FlipCard.vue";
 import { ref } from "vue";
 import Tag from "primevue/tag";
-import { inject } from "vue";
-import { GlobalState } from "@/types";
-const globalState = inject("globalState") as GlobalState;
+// import { inject } from "vue";
+// import { GlobalState } from "@/types";
+// const globalState = inject("globalState") as GlobalState;
 
 const workExperience = ref([
   {
