@@ -45,7 +45,12 @@ onUnmounted(() => {
   <div class="sticky-toolbar" id="appbar">
     <Toolbar>
       <template #start>
-        <Avatar class="mr-2" size="normal" shape="circle" image="robin.png" />
+        <a
+          @click="scrollToDivWithOffset('intro-section')"
+          :style="{ cursor: 'pointer' }"
+        >
+          <Avatar class="mr-2" size="normal" shape="circle" image="robin.svg" />
+        </a>
       </template>
       <template #end>
         <Button

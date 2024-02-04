@@ -3,8 +3,12 @@ import Card from "primevue/card";
 import Button from "primevue/button";
 import ProgressBar from "primevue/progressbar";
 import Tag from "primevue/tag";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch, inject } from "vue";
 import ScrollPanel from "primevue/scrollpanel";
+import { GlobalState } from "../types";
+
+const globalState = inject("globalState") as GlobalState;
+const windowHeight = ref(0);
 
 type Repo = {
   id: number;
@@ -71,10 +75,24 @@ function openRepo(url: string, target = "_blank") {
 onMounted(() => {
   getRepos();
 });
+watch(
+  () => globalState.window.height,
+  (newVal) => {
+    console.log({ newVal });
+    windowHeight.value = newVal - globalState.appbar.height;
+  },
+  {
+    immediate: true,
+  }
+);
 </script>
 
 <template>
-  <div id="portfolio" class="w-screen p-4">
+  <div
+    id="portfolio"
+    class="w-screen p-4"
+    :style="{ minHeight: windowHeight + 'px' }"
+  >
     <div id="title-group col-12">
       <p class="name-title my-2">Portfolio</p>
     </div>

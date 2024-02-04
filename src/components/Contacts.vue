@@ -75,19 +75,21 @@ async function copyToClipboard(text: string) {
         </div>
       </template>
       <template #end>
-        <div class="text-xs text-200 mr-1">
-          This page is built by Robin Moreno Rinding using Vue3, PrimeVue,
-          PrimeFlex. Portfolio is integrated with
-        </div>
-        <a
-          class="text-xs text-200 mr-1"
-          href="https://docs.github.com/en/rest?apiVersion=2022-11-28"
-          target="_blank"
-        >
-          Github API.</a
-        >
-        <div class="text-xs text-200 mr-1">
-          Illustrations are done in Figma.
+        <div class="flex flex-row">
+          <div class="text-xs text-200 mr-1">
+            This page is built by Robin Moreno Rinding using Vue3, PrimeVue,
+            PrimeFlex. Portfolio is integrated with
+          </div>
+          <a
+            class="text-xs text-200 mr-1"
+            href="https://docs.github.com/en/rest?apiVersion=2022-11-28"
+            target="_blank"
+          >
+            Github API.</a
+          >
+          <div class="text-xs text-200 mr-1">
+            Illustrations are done in Figma.
+          </div>
         </div>
       </template>
     </Toolbar>

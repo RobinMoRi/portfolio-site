@@ -2,9 +2,11 @@
 import Image from "primevue/image";
 import Button from "primevue/button";
 import { GlobalState } from "../types";
-import { inject } from "vue";
+import { inject, ref, watch } from "vue";
 
 const globalState = inject("globalState") as GlobalState;
+
+const windowHeight = ref(0);
 
 function scrollToDivWithOffset(id: string) {
   const element = document.getElementById(id);
@@ -22,15 +24,22 @@ function scrollToDivWithOffset(id: string) {
   }
 }
 
-function getDivHeight() {
-  return window.innerHeight;
-}
+watch(
+  () => globalState.window.height,
+  (newVal) => {
+    console.log({ newVal });
+    windowHeight.value = newVal - globalState.appbar.height;
+  },
+  {
+    immediate: true,
+  }
+);
 </script>
 
 <template>
   <div
     id="intro-section"
-    :style="{ height: getDivHeight() }"
+    :style="{ minHeight: windowHeight + 'px' }"
     class="flex flex-column align-items-center justify-content-center flex-wrap p-4 w-screen section-container"
   >
     <div class="background-container w-full">
@@ -46,7 +55,7 @@ function getDivHeight() {
           Fullstack Developer | Tech Enthusiast | Lifelong Learner
         </p>
         <div class="image mt-2">
-          <Image src="/robin.png" width="250" />
+          <Image src="/robin.svg" width="250" />
         </div>
       </div>
       <div class="w-full flex justify-content-center">
