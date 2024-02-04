@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { inject, onMounted, onUnmounted } from "vue";
+import { GlobalState } from "@/types";
 import Appbar from "@/components/Appbar.vue";
 import IntroSection from "@/components/IntroSection.vue";
 import Contacts from "@/components/Contacts.vue";
@@ -7,6 +9,23 @@ import Skills from "@/components/Skills.vue";
 import Resume from "@/components/Resume.vue";
 import Toast from "primevue/toast";
 import Portfolio from "./components/Portfolio.vue";
+import SideProjects from "./components/SideProjects.vue";
+
+const globalState = inject("globalState") as GlobalState;
+
+function updateWindowSize() {
+  globalState.window.height = window.innerHeight;
+  globalState.window.width = window.innerWidth;
+}
+
+onMounted(() => {
+  updateWindowSize();
+  window.addEventListener("resize", updateWindowSize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWindowSize);
+});
 </script>
 
 <template>
@@ -17,6 +36,7 @@ import Portfolio from "./components/Portfolio.vue";
     <AboutMe />
     <Skills />
     <Resume />
+    <SideProjects />
     <Portfolio />
   </main>
   <Contacts />

@@ -6,7 +6,7 @@ import Image from "primevue/image";
   <div id="about-me" class="w-screen p-4 surface-0">
     <div id="title-group" class="grid">
       <p class="col-12 name-title my-2">About Me</p>
-      <div class="col-8">
+      <div class="col-12 md:col-8">
         <p class="p-text-secondary">
           With a master's degree in mechatronics and robotics from the Royal
           Institute of Technology, I come most recently from Morpheus Tribe,
@@ -30,7 +30,9 @@ import Image from "primevue/image";
           to food.
         </p>
       </div>
-      <div class="mt-2 col-4 flex justify-content-center align-items-center">
+      <div
+        class="mt-2 col-12 md:col-4 flex justify-content-center align-items-center"
+      >
         <Image src="/robin2.png" width="250" />
       </div>
     </div>

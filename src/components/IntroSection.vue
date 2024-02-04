@@ -21,11 +21,16 @@ function scrollToDivWithOffset(id: string) {
     console.error("Element with ID " + id + " not found.");
   }
 }
+
+function getDivHeight() {
+  return window.innerHeight;
+}
 </script>
 
 <template>
   <div
     id="intro-section"
+    :style="{ height: getDivHeight() }"
     class="flex flex-column align-items-center justify-content-center flex-wrap p-4 w-screen section-container"
   >
     <div class="background-container w-full">

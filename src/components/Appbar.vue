@@ -76,6 +76,15 @@ onUnmounted(() => {
           outlined
         />
         <Button
+          v-tooltip.bottom="{ value: 'Side Projects', autoHide: false }"
+          text
+          @click="scrollToDivWithOffset('side-projects')"
+          class="mr-2"
+          icon="pi pi-file"
+          size="small"
+          outlined
+        />
+        <Button
           v-tooltip.bottom="{ value: 'Portfolio', autoHide: false }"
           text
           @click="scrollToDivWithOffset('portfolio')"

@@ -31,6 +31,7 @@ import {
 
 const globalState = reactive({
   appbar: { height: 0, width: 0 },
+  window: { height: 0, width: 0 },
 });
 const app = createApp(App);
 library.add(

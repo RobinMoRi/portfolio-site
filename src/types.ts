@@ -3,4 +3,8 @@ export interface GlobalState {
     height: number;
     width: number;
   };
+  window: {
+    height: number;
+    width: number;
+  };
 }
