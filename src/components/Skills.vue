@@ -19,11 +19,11 @@ const techSkills = ref([
 ]);
 
 const softSkills = ref([
-  { icon: "fa-brands fa-python", name: "Analytical" },
-  { icon: "fa-brands fa-js", name: "Adaptable" },
-  { icon: "fa-brands fa-react", name: "Team player" },
-  { icon: "fa-brands fa-vuejs", name: "Problem solver" },
-  { icon: "fa-brands fa-vuejs", name: "Curious about learning" },
+  { icon: "fa-solid fa-chart-simple", name: "Analytical" },
+  { icon: "fa-solid fa-circle-nodes", name: "Adaptable" },
+  { icon: "fa-solid fa-people-group", name: "Team player" },
+  { icon: "fa-solid fa-brain", name: "Problem solver" },
+  { icon: "fa-solid fa-book", name: "Curious about learning" },
 ]);
 </script>
 <template>
@@ -73,13 +73,10 @@ const softSkills = ref([
   </div>
 </template>
 
-<style>
+<style scoped>
 .name-title {
   font-family: "Inter";
   letter-spacing: 2px;
   font-size: 54px;
-}
-.image {
-  clip-path: circle();
 }
 </style>

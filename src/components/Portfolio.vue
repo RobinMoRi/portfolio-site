@@ -130,4 +130,10 @@ onMounted(() => {
   </div>
 </template>
 
-<style></style>
+<style scoped>
+.name-title {
+  font-family: "Inter";
+  letter-spacing: 2px;
+  font-size: 54px;
+}
+</style>

@@ -238,9 +238,6 @@ function downloadCV() {
   letter-spacing: 2px;
   font-size: 54px;
 }
-.image {
-  clip-path: circle();
-}
 .p-card-content {
   width: 100%;
   max-height: 100px;

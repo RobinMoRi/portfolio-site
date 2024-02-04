@@ -23,9 +23,13 @@ import {
   faNodeJs,
 } from "@fortawesome/free-brands-svg-icons";
 import {
+  faBook,
+  faBrain,
   faChartSimple,
+  faCircleNodes,
   faCode,
   faDatabase,
+  faPeopleGroup,
   faScrewdriverWrench,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -45,7 +49,12 @@ library.add(
   faDocker,
   faScrewdriverWrench,
   faChartSimple,
-  faNodeJs
+  faNodeJs,
+  faChartSimple,
+  faCircleNodes,
+  faPeopleGroup,
+  faBrain,
+  faBook
 );
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(PrimeVue, { ripple: true });

@@ -63,7 +63,7 @@ function getDivHeight() {
   </div>
 </template>
 
-<style>
+<style scoped>
 .name-title {
   font-family: "Inter";
   letter-spacing: 2px;
