@@ -10,7 +10,6 @@ import { useBreakpoints, breakpointsPrimeFlex, useStorage } from "@vueuse/core";
 
 const PrimeVue = usePrimeVue();
 
-// const currentTheme = ref<"dark" | "light">("dark");
 const currentTheme = useStorage("theme", "dark");
 
 const menu = ref();
