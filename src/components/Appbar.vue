@@ -6,10 +6,13 @@ import Menu from "primevue/menu";
 import { usePrimeVue } from "primevue/config";
 import { inject, onMounted, onUnmounted, ref } from "vue";
 import { GlobalState } from "@/types";
-import { useBreakpoints, breakpointsPrimeFlex } from "@vueuse/core";
+import { useBreakpoints, breakpointsPrimeFlex, useStorage } from "@vueuse/core";
+
 const PrimeVue = usePrimeVue();
 
-const currentTheme = ref<"dark" | "light">("dark");
+// const currentTheme = ref<"dark" | "light">("dark");
+const currentTheme = useStorage("theme", "dark");
+
 const menu = ref();
 const items = ref([
   {
@@ -99,8 +102,24 @@ function toggleTheme() {
   );
 }
 
+function setTheme() {
+  /**
+   * Set theme to light if local-storage says so (default is dark)
+   */
+  if (currentTheme.value === "dark") return;
+  PrimeVue.changeTheme(
+    `aura-dark-indigo`,
+    `aura-light-indigo`,
+    "theme-link",
+    () => {
+      currentTheme.value = "light";
+    }
+  );
+}
+
 onMounted(() => {
   updateAppbarDimensions();
+  setTheme();
   window.addEventListener("resize", updateAppbarDimensions);
 });
 
@@ -123,11 +142,12 @@ onUnmounted(() => {
       <template #end class="justify-content-end">
         <Button
           v-tooltip.bottom="{ value: 'Toggle Theme', autoHide: false }"
-          text
           @click="toggleTheme()"
           class="mr-2"
           icon="pi pi-palette"
           size="small"
+          severity="secondary"
+          outlined
         />
         <div class="flex" v-if="breakpoints.isGreater('md')">
           <Button
