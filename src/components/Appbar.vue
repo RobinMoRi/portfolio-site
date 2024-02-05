@@ -2,10 +2,62 @@
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import Avatar from "primevue/avatar";
-import { inject, onMounted, onUnmounted } from "vue";
+import Menu from "primevue/menu";
+import { inject, onMounted, onUnmounted, ref } from "vue";
 import { GlobalState } from "@/types";
+import { useBreakpoints, breakpointsPrimeFlex } from "@vueuse/core";
+
+const menu = ref();
+const items = ref([
+  {
+    label: "Sections",
+    items: [
+      {
+        label: "About Me",
+        icon: "pi pi-user",
+        id: "about-me",
+        command: () => scrollToDivWithOffset("about-me"),
+      },
+      {
+        label: "Skills",
+        icon: "pi pi-code",
+        id: "skills",
+        command: () => scrollToDivWithOffset("skills"),
+      },
+      {
+        label: "Resume",
+        icon: "pi pi-file",
+        id: "resume",
+        command: () => scrollToDivWithOffset("resume"),
+      },
+      {
+        label: "Side Projects",
+        icon: "pi pi-briefcase",
+        id: "side-projects",
+        command: () => scrollToDivWithOffset("side-projects"),
+      },
+      {
+        label: "Portfolio",
+        icon: "pi pi-folder-open",
+        id: "portfolio",
+        command: () => scrollToDivWithOffset("portfolio"),
+      },
+      {
+        label: "Contacts",
+        icon: "pi pi-id-card",
+        id: "contacts",
+        command: () => scrollToDivWithOffset("contacts"),
+      },
+    ],
+  },
+]);
+
+const toggle = (event: MouseEvent) => {
+  menu.value.toggle(event);
+};
 
 const globalState = inject("globalState") as GlobalState;
+let breakpoints = useBreakpoints(breakpointsPrimeFlex);
 
 function scrollToDivWithOffset(id: string) {
   const element = document.getElementById(id);
@@ -52,59 +104,30 @@ onUnmounted(() => {
           <Avatar class="mr-2" size="normal" shape="circle" image="robin.svg" />
         </a>
       </template>
-      <template #end>
-        <Button
-          v-tooltip.bottom="{ value: 'About Me', autoHide: false }"
-          text
-          @click="scrollToDivWithOffset('about-me')"
-          class="mr-2"
-          icon="pi pi-user"
-          size="small"
-          outlined
-        />
-        <Button
-          v-tooltip.bottom="{ value: 'Skills', autoHide: false }"
-          text
-          @click="scrollToDivWithOffset('skills')"
-          class="mr-2"
-          icon="pi pi-code"
-          size="small"
-          outlined
-        />
-        <Button
-          v-tooltip.bottom="{ value: 'Resume', autoHide: false }"
-          text
-          @click="scrollToDivWithOffset('resume')"
-          class="mr-2"
-          icon="pi pi-file"
-          size="small"
-          outlined
-        />
-        <Button
-          v-tooltip.bottom="{ value: 'Side Projects', autoHide: false }"
-          text
-          @click="scrollToDivWithOffset('side-projects')"
-          class="mr-2"
-          icon="pi pi-file"
-          size="small"
-          outlined
-        />
-        <Button
-          v-tooltip.bottom="{ value: 'Portfolio', autoHide: false }"
-          text
-          @click="scrollToDivWithOffset('portfolio')"
-          class="mr-2"
-          icon="pi pi-folder-open"
-          size="small"
-          outlined
-        />
-        <Button
-          v-tooltip.bottom="{ value: 'Contacts', autoHide: false }"
-          @click="scrollToDivWithOffset('contacts')"
-          class="mr-2"
-          icon="pi pi-id-card"
-          size="small"
-        />
+      <template #end class="justify-content-end">
+        <div class="flex" v-if="breakpoints.isGreater('md')">
+          <Button
+            v-for="item in items[0].items"
+            v-tooltip.bottom="{ value: item.label, autoHide: false }"
+            text
+            @click="scrollToDivWithOffset(item.id)"
+            class="mr-2"
+            :icon="item.icon"
+            size="small"
+            outlined
+          />
+        </div>
+        <div v-else class="flex align-items-center justify-content-end">
+          <Button
+            type="button"
+            icon="pi pi-ellipsis-v"
+            outlined
+            @click="toggle"
+            aria-haspopup="true"
+            aria-controls="overlay_menu"
+          />
+          <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
+        </div>
       </template>
     </Toolbar>
   </div>

@@ -14,6 +14,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/vue-fontawesome": "^3.0.6",
+    "@vueuse/core": "^10.7.2",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primevue": "^3.47.2",
