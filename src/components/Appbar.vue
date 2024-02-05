@@ -7,7 +7,9 @@ import { usePrimeVue } from "primevue/config";
 import { inject, onMounted, onUnmounted, ref } from "vue";
 import { GlobalState } from "@/types";
 import { useBreakpoints, breakpointsPrimeFlex } from "@vueuse/core";
+const PrimeVue = usePrimeVue();
 
+const currentTheme = ref<"dark" | "light">("dark");
 const menu = ref();
 const items = ref([
   {
@@ -85,12 +87,15 @@ function updateAppbarDimensions() {
 }
 
 function toggleTheme() {
-  const PrimeVue = usePrimeVue();
+  const switchToTheme = currentTheme.value === "dark" ? "light" : "dark";
+  console.debug(`Switching from ${currentTheme.value} to ${switchToTheme}`);
   PrimeVue.changeTheme(
-    "aura-light-indigo",
-    "aura-dark-indigo",
+    `aura-${currentTheme.value}-indigo`,
+    `aura-${switchToTheme}-indigo`,
     "theme-link",
-    () => {}
+    () => {
+      currentTheme.value = currentTheme.value === "dark" ? "light" : "dark";
+    }
   );
 }
 
@@ -116,15 +121,15 @@ onUnmounted(() => {
         </a>
       </template>
       <template #end class="justify-content-end">
+        <Button
+          v-tooltip.bottom="{ value: 'Toggle Theme', autoHide: false }"
+          text
+          @click="toggleTheme()"
+          class="mr-2"
+          icon="pi pi-palette"
+          size="small"
+        />
         <div class="flex" v-if="breakpoints.isGreater('md')">
-          <Button
-            v-tooltip.bottom="{ value: 'Toggle Theme', autoHide: false }"
-            text
-            @click="toggleTheme()"
-            class="mr-2"
-            icon="pi pi-palette"
-            size="small"
-          />
           <Button
             v-for="item in items[0].items"
             v-tooltip.bottom="{ value: item.label, autoHide: false }"
