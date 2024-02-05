@@ -3,6 +3,7 @@ import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import Avatar from "primevue/avatar";
 import Menu from "primevue/menu";
+import { usePrimeVue } from "primevue/config";
 import { inject, onMounted, onUnmounted, ref } from "vue";
 import { GlobalState } from "@/types";
 import { useBreakpoints, breakpointsPrimeFlex } from "@vueuse/core";
@@ -83,6 +84,16 @@ function updateAppbarDimensions() {
   }
 }
 
+function toggleTheme() {
+  const PrimeVue = usePrimeVue();
+  PrimeVue.changeTheme(
+    "aura-light-indigo",
+    "aura-dark-indigo",
+    "theme-link",
+    () => {}
+  );
+}
+
 onMounted(() => {
   updateAppbarDimensions();
   window.addEventListener("resize", updateAppbarDimensions);
@@ -106,6 +117,14 @@ onUnmounted(() => {
       </template>
       <template #end class="justify-content-end">
         <div class="flex" v-if="breakpoints.isGreater('md')">
+          <Button
+            v-tooltip.bottom="{ value: 'Toggle Theme', autoHide: false }"
+            text
+            @click="toggleTheme()"
+            class="mr-2"
+            icon="pi pi-palette"
+            size="small"
+          />
           <Button
             v-for="item in items[0].items"
             v-tooltip.bottom="{ value: item.label, autoHide: false }"
