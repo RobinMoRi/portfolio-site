@@ -2,16 +2,24 @@
 import Timeline from "primevue/timeline";
 import Card from "primevue/card";
 import Button from "primevue/button";
-import FlipCard from "@/components/FlipCard.vue";
+import Dialog from "primevue/dialog";
 import { ref } from "vue";
 import Tag from "primevue/tag";
-// import { inject } from "vue";
-// import { GlobalState } from "@/types";
-// const globalState = inject("globalState") as GlobalState;
 
-const workExperience = ref([
+type Experience = {
+  institute: string;
+  title: string;
+  description: string[];
+  start: string;
+  end: string;
+  skills?: string[];
+};
+
+const currentExperience = ref<Experience | null>(null);
+
+const workExperience = ref<Experience[]>([
   {
-    company: "Morpheus Tribe",
+    institute: "Morpheus Tribe",
     title: "Fullstack Developer",
     description: [
       "In my current role, I am deeply involved in fullstack development for an automation solution designed to streamline search and recruitment processes. Working within a small team reminiscent of a startup environment, I hold a wide range of responsibilities. I collaborate closely with the solution's end-users and maintain a primary focus on optimizing, streamlining, and advancing the solution, both on the backend and frontend.",
@@ -33,7 +41,7 @@ const workExperience = ref([
     ],
   },
   {
-    company: "Capgemini",
+    institute: "Capgemini",
     title: "Senior Applications Consultant",
     description: [
       "Primary roles as developer and business analyst.",
@@ -54,7 +62,7 @@ const workExperience = ref([
     ],
   },
   {
-    company: "KPMG",
+    institute: "KPMG",
     title: "Technical Associate",
     description: [
       "Primary roles as software developer, automation engineer and business analyst.",
@@ -85,7 +93,7 @@ const workExperience = ref([
     ],
   },
   {
-    company: "Alten",
+    institute: "Alten",
     title: "Embedded Software Engineer",
     description: [
       "Primary role as an Embedded Software Engineer.",
@@ -98,9 +106,9 @@ const workExperience = ref([
   },
 ]);
 
-const education = ref([
+const education = ref<Experience[]>([
   {
-    school: "KTH (Royal Institute of Technology)",
+    institute: "KTH (Royal Institute of Technology)",
     title: "M.Sc. in Mechatronics and Robotics Engineering",
     description: [
       "Degree program covering subjects such as embedded systems, applied mathematics and artificial intelligence.",
@@ -108,10 +116,9 @@ const education = ref([
     ],
     start: "Aug. 2016",
     end: "Jun. 2018",
-    icon: "pi pi-shopping-cart",
   },
   {
-    school: "KTH (Royal Institute of Technology)",
+    institute: "KTH (Royal Institute of Technology)",
     title: "B.Sc. in Mechanical Engineering",
     description: [
       "Degree program covering subjects such as mathematics, mechanics, electronics and programming.",
@@ -120,7 +127,6 @@ const education = ref([
     ],
     start: "Aug. 2013",
     end: "Jun. 2016",
-    icon: "pi pi-cog",
   },
 ]);
 
@@ -130,12 +136,23 @@ function downloadCV() {
     "_blank"
   );
 }
+
+function selectExperience(item: Experience) {
+  currentExperience.value = item;
+}
+
+function deselectExperience() {
+  currentExperience.value = null;
+}
 </script>
 
 <template>
   <div id="resume" class="w-screen p-4 surface-0">
     <div id="title-group col-12">
       <p class="name-title my-2">Resume</p>
+      <p class="my-2 text-md text-200">
+        Click on the cards to find out more about my roles.
+      </p>
     </div>
     <div class="col-12">
       <Button
@@ -158,28 +175,14 @@ function downloadCV() {
 
           <template #content="slotProps">
             <div class="mb-3">
-              <FlipCard>
-                <template #front>
-                  <Card class="h-full surface-100">
-                    <template #subtitle>{{ slotProps.item.school }}</template>
-                    <template #content>{{ slotProps.item.title }}</template>
-                  </Card>
-                </template>
-                <template #back>
-                  <Card class="h-full surface-100">
-                    <template #content>
-                      <div class="p-card-content">
-                        <li
-                          v-for="item in slotProps.item.description"
-                          class="mb-2 text-xs"
-                        >
-                          {{ item }}
-                        </li>
-                      </div>
-                    </template>
-                  </Card>
-                </template>
-              </FlipCard>
+              <Card
+                class="surface-100 p-2"
+                style="cursor: pointer"
+                @click="selectExperience(slotProps.item)"
+              >
+                <template #subtitle>{{ slotProps.item.institute }}</template>
+                <template #content>{{ slotProps.item.title }}</template>
+              </Card>
             </div>
           </template>
         </Timeline>
@@ -199,34 +202,42 @@ function downloadCV() {
           </template>
           <template #opposite="slotProps">
             <div class="mb-3">
-              <FlipCard>
-                <template #front>
-                  <Card class="h-full surface-100">
-                    <template #subtitle>{{ slotProps.item.company }}</template>
-                    <template #content>{{ slotProps.item.title }}</template>
-                    <template #footer> </template>
-                  </Card>
-                </template>
-                <template #back>
-                  <Card class="h-full w-full surface-100">
-                    <template #content>
-                      <div class="p-card-content">
-                        <li
-                          v-for="item in slotProps.item.description"
-                          class="mb-2 text-xs"
-                        >
-                          {{ item }}
-                        </li>
-                      </div>
-                    </template>
-                  </Card>
-                </template>
-              </FlipCard>
+              <Card
+                class="surface-100 p-2"
+                style="cursor: pointer"
+                @click="selectExperience(slotProps.item)"
+              >
+                <template #subtitle>{{ slotProps.item.institute }}</template>
+                <template #content>{{ slotProps.item.title }}</template>
+                <template #footer> </template>
+              </Card>
             </div>
           </template>
         </Timeline>
       </div>
     </div>
+  </div>
+  <div class="card flex justify-content-center">
+    <Dialog
+      :visible="currentExperience !== null"
+      modal
+      :closable="false"
+      @update:visible="deselectExperience"
+      dismissableMask
+      class="mx-4 w-screen md:w-6"
+    >
+      <template #header>
+        <div class="flex flex-column gap-1">
+          <div class="text-md text-200">{{ currentExperience?.institute }}</div>
+          <div class="text-xs">{{ currentExperience?.title }}</div>
+        </div>
+      </template>
+      <div>
+        <li v-for="item in currentExperience?.description" class="mb-2 text-xs">
+          {{ item }}
+        </li>
+      </div>
+    </Dialog>
   </div>
 </template>
 
@@ -235,11 +246,5 @@ function downloadCV() {
   font-family: "Inter";
   letter-spacing: 2px;
   font-size: 54px;
-}
-.p-card-content {
-  width: 100%;
-  max-height: 100px;
-  overflow-y: scroll;
-  text-align: start;
 }
 </style>
