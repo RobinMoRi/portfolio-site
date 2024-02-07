@@ -227,8 +227,8 @@ function deselectExperience() {
       class="mx-4 w-screen md:w-6"
     >
       <template #header>
-        <div class="flex flex-column gap-1">
-          <div class="text-md text-200">{{ currentExperience?.institute }}</div>
+        <div class="flex flex-column gap-2">
+          <div class="text-md text-400">{{ currentExperience?.institute }}</div>
           <div class="text-xs">{{ currentExperience?.title }}</div>
         </div>
       </template>

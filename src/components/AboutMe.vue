@@ -31,7 +31,7 @@ import Image from "primevue/image";
         </p>
       </div>
       <div
-        class="mt-2 col-12 md:col-4 flex justify-content-center align-items-center"
+        class="mt-2 col-12 md:col-4 flex justify-content-end align-items-center"
       >
         <Image src="/robin2.svg" width="250" />
       </div>
