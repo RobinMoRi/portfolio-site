@@ -12,6 +12,9 @@ const PrimeVue = usePrimeVue();
 
 const currentTheme = useStorage("theme", "dark");
 
+const activeSection = ref("");
+let observer: IntersectionObserver;
+
 const menu = ref();
 const items = ref([
   {
@@ -120,10 +123,30 @@ onMounted(() => {
   updateAppbarDimensions();
   setTheme();
   window.addEventListener("resize", updateAppbarDimensions);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          activeSection.value = entry.target.id;
+        }
+      });
+    },
+    {
+      rootMargin: `-${globalState.appbar.height}px 0px 0px 0px`,
+      threshold: 0.1,
+    }
+  );
+
+  items.value[0].items.forEach((item) => {
+    const element = document.getElementById(item.id);
+    if (element) observer.observe(element);
+  });
 });
 
 onUnmounted(() => {
   window.removeEventListener("resize", updateAppbarDimensions);
+  if (observer) observer.disconnect();
 });
 </script>
 
@@ -157,7 +180,7 @@ onUnmounted(() => {
             class="mr-2"
             :icon="item.icon"
             size="small"
-            outlined
+            :outlined="activeSection === item.id"
           />
         </div>
         <div v-else class="flex align-items-center justify-content-end">
