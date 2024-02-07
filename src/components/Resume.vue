@@ -150,6 +150,9 @@ function deselectExperience() {
   <div id="resume" class="w-screen p-4 surface-0">
     <div id="title-group col-12">
       <p class="name-title my-2">Resume</p>
+      <p class="my-2 text-md text-200">
+        Click on the cards to find out more about my roles.
+      </p>
     </div>
     <div class="col-12">
       <Button
@@ -221,7 +224,7 @@ function deselectExperience() {
       :closable="false"
       @update:visible="deselectExperience"
       dismissableMask
-      class="mx-4"
+      class="mx-4 w-screen md:w-6"
     >
       <template #header>
         <div class="flex flex-column gap-1">
