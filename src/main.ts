@@ -6,11 +6,13 @@ import Tooltip from "primevue/tooltip";
 import ToastService from "primevue/toastservice";
 import Ripple from "primevue/ripple";
 
+import "primevue/resources/themes/aura-dark-indigo/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+// import { all } from '@fortawesome/free-regular-svg-icons'
 import {
   faPython,
   faJs,

@@ -3,14 +3,9 @@ import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import Avatar from "primevue/avatar";
 import Menu from "primevue/menu";
-import { usePrimeVue } from "primevue/config";
 import { inject, onMounted, onUnmounted, ref } from "vue";
 import { GlobalState } from "@/types";
-import { useBreakpoints, breakpointsPrimeFlex, useStorage } from "@vueuse/core";
-
-const PrimeVue = usePrimeVue();
-
-const currentTheme = useStorage("theme", "dark");
+import { useBreakpoints, breakpointsPrimeFlex } from "@vueuse/core";
 
 const menu = ref();
 const items = ref([
@@ -88,37 +83,8 @@ function updateAppbarDimensions() {
   }
 }
 
-function toggleTheme() {
-  const switchToTheme = currentTheme.value === "dark" ? "light" : "dark";
-  console.debug(`Switching from ${currentTheme.value} to ${switchToTheme}`);
-  PrimeVue.changeTheme(
-    `aura-${currentTheme.value}-indigo`,
-    `aura-${switchToTheme}-indigo`,
-    "theme-link",
-    () => {
-      currentTheme.value = currentTheme.value === "dark" ? "light" : "dark";
-    }
-  );
-}
-
-function setTheme() {
-  /**
-   * Set theme to light if local-storage says so (default is dark)
-   */
-  if (currentTheme.value === "dark") return;
-  PrimeVue.changeTheme(
-    `aura-dark-indigo`,
-    `aura-light-indigo`,
-    "theme-link",
-    () => {
-      currentTheme.value = "light";
-    }
-  );
-}
-
 onMounted(() => {
   updateAppbarDimensions();
-  setTheme();
   window.addEventListener("resize", updateAppbarDimensions);
 });
 
@@ -139,15 +105,6 @@ onUnmounted(() => {
         </a>
       </template>
       <template #end class="justify-content-end">
-        <Button
-          v-tooltip.bottom="{ value: 'Toggle Theme', autoHide: false }"
-          @click="toggleTheme()"
-          class="mr-2"
-          icon="pi pi-palette"
-          size="small"
-          severity="secondary"
-          outlined
-        />
         <div class="flex" v-if="breakpoints.isGreater('md')">
           <Button
             v-for="item in items[0].items"
