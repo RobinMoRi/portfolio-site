@@ -48,10 +48,11 @@ async function getRepos() {
 
   for (let idx in repos.value) {
     let repo = repos.value[idx];
-    const lang = await getLanguages(repo.languages_url);
-    repos.value[idx] = { ...repo, languges: Object.keys(lang) };
-    loadingContent.value.push(repo.id);
-    // await new Promise((r) => setTimeout(r, 500)); //Mock sleep
+
+    getLanguages(repo.languages_url).then((lang) => {
+      repos.value[idx] = { ...repo, languges: Object.keys(lang) };
+      loadingContent.value.push(repo.id);
+    });
   }
 
   console.log({ data });
