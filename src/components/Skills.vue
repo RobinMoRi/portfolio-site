@@ -24,6 +24,8 @@ const softSkills = ref([
   { icon: "fa-solid fa-people-group", name: "Team player" },
   { icon: "fa-solid fa-brain", name: "Problem solver" },
   { icon: "fa-solid fa-book", name: "Curious about learning" },
+  { icon: "fa-solid fa-chess-knight", name: "Business acumen" },
+  { icon: "fa-regular fa-comments", name: "Communicative" },
 ]);
 </script>
 <template>

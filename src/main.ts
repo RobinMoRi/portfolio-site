@@ -12,7 +12,6 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-// import { all } from '@fortawesome/free-regular-svg-icons'
 import {
   faPython,
   faJs,
@@ -26,12 +25,14 @@ import {
   faBook,
   faBrain,
   faChartSimple,
+  faChessKnight,
   faCircleNodes,
   faCode,
   faDatabase,
   faPeopleGroup,
   faScrewdriverWrench,
 } from "@fortawesome/free-solid-svg-icons";
+import { faComments } from "@fortawesome/free-regular-svg-icons";
 
 const globalState = reactive({
   appbar: { height: 0, width: 0 },
@@ -54,7 +55,9 @@ library.add(
   faCircleNodes,
   faPeopleGroup,
   faBrain,
-  faBook
+  faBook,
+  faComments,
+  faChessKnight
 );
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(PrimeVue, { ripple: true });
