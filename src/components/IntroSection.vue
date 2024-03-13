@@ -55,7 +55,7 @@ watch(
           Fullstack Developer | Tech Enthusiast | Lifelong Learner
         </p>
         <div class="image mt-2">
-          <Image src="/robin.svg" width="250" />
+          <Image src="/robin.svg" width="250" alt="robin moreno rinding svg" />
         </div>
       </div>
       <div class="w-full flex justify-content-center">
