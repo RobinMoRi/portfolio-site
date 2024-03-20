@@ -4,8 +4,8 @@ import Button from "primevue/button";
 import ProgressBar from "primevue/progressbar";
 import Tag from "primevue/tag";
 import { onMounted, ref, watch, inject } from "vue";
-import ScrollPanel from "primevue/scrollpanel";
 import { GlobalState } from "../types";
+import Carousel from "primevue/carousel";
 
 const globalState = inject("globalState") as GlobalState;
 const windowHeight = ref(0);
@@ -86,6 +86,30 @@ watch(
     immediate: true,
   }
 );
+
+const responsiveOptions = ref([
+  {
+    breakpoint: "2000px",
+    numVisible: 4,
+    numScroll: 4,
+  },
+
+  {
+    breakpoint: "1200px",
+    numVisible: 3,
+    numScroll: 3,
+  },
+  {
+    breakpoint: "575px",
+    numVisible: 2,
+    numScroll: 2,
+  },
+  {
+    breakpoint: "375px",
+    numVisible: 1,
+    numScroll: 1,
+  },
+]);
 </script>
 
 <template>
@@ -97,51 +121,64 @@ watch(
     <div id="title-group col-12">
       <p class="name-title my-2">Portfolio</p>
     </div>
-    <ScrollPanel v-if="!loading" style="width: 100%; height: 600px">
-      <div class="grid">
-        <div v-for="repo in repos" class="col-12 md:col-4 sm:col-6">
-          <Card class="h-full">
-            <template #title>
-              <Button
-                @click="openRepo(repo.html_url)"
-                link
-                v-tooltip.top="{ value: repo.html_url, autoHide: false }"
-                >{{ repo.name }}</Button
+    <Carousel
+      v-if="!loading"
+      :verticalViewPortHeight="0.55 * windowHeight + 'px'"
+      :numVisible="1"
+      :numScroll="1"
+      :value="repos"
+      circular
+      :autoplayInterval="3000"
+      :responsiveOptions="responsiveOptions"
+      :orientation="globalState.window.width < 500 ? 'vertical' : 'horizontal'"
+    >
+      <template #item="slotProps">
+        <Card class="m-1">
+          <template #title>
+            <Button
+              @click="openRepo(slotProps.data.html_url)"
+              link
+              v-tooltip.top="{
+                value: slotProps.data.html_url,
+                autoHide: false,
+              }"
+              >{{ slotProps.data.name }}</Button
+            >
+          </template>
+          <template #subtitle>
+            <div>
+              Created:
+              {{
+                new Date(slotProps.data.created_at).toLocaleDateString("sv-SE")
+              }}
+            </div>
+          </template>
+          <template #content>
+            <div>
+              {{ slotProps.data.description }}
+            </div>
+          </template>
+          <template #footer>
+            <div class="flex flex-wrap">
+              <div
+                v-if="loadingContent.includes(slotProps.data.id)"
+                v-for="lang in slotProps.data.languges"
+                class="mr-1 mb-1"
               >
-            </template>
-            <template #subtitle>
-              <div>
-                Created:
-                {{ new Date(repo.created_at).toLocaleDateString("sv-SE") }}
+                <Tag :value="lang" />
               </div>
-            </template>
-            <template #content>
-              <div>
-                {{ repo.description }}
-              </div>
-            </template>
-            <template #footer>
-              <div class="flex flex-wrap">
-                <div
-                  v-if="loadingContent.includes(repo.id)"
-                  v-for="lang in repo.languges"
-                  class="mr-1 mb-1"
-                >
-                  <Tag :value="lang" />
-                </div>
 
-                <div v-else class="card">
-                  <ProgressBar
-                    mode="indeterminate"
-                    style="height: 6px"
-                  ></ProgressBar>
-                </div>
+              <div v-else class="card">
+                <ProgressBar
+                  mode="indeterminate"
+                  style="height: 6px"
+                ></ProgressBar>
               </div>
-            </template>
-          </Card>
-        </div>
-      </div>
-    </ScrollPanel>
+            </div>
+          </template>
+        </Card>
+      </template>
+    </Carousel>
 
     <div v-else class="card">
       <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar>
