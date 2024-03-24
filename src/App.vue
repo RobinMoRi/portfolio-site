@@ -18,9 +18,19 @@ function updateWindowSize() {
   globalState.window.width = window.innerWidth;
 }
 
+function getIpAddress() {
+  fetch("https://api.ipify.org?format=json")
+    .then((res) => res.json())
+    .then(({ ip }) => {
+      console.log(ip);
+      localStorage.setItem("IP_ADDRESS", ip);
+    });
+}
+
 onMounted(() => {
   updateWindowSize();
   window.addEventListener("resize", updateWindowSize);
+  getIpAddress();
 });
 
 onUnmounted(() => {
