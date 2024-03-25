@@ -17,7 +17,7 @@
     "@vueuse/core": "^10.7.2",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
-    "primevue": "^3.47.2",
+    "primevue": "^3.50.0",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5"

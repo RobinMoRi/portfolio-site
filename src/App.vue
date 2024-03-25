@@ -10,6 +10,7 @@ import Resume from "@/components/Resume.vue";
 import Toast from "primevue/toast";
 import Portfolio from "./components/Portfolio.vue";
 import SideProjects from "./components/SideProjects.vue";
+import ChatBubble from "@/components/ChatBubble.vue";
 
 const globalState = inject("globalState") as GlobalState;
 
@@ -40,6 +41,7 @@ onUnmounted(() => {
 
 <template>
   <Toast position="bottom-left" group="bl" />
+  <ChatBubble />
   <Appbar ref="appbarRef" />
   <main class="flex flex-column align-items-center">
     <IntroSection />
