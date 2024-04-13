@@ -3,7 +3,7 @@ import Button from "primevue/button";
 import OverlayPanel from "primevue/overlaypanel";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
-
+import Card from "primevue/card";
 import { ref } from "vue";
 
 const op = ref();
@@ -21,48 +21,50 @@ const message = ref(null);
 </script>
 
 <template>
-  <div id="chat-bubble-wrapper" class="chat-wrapper">
-    <OverlayPanel ref="op" class="chat-bubble">
-      <div class="flex flex-column gap-2">
-        <div>Chat with me!</div>
-        <InputText
-          id="title"
-          type="text"
-          v-model="title"
-          class="text"
-          placeholder="Title"
-        />
-        <InputText
-          id="name"
-          type="text"
-          v-model="name"
-          class="text"
-          placeholder="Name"
-        />
-        <Textarea
-          id="message"
-          class="text"
-          v-model="message"
-          rows="5"
-          cols="30"
-          :style="{ resize: 'none' }"
-          placeholder="Message"
-        />
+  <!-- <OverlayPanel ref="op" appendTo="body">
+    <div class="flex flex-column gap-2">
+      <div>Chat with me!</div>
+      <InputText
+        id="title"
+        type="text"
+        v-model="title"
+        class="text"
+        placeholder="Title"
+      />
+      <InputText
+        id="name"
+        type="text"
+        v-model="name"
+        class="text"
+        placeholder="Name"
+      />
+      <Textarea
+        id="message"
+        class="text"
+        v-model="message"
+        rows="5"
+        cols="30"
+        :style="{ resize: 'none' }"
+        placeholder="Message"
+      />
 
-        <div :style="{ width: '100%' }" class="flex justify-content-end">
-          <Button
-            icon="pi pi-send"
-            aria-label="Chat"
-            @click="send"
-            :disabled="!title || !name || !message"
-          />
-        </div>
+      <div :style="{ width: '100%' }" class="flex justify-content-end">
+        <Button
+          icon="pi pi-send"
+          aria-label="Chat"
+          @click="send"
+          :disabled="!title || !name || !message"
+        />
       </div>
-    </OverlayPanel>
+    </div>
+  </OverlayPanel> -->
+  <div>
+    <Card></Card>
+  </div>
+  <div id="chat-bubble-wrapper" class="chat-wrapper">
     <Button
       class="chat-bubble"
       icon="pi pi-comment"
-      severity="info"
       rounded
       outlined
       aria-label="Chat"
@@ -81,6 +83,6 @@ const message = ref(null);
   right: 3rem;
 }
 .chat-bubble {
-  position: absolute;
+  position: fixed;
 }
 </style>

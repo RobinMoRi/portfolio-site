@@ -41,7 +41,6 @@ onUnmounted(() => {
 
 <template>
   <Toast position="bottom-left" group="bl" />
-  <ChatBubble />
   <Appbar ref="appbarRef" />
   <main class="flex flex-column align-items-center">
     <IntroSection />
@@ -52,6 +51,7 @@ onUnmounted(() => {
     <Portfolio />
   </main>
   <Contacts />
+  <ChatBubble />
 </template>
 
 <style>
