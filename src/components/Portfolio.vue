@@ -133,7 +133,7 @@ const responsiveOptions = ref([
       :orientation="globalState.window.width < 500 ? 'vertical' : 'horizontal'"
     >
       <template #item="slotProps">
-        <Card class="m-1">
+        <Card class="m-1" style="max-width: 30%">
           <template #title>
             <Button
               @click="openRepo(slotProps.data.html_url)"
@@ -154,7 +154,11 @@ const responsiveOptions = ref([
             </div>
           </template>
           <template #content>
-            <div>
+            <div
+              v-tooltip.bottom="slotProps.data.description"
+              class="clipped"
+              style="width: 100%"
+            >
               {{ slotProps.data.description }}
             </div>
           </template>
@@ -191,5 +195,11 @@ const responsiveOptions = ref([
   font-family: "Inter";
   letter-spacing: 2px;
   font-size: 54px;
+}
+
+.clipped {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>
