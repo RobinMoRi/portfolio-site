@@ -134,7 +134,7 @@ onUnmounted(() => {
     <ProgressBar
       :value="globalState.scroll.scrollPositionPercentage"
       :show-value="false"
-      style="height: 3px"
+      style="height: 1.5px"
     ></ProgressBar>
   </div>
 </template>

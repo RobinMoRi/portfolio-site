@@ -23,6 +23,7 @@ type Repo = {
 const repos = ref<Repo[]>([]);
 const loading = ref(false);
 const loadingContent = ref<number[]>([]);
+const VERTICAL_BREAKPOINT = ref<number>(500);
 
 async function getRepos() {
   loading.value = true;
@@ -95,17 +96,17 @@ const responsiveOptions = ref([
   },
 
   {
-    breakpoint: "1200px",
+    breakpoint: "1300px",
     numVisible: 3,
     numScroll: 3,
   },
   {
-    breakpoint: "575px",
+    breakpoint: "1100px",
     numVisible: 2,
     numScroll: 2,
   },
   {
-    breakpoint: "375px",
+    breakpoint: "450px",
     numVisible: 1,
     numScroll: 1,
   },
@@ -113,27 +114,33 @@ const responsiveOptions = ref([
 </script>
 
 <template>
-  <div
-    id="portfolio"
-    class="w-screen p-4"
-    :style="{ minHeight: windowHeight + 'px' }"
-  >
+  <div id="portfolio" class="w-screen p-4">
     <div id="title-group col-12">
       <p class="name-title my-2">Portfolio</p>
     </div>
     <Carousel
       v-if="!loading"
-      :verticalViewPortHeight="0.55 * windowHeight + 'px'"
       :numVisible="1"
       :numScroll="1"
       :value="repos"
       circular
-      :autoplayInterval="3000"
+      :autoplayInterval="5000"
       :responsiveOptions="responsiveOptions"
-      :orientation="globalState.window.width < 500 ? 'vertical' : 'horizontal'"
+      :orientation="
+        globalState.window.width < VERTICAL_BREAKPOINT
+          ? 'vertical'
+          : 'horizontal'
+      "
     >
       <template #item="slotProps">
-        <Card class="m-1">
+        <Card
+          class="m-1"
+          :style="
+            globalState.window.width < VERTICAL_BREAKPOINT
+              ? { height: '250px' }
+              : { width: '300px' }
+          "
+        >
           <template #title>
             <Button
               @click="openRepo(slotProps.data.html_url)"
@@ -154,7 +161,7 @@ const responsiveOptions = ref([
             </div>
           </template>
           <template #content>
-            <div>
+            <div v-tooltip.bottom="slotProps.data.description" class="clipped">
               {{ slotProps.data.description }}
             </div>
           </template>
@@ -191,5 +198,11 @@ const responsiveOptions = ref([
   font-family: "Inter";
   letter-spacing: 2px;
   font-size: 54px;
+}
+
+.clipped {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>
