@@ -27,14 +27,31 @@ function getIpAddress() {
     });
 }
 
+function onScroll() {
+  const scrollHeight = document.body.scrollHeight;
+  const windowHeight = window.innerHeight;
+  const scrollY = Math.round(window.scrollY);
+  const percentageScroll = Math.round(
+    ((windowHeight + scrollY) / scrollHeight) * 100
+  );
+
+  globalState.scroll.scrollPositionPercentage =
+    scrollY === 0 ? scrollY : percentageScroll;
+  globalState.scroll.scrollY = scrollY;
+
+  console.log({ perc: globalState.scroll.scrollPositionPercentage });
+}
+
 onMounted(() => {
   updateWindowSize();
   window.addEventListener("resize", updateWindowSize);
+  window.addEventListener("scroll", onScroll);
   getIpAddress();
 });
 
 onUnmounted(() => {
   window.removeEventListener("resize", updateWindowSize);
+  window.addEventListener("scroll", onScroll);
 });
 </script>
 
