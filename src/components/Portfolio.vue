@@ -106,7 +106,7 @@ const responsiveOptions = ref([
     numScroll: 2,
   },
   {
-    breakpoint: "450px",
+    breakpoint: "375px",
     numVisible: 1,
     numScroll: 1,
   },
@@ -114,7 +114,11 @@ const responsiveOptions = ref([
 </script>
 
 <template>
-  <div id="portfolio" class="w-screen p-4">
+  <div
+    id="portfolio"
+    class="w-screen p-4"
+    :style="{ minHeight: windowHeight + 'px' }"
+  >
     <div id="title-group col-12">
       <p class="name-title my-2">Portfolio</p>
     </div>
@@ -126,6 +130,7 @@ const responsiveOptions = ref([
       circular
       :autoplayInterval="5000"
       :responsiveOptions="responsiveOptions"
+      :verticalViewPortHeight="0.7 * windowHeight + 'px'"
       :orientation="
         globalState.window.width < VERTICAL_BREAKPOINT
           ? 'vertical'
