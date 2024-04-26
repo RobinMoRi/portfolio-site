@@ -37,6 +37,7 @@ import { faComments } from "@fortawesome/free-regular-svg-icons";
 const globalState = reactive({
   appbar: { height: 0, width: 0 },
   window: { height: 0, width: 0 },
+  scroll: { scrollPositionPercentage: 0, scrollY: 0 },
 });
 const app = createApp(App);
 library.add(

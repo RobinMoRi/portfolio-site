@@ -6,6 +6,7 @@ import Menu from "primevue/menu";
 import { inject, onMounted, onUnmounted, ref } from "vue";
 import { GlobalState } from "@/types";
 import { useBreakpoints, breakpointsPrimeFlex } from "@vueuse/core";
+import ProgressBar from "primevue/progressbar";
 
 const menu = ref();
 const items = ref([
@@ -130,6 +131,11 @@ onUnmounted(() => {
         </div>
       </template>
     </Toolbar>
+    <ProgressBar
+      :value="globalState.scroll.scrollPositionPercentage"
+      :show-value="false"
+      style="height: 1.5px"
+    ></ProgressBar>
   </div>
 </template>
 

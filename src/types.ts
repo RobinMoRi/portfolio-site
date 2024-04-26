@@ -7,4 +7,8 @@ export interface GlobalState {
     height: number;
     width: number;
   };
+  scroll: {
+    scrollPositionPercentage: number;
+    scrollY: number;
+  };
 }

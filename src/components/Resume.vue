@@ -71,7 +71,6 @@ const workExperience = ref<Experience[]>([
       "Developed several chatbots (Google Dialogflow, JavaScript, API-integrations, building RESTful API in Django).",
       "Several projects in developing automated business processes using various tools and technologies (Python, VBA, C\#, BluePrism, UiPath).",
       "Responsible for establishing KPMGs Chat & Voice tech capabilities within the Swedish firm.",
-      "test",
     ],
     start: "Feb. 2019",
     end: "Jul. 2021",
