@@ -1,5 +1,5 @@
 // TODO: Move to environment variables
-const DISCORD_PROXY_HOST = "http://localhost:8001";
+const DISCORD_PROXY_HOST = "http://localhost:8080";
 
 export interface CreateThreadResponse {
   id: string;
