@@ -24,3 +24,20 @@ services:
     environment:
       - NODE_ENV=prod
       - GITHUB_API_TOKEN=sometokenhere
+
+  api-dev:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: portfolio-api-dev
+    ports:
+      - "8080:8080"
+    env_file:
+      - path: ./api/.env
+        required: true
+    environment:
+      - DISCORD_CHANNEL_ID=${DISCORD_CHANNEL_ID}
+      - DISCORD_BOT_ID=${DISCORD_BOT_ID}
+      - DISCORD_AUTH_TOKEN=${DISCORD_AUTH_TOKEN}
+    volumes:
+      - ./api:/app

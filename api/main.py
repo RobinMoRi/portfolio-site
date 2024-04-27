@@ -60,12 +60,15 @@ def add_bot_to_thread(thread_id: str):
 
 
 @app.post("/createThreadMessage")
-def create_thread_message(message: str, thread_id: str):
+def create_thread_message(message: str, thread_id: str, meta=False):
+    data = {
+        "content": message,
+    }
+    if meta:
+        data.setdefault("embeds", [{"title": "Meta"}])
     res = requests.post(
         url=f"https://discord.com/api/v10/channels/{thread_id}/messages",
-        json={
-            "content": message,
-        },
+        json=data,
         headers=HEADERS,
     )
     res.raise_for_status()

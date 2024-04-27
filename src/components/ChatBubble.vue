@@ -2,6 +2,7 @@
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import TextArea from "primevue/textarea";
+import Avatar from "primevue/avatar";
 import { inject, onMounted } from "vue";
 
 import { ChatSession, GlobalState } from "@/types";
@@ -10,7 +11,7 @@ import {
   addBotToThread,
   createThreadMessage,
   getThreadMessages,
-  GetThreadMessagesResponse,
+  GetThreadMessageResponse,
 } from "@/discord-utils";
 
 import Card from "primevue/card";
@@ -25,13 +26,7 @@ const globalState = inject("globalState") as GlobalState;
 
 const open = ref();
 
-const testMessages = ref([
-  { message: "hej", user: true },
-  { message: "hej hej", user: false },
-  { message: "hur mår du", user: true },
-]);
-
-const threadMessages = ref<GetThreadMessagesResponse[]>([]);
+const threadMessages = ref<GetThreadMessageResponse[]>([]);
 
 // TODO: Only add relevant fields..
 const data = ref({
@@ -48,19 +43,20 @@ const intro = ref({
 
 onMounted(() => {
   // Clear interval...
-  setInterval(setThreadMessages, 20000);
+  setThreadMessages();
+  setInterval(setThreadMessages, 15000);
   // setThreadMessages();
 });
 
 const setThreadMessages = async () => {
-  if (globalState.chatSession.sessionId) {
+  if (globalState.chatSession && globalState.chatSession.sessionId) {
     const messages = await getThreadMessages(globalState.chatSession.sessionId);
     messages.sort((a, b) => {
       return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
     });
 
     const filtered = messages.filter(
-      (msg) => !msg.content.includes("<DISMISS>") && msg.content !== ""
+      (msg) => msg.embeds.length === 0 && msg.content !== ""
     );
     threadMessages.value = filtered;
   }
@@ -106,7 +102,11 @@ const sendIntro = async () => {
 
   // IP-info etc
   const ip = localStorage.getItem("IP_ADDRESS") || "No IP info available";
-  await createThreadMessage(thread.id, `<DISMISS>${ip}</DISMISS>`);
+  await createThreadMessage(
+    thread.id,
+    `\`\`\`\n${JSON.stringify(JSON.parse(ip))}\n\`\`\``,
+    true
+  );
 
   await createThreadMessage(thread.id, intro.value.message);
 
@@ -114,15 +114,17 @@ const sendIntro = async () => {
   localStorage.setItem("chat_session", JSON.stringify(session));
 };
 
-const send = () => {
+const send = async () => {
   if (data.value.message.length < 3) {
     return;
   }
-  const newMessage = {
-    message: data.value.message,
-    user: true,
-  };
-  testMessages.value.push(newMessage);
+
+  const msg = await createThreadMessage(
+    globalState.chatSession.sessionId,
+    data.value.message
+  );
+
+  threadMessages.value.push(msg);
   data.value = {
     title: "",
     name: "",
@@ -155,8 +157,17 @@ const send = () => {
             :class="`w-7 ${!message.author.bot ? 'align-self-end' : null}`"
             :closable="false"
             :severity="!message.author.bot ? 'success' : 'info'"
-            icon="pi pi-send"
-            >{{ message.content }}</Message
+            style="flex-direction: row-reverse"
+            ><template #messageicon>
+              <Avatar
+                v-if="!message.author.bot"
+                image="/robin.svg"
+                shape="circle"
+              />
+            </template>
+            <span :class="!message.author.bot ? 'ml-2' : null">{{
+              message.content
+            }}</span></Message
           >
         </div>
       </template>

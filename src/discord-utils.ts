@@ -39,7 +39,7 @@ export interface ThreadMetadata {
   invitable: boolean;
 }
 
-export interface GetThreadMessagesResponse {
+export interface GetThreadMessageResponse {
   id: string;
   type: number;
   content: string;
@@ -93,8 +93,16 @@ export async function addBotToThread(thread_id: string): Promise<null> {
   }).then((res) => res.json());
 }
 
-export async function createThreadMessage(thread_id: string, message: string) {
-  const url = `${DISCORD_PROXY_HOST}/createThreadMessage?thread_id=${thread_id}&message=${message}`;
+export async function createThreadMessage(
+  thread_id: string,
+  message: string,
+  meta: boolean = false
+): Promise<GetThreadMessageResponse> {
+  let url = `${DISCORD_PROXY_HOST}/createThreadMessage?thread_id=${thread_id}&message=${message}`;
+
+  if (meta) {
+    url += `&meta=True`;
+  }
 
   return fetch(url, {
     method: "POST",
@@ -103,7 +111,7 @@ export async function createThreadMessage(thread_id: string, message: string) {
 
 export async function getThreadMessages(
   thread_id: string
-): Promise<GetThreadMessagesResponse[]> {
+): Promise<GetThreadMessageResponse[]> {
   const url = `${DISCORD_PROXY_HOST}/getThreadMessages?thread_id=${thread_id}`;
 
   return fetch(url, {
