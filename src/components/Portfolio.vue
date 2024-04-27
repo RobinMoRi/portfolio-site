@@ -80,7 +80,6 @@ onMounted(() => {
 watch(
   () => globalState.window.height,
   (newVal) => {
-    console.log({ newVal });
     windowHeight.value = newVal - globalState.appbar.height;
   },
   {

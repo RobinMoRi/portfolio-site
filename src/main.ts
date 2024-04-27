@@ -34,10 +34,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faComments } from "@fortawesome/free-regular-svg-icons";
 
+// TODO: FIX GLOBALSTATE... with functions etc... chatSession should be on mount and setup with a discords websocket...
 const globalState = reactive({
   appbar: { height: 0, width: 0 },
   window: { height: 0, width: 0 },
   scroll: { scrollPositionPercentage: 0, scrollY: 0 },
+  chatSession: { sessionId: "", name: "", title: "" },
 });
 const app = createApp(App);
 library.add(

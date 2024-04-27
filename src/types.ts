@@ -11,4 +11,11 @@ export interface GlobalState {
     scrollPositionPercentage: number;
     scrollY: number;
   };
+  chatSession: ChatSession;
+}
+
+export interface ChatSession {
+  sessionId: string;
+  name: string;
+  title: string;
 }
