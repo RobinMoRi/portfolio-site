@@ -39,7 +39,45 @@ export interface ThreadMetadata {
   invitable: boolean;
 }
 
-export function startNewThread(name: string): Promise<CreateThreadResponse> {
+export interface GetThreadMessagesResponse {
+  id: string;
+  type: number;
+  content: string;
+  channel_id: string;
+  author: Author;
+  attachments: any[];
+  embeds: any[];
+  mentions: Author[];
+  mention_roles: any[];
+  pinned: boolean;
+  mention_everyone: boolean;
+  tts: boolean;
+  timestamp: Date;
+  edited_timestamp: null;
+  flags: number;
+  components: any[];
+  position: number;
+}
+
+export interface Author {
+  id: string;
+  username: string;
+  avatar: null | string;
+  discriminator: string;
+  public_flags: number;
+  premium_type: number;
+  flags: number;
+  banner: null;
+  accent_color: null;
+  global_name: null;
+  avatar_decoration_data: null;
+  banner_color: null;
+  bot?: boolean;
+}
+
+export async function startNewThread(
+  name: string
+): Promise<CreateThreadResponse> {
   const url = `${DISCORD_PROXY_HOST}/startNewThread?name=${name}`;
 
   return fetch(url, {
@@ -47,7 +85,7 @@ export function startNewThread(name: string): Promise<CreateThreadResponse> {
   }).then((res) => res.json());
 }
 
-export function addBotToThread(thread_id: string): Promise<null> {
+export async function addBotToThread(thread_id: string): Promise<null> {
   const url = `${DISCORD_PROXY_HOST}/addBotToThread?thread_id=${thread_id}`;
 
   return fetch(url, {
@@ -55,10 +93,20 @@ export function addBotToThread(thread_id: string): Promise<null> {
   }).then((res) => res.json());
 }
 
-export function createThreadMessage(thread_id: string, message: string) {
+export async function createThreadMessage(thread_id: string, message: string) {
   const url = `${DISCORD_PROXY_HOST}/createThreadMessage?thread_id=${thread_id}&message=${message}`;
 
   return fetch(url, {
     method: "POST",
+  }).then((res) => res.json());
+}
+
+export async function getThreadMessages(
+  thread_id: string
+): Promise<GetThreadMessagesResponse[]> {
+  const url = `${DISCORD_PROXY_HOST}/getThreadMessages?thread_id=${thread_id}`;
+
+  return fetch(url, {
+    method: "GET",
   }).then((res) => res.json());
 }

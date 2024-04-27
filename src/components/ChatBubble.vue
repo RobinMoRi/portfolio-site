@@ -2,13 +2,15 @@
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import TextArea from "primevue/textarea";
-import { inject } from "vue";
+import { inject, onMounted } from "vue";
 
 import { ChatSession, GlobalState } from "@/types";
 import {
   startNewThread,
   addBotToThread,
   createThreadMessage,
+  getThreadMessages,
+  GetThreadMessagesResponse,
 } from "@/discord-utils";
 
 import Card from "primevue/card";
@@ -29,6 +31,8 @@ const testMessages = ref([
   { message: "hur mår du", user: true },
 ]);
 
+const threadMessages = ref<GetThreadMessagesResponse[]>([]);
+
 // TODO: Only add relevant fields..
 const data = ref({
   title: "",
@@ -41,6 +45,26 @@ const intro = ref({
   name: "",
   message: "",
 });
+
+onMounted(() => {
+  // Clear interval...
+  setInterval(setThreadMessages, 5000);
+  // setThreadMessages();
+});
+
+const setThreadMessages = async () => {
+  if (globalState.chatSession.sessionId) {
+    const messages = await getThreadMessages(globalState.chatSession.sessionId);
+    messages.sort((a, b) => {
+      return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+    });
+
+    const filtered = messages.filter(
+      (msg) => !msg.content.includes("<DISMISS>") && msg.content !== ""
+    );
+    threadMessages.value = filtered;
+  }
+};
 
 const toggle = () => {
   open.value = !open.value;
@@ -82,7 +106,7 @@ const sendIntro = async () => {
 
   // IP-info etc
   const ip = localStorage.getItem("IP_ADDRESS") || "No IP info available";
-  await createThreadMessage(thread.id, ip);
+  await createThreadMessage(thread.id, `<DISMISS>${ip}</DISMISS>`);
 
   await createThreadMessage(thread.id, intro.value.message);
 
@@ -127,12 +151,12 @@ const send = () => {
       <template #content>
         <div class="flex flex-column gap-2 m-4 card-content-messages">
           <Message
-            v-for="message in testMessages"
-            :class="`w-7 ${message.user ? 'align-self-end' : null}`"
+            v-for="message in threadMessages"
+            :class="`w-7 ${!message.author.bot ? 'align-self-end' : null}`"
             :closable="false"
-            :severity="message.user ? 'success' : 'info'"
+            :severity="!message.author.bot ? 'success' : 'info'"
             icon="pi pi-send"
-            >{{ message.message }}</Message
+            >{{ message.content }}</Message
           >
         </div>
       </template>
