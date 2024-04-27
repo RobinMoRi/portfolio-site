@@ -15,7 +15,8 @@ import {
 } from "@/discord-utils";
 
 import Card from "primevue/card";
-import Message from "primevue/message";
+// import Message from "primevue/message";
+import Message from "@/components/Message.vue";
 import { ref } from "vue";
 
 const globalState = inject("globalState") as GlobalState;
@@ -43,9 +44,9 @@ const intro = ref({
 
 onMounted(() => {
   // Clear interval...
-  setThreadMessages();
+
   setInterval(setThreadMessages, 15000);
-  // setThreadMessages();
+  setThreadMessages();
 });
 
 const setThreadMessages = async () => {
@@ -137,7 +138,7 @@ const send = async () => {
 <template>
   <div v-if="open" class="chat-card">
     <Card
-      v-if="globalState.chatSession"
+      v-if="globalState.chatSession.sessionId"
       id="chat-card"
       class="surface-50 p-0"
       style="border: 1px solid var(--gray-900)"
@@ -154,32 +155,42 @@ const send = async () => {
         <div class="flex flex-column gap-2 m-4 card-content-messages">
           <Message
             v-for="message in threadMessages"
-            :class="`w-7 ${!message.author.bot ? 'align-self-end' : null}`"
-            :closable="false"
-            :severity="!message.author.bot ? 'success' : 'info'"
-            style="flex-direction: row-reverse"
-            ><template #messageicon>
-              <Avatar
-                v-if="!message.author.bot"
-                image="/robin.svg"
-                shape="circle"
-              />
-            </template>
-            <span :class="!message.author.bot ? 'ml-2' : null">{{
-              message.content
-            }}</span></Message
+            :user="message.author.bot"
+            :timestamp="new Date(message.timestamp)"
+            :class="`${
+              message.author.bot ? 'align-self-end' : 'align-self-start'
+            }`"
           >
+            <template #text>
+              <div class="text-sm" style="word-break: break-word">
+                {{ message.content }}
+              </div>
+            </template>
+            <template #avatar>
+              <Avatar image="/robin.svg" shape="circle" />
+            </template>
+          </Message>
         </div>
       </template>
       <template #footer>
-        <div class="grid mx-4 my-3 justify-content-between">
-          <div class="col-10">
+        <div class="grid mx-4 my-2 justify-content-between">
+          <div class="col-10 flex flex-column align-items-center">
             <InputText
               v-model="data.message"
               v-on:keyup.enter="send"
               type="text"
-              class="surface-100 w-full"
+              class="surface-100 w-full mb-2"
+              placeholder="Write something"
             />
+            <div class="text-xs text-200">
+              Powered with
+              <a
+                href="https://discord.com/developers/docs/reference"
+                target="_blank"
+                class="text-xs text-200"
+                >Discord API</a
+              >
+            </div>
           </div>
           <div class="col-2">
             <Button
