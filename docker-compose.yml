@@ -33,11 +33,6 @@ services:
     ports:
       - "8080:8080"
     env_file:
-      - path: ./api/.env
-        required: true
-    environment:
-      - DISCORD_CHANNEL_ID=${DISCORD_CHANNEL_ID}
-      - DISCORD_BOT_ID=${DISCORD_BOT_ID}
-      - DISCORD_AUTH_TOKEN=${DISCORD_AUTH_TOKEN}
+      - ./api/.env
     volumes:
       - ./api:/app
