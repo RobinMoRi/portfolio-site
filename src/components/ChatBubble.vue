@@ -167,7 +167,14 @@ const send = async () => {
               </div>
             </template>
             <template #avatar>
-              <Avatar image="/robin.svg" shape="circle" />
+              <Avatar
+                :image="
+                  !message.author.bot
+                    ? '/robin.svg'
+                    : 'https://gravatar.com/avatar?d=mp'
+                "
+                shape="circle"
+              />
             </template>
           </Message>
         </div>
