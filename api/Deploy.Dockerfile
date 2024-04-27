@@ -1,0 +1,16 @@
+ARG DISCORD_AUTH_TOKEN
+ARG DISCORD_BOT_ID
+ARG DISCORD_CHANNEL_ID
+
+FROM python:3.11-slim
+
+ENV DISCORD_AUTH_TOKEN=$DISCORD_AUTH_TOKEN
+ENV DISCORD_BOT_ID=$DISCORD_BOT_ID
+ENV DISCORD_CHANNEL_ID=$DISCORD_CHANNEL_ID
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 8080
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
