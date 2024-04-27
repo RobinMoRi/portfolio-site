@@ -48,7 +48,7 @@ const intro = ref({
 
 onMounted(() => {
   // Clear interval...
-  setInterval(setThreadMessages, 5000);
+  setInterval(setThreadMessages, 20000);
   // setThreadMessages();
 });
 
