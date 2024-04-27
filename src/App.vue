@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, onMounted, onUnmounted } from "vue";
-import { GlobalState } from "@/types";
+import { GlobalState, ChatSession } from "@/types";
 import Appbar from "@/components/Appbar.vue";
 import IntroSection from "@/components/IntroSection.vue";
 import Contacts from "@/components/Contacts.vue";
@@ -20,12 +20,21 @@ function updateWindowSize() {
 }
 
 function getIpAddress() {
-  fetch("https://api.ipify.org?format=json")
+  fetch("https://ipinfo.io/json")
     .then((res) => res.json())
-    .then(({ ip }) => {
+    .then((ip) => {
       console.log(ip);
-      localStorage.setItem("IP_ADDRESS", ip);
+      localStorage.setItem("IP_ADDRESS", JSON.stringify(ip));
     });
+}
+
+function getChatSession() {
+  const session = localStorage.getItem("chat_session");
+  if (!session) {
+    return;
+  }
+  const sessionObj: ChatSession = JSON.parse(session);
+  globalState.chatSession = sessionObj;
 }
 
 function onScroll() {
@@ -39,8 +48,6 @@ function onScroll() {
   globalState.scroll.scrollPositionPercentage =
     scrollY === 0 ? scrollY : percentageScroll;
   globalState.scroll.scrollY = scrollY;
-
-  console.log({ perc: globalState.scroll.scrollPositionPercentage });
 }
 
 onMounted(() => {
@@ -48,6 +55,7 @@ onMounted(() => {
   window.addEventListener("resize", updateWindowSize);
   window.addEventListener("scroll", onScroll);
   getIpAddress();
+  getChatSession();
 });
 
 onUnmounted(() => {

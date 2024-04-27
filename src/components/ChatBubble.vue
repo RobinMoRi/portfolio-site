@@ -1,72 +1,205 @@
 <script setup lang="ts">
 import Button from "primevue/button";
-import OverlayPanel from "primevue/overlaypanel";
 import InputText from "primevue/inputtext";
-import Textarea from "primevue/textarea";
+import TextArea from "primevue/textarea";
+import { inject } from "vue";
+
+import { ChatSession, GlobalState } from "@/types";
+import {
+  startNewThread,
+  addBotToThread,
+  createThreadMessage,
+} from "@/discord-utils";
+
 import Card from "primevue/card";
+import Message from "primevue/message";
 import { ref } from "vue";
 
-const op = ref();
-const toggle = (event: any) => {
-  op.value.toggle(event);
+const globalState = inject("globalState") as GlobalState;
+
+/**
+ * TODO: Fix custom message component
+ */
+
+const open = ref();
+
+const testMessages = ref([
+  { message: "hej", user: true },
+  { message: "hej hej", user: false },
+  { message: "hur mår du", user: true },
+]);
+
+// TODO: Only add relevant fields..
+const data = ref({
+  title: "",
+  name: "",
+  message: "",
+});
+
+const intro = ref({
+  title: "",
+  name: "",
+  message: "",
+});
+
+const toggle = () => {
+  open.value = !open.value;
+};
+
+const scrollToBottom = () => {
+  const card = document.getElementById("chat-card");
+  if (!card) {
+    return;
+  }
+  const cardContents = card.getElementsByClassName("p-card-content");
+  const cardHeaders = card.getElementsByClassName("p-card-header");
+  console.log(cardContents);
+  if (cardContents.length == 0) {
+    return;
+  }
+
+  let cardHeaderHeight = 0;
+  if (cardHeaders.length > 0) {
+    cardHeaderHeight = cardHeaders[0].getBoundingClientRect().height;
+  }
+
+  const cardContent = cardContents[0];
+  cardContent.scrollTop = cardContent.scrollHeight - cardHeaderHeight - 50;
+};
+
+const sendIntro = async () => {
+  const thread = await startNewThread(
+    `${intro.value.name} - ${intro.value.title}`
+  );
+
+  const session: ChatSession = {
+    title: intro.value.title,
+    sessionId: thread.id,
+    name: intro.value.name,
+  };
+
+  await addBotToThread(thread.id);
+
+  // IP-info etc
+  const ip = localStorage.getItem("IP_ADDRESS") || "No IP info available";
+  await createThreadMessage(thread.id, ip);
+
+  await createThreadMessage(thread.id, intro.value.message);
+
+  globalState.chatSession = session;
+  localStorage.setItem("chat_session", JSON.stringify(session));
 };
 
 const send = () => {
-  console.log({ title: title.value, name: name.value, message: message.value });
+  if (data.value.message.length < 3) {
+    return;
+  }
+  const newMessage = {
+    message: data.value.message,
+    user: true,
+  };
+  testMessages.value.push(newMessage);
+  data.value = {
+    title: "",
+    name: "",
+    message: "",
+  };
+  scrollToBottom();
 };
-
-const title = ref(null);
-const name = ref(null);
-const message = ref(null);
 </script>
 
 <template>
-  <!-- <OverlayPanel ref="op" appendTo="body">
-    <div class="flex flex-column gap-2">
-      <div>Chat with me!</div>
-      <InputText
-        id="title"
-        type="text"
-        v-model="title"
-        class="text"
-        placeholder="Title"
-      />
-      <InputText
-        id="name"
-        type="text"
-        v-model="name"
-        class="text"
-        placeholder="Name"
-      />
-      <Textarea
-        id="message"
-        class="text"
-        v-model="message"
-        rows="5"
-        cols="30"
-        :style="{ resize: 'none' }"
-        placeholder="Message"
-      />
-
-      <div :style="{ width: '100%' }" class="flex justify-content-end">
-        <Button
-          icon="pi pi-send"
-          aria-label="Chat"
-          @click="send"
-          :disabled="!title || !name || !message"
-        />
-      </div>
-    </div>
-  </OverlayPanel> -->
-  <div>
-    <Card></Card>
+  <div v-if="open" class="chat-card">
+    <Card
+      v-if="globalState.chatSession"
+      id="chat-card"
+      class="surface-50 p-0"
+      style="border: 1px solid var(--gray-900)"
+    >
+      <template #header>
+        <div class="ml-4">
+          <p>{{ globalState.chatSession.title }}</p>
+          <p class="text-color-secondary text-xs">
+            Chat between {{ globalState.chatSession.name }} and Robin
+          </p>
+        </div>
+      </template>
+      <template #content>
+        <div class="flex flex-column gap-2 m-4 card-content-messages">
+          <Message
+            v-for="message in testMessages"
+            :class="`w-7 ${message.user ? 'align-self-end' : null}`"
+            :closable="false"
+            :severity="message.user ? 'success' : 'info'"
+            icon="pi pi-send"
+            >{{ message.message }}</Message
+          >
+        </div>
+      </template>
+      <template #footer>
+        <div class="grid mx-4 my-3 justify-content-between">
+          <div class="col-10">
+            <InputText
+              v-model="data.message"
+              v-on:keyup.enter="send"
+              type="text"
+              class="surface-100 w-full"
+            />
+          </div>
+          <div class="col-2">
+            <Button
+              icon="pi pi-send"
+              outlined
+              aria-label="Chat"
+              @click="send"
+            />
+          </div>
+        </div>
+      </template>
+    </Card>
+    <Card
+      v-else
+      id="chat-card"
+      class="surface-50 p-0"
+      style="border: 1px solid var(--gray-900)"
+    >
+      <template #header>
+        <p class="ml-4">Chat with me!</p>
+      </template>
+      <template #content>
+        <div class="flex flex-column gap-2 m-4 card-content-messages">
+          <InputText
+            placeholder="Subject"
+            v-model="intro.title"
+            type="text"
+            class="surface-100 w-full"
+          />
+          <InputText
+            placeholder="Name"
+            v-model="intro.name"
+            type="text"
+            class="surface-100 w-full"
+          />
+          <TextArea
+            placeholder="Message"
+            v-model="intro.message"
+            type="text"
+            class="surface-100 w-full"
+          />
+        </div>
+      </template>
+      <template #footer>
+        <div class="grid mx-4 my-4 justify-content-center">
+          <Button icon="pi pi-send" label="Send" outlined @click="sendIntro" />
+        </div>
+      </template>
+    </Card>
   </div>
-  <div id="chat-bubble-wrapper" class="chat-wrapper">
+  <div class="chat-button">
     <Button
       class="chat-bubble"
-      icon="pi pi-comment"
+      :icon="open ? 'pi pi-times' : 'pi pi-comment'"
       rounded
-      outlined
       aria-label="Chat"
       @click="toggle"
     />
@@ -77,12 +210,38 @@ const message = ref(null);
 .text {
   width: 100%;
 }
-.chat-wrapper {
+.chat-card {
   position: fixed;
-  bottom: 3rem;
-  right: 3rem;
+  bottom: 5rem;
+  right: 2rem;
+}
+.chat-button {
+  position: fixed;
+  bottom: 4rem;
+  right: 4rem;
 }
 .chat-bubble {
   position: fixed;
+}
+.chat-card .p-card-body {
+  padding: 0;
+  gap: 0;
+}
+.chat-card .p-card-content {
+  position: relative;
+  height: 20rem;
+  width: 20rem;
+  overflow-y: scroll;
+  background-color: var(--surface-ground);
+}
+.chat-card .p-message {
+  margin: 0;
+}
+.chat-card .p-message-wrapper .p-message-text {
+  height: auto;
+}
+.card-content-messages {
+  max-height: 20rem;
+  padding-bottom: 2rem;
 }
 </style>
