@@ -9,8 +9,8 @@ ENV DISCORD_BOT_ID=$DISCORD_BOT_ID
 ENV DISCORD_CHANNEL_ID=$DISCORD_CHANNEL_ID
 
 WORKDIR /app
-COPY requirements.txt .
+COPY ./api/requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
-EXPOSE 8080
+EXPOSE 8081
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
