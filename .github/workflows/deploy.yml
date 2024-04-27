@@ -32,6 +32,7 @@ jobs:
           tags: romori1993/portfolio-site-frontend-deploy:latest
           build-args: |
             VITE_GITHUB_API_TOKEN=${{ secrets.VITE_GITHUB_API_TOKEN }}
+            VITE_DISCORD_PROXY_HOST=${{ secrets.VITE_DISCORD_PROXY_HOST }}
 
       - name: Build and push api Docker image
         uses: docker/build-push-action@v2

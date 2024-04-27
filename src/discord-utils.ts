@@ -1,5 +1,6 @@
 // TODO: Move to environment variables
-const DISCORD_PROXY_HOST = "http://localhost:8080";
+// const DISCORD_PROXY_HOST = "http://localhost:8080";
+const DISCORD_PROXY_HOST = import.meta.env.VITE_DISCORD_PROXY_HOST;
 
 export interface CreateThreadResponse {
   id: string;
@@ -112,6 +113,7 @@ export async function createThreadMessage(
 export async function getThreadMessages(
   thread_id: string
 ): Promise<GetThreadMessageResponse[]> {
+  console.log({ DISCORD_PROXY_HOST });
   const url = `${DISCORD_PROXY_HOST}/getThreadMessages?thread_id=${thread_id}`;
 
   return fetch(url, {

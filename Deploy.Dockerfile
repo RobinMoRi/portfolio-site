@@ -1,5 +1,6 @@
 # build stage
 ARG VITE_GITHUB_API_TOKEN
+ARG VITE_DISCORD_PROXY_HOST
 FROM node:18-alpine AS build-stage
 WORKDIR /app
 COPY package.json ./
