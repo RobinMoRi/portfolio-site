@@ -1,5 +1,3 @@
-// TODO: Move to environment variables
-// const DISCORD_PROXY_HOST = "http://localhost:8080";
 const DISCORD_PROXY_HOST = import.meta.env.VITE_DISCORD_PROXY_HOST;
 
 export interface CreateThreadResponse {
