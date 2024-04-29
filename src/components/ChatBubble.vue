@@ -34,6 +34,7 @@ const globalState = inject("globalState") as GlobalState;
 
 const open = ref();
 const openEmojiPicker = ref(false);
+const sendingMessage = ref(false);
 const loadingChatHistory = ref({
   initFetch: true,
   loading: true,
@@ -142,6 +143,7 @@ const send = async () => {
   if (data.value.message.length < 3) {
     return;
   }
+  sendingMessage.value = true;
 
   const msg = await createThreadMessage(
     globalState.chatSession.sessionId,
@@ -154,6 +156,7 @@ const send = async () => {
     name: "",
     message: "",
   };
+  sendingMessage.value = false;
   scrollToBottom();
 };
 const toggleOpenEmojiPicker = () => {
@@ -252,7 +255,13 @@ const appendEmoji = (emoji: any) => {
               @select="appendEmoji"
               theme="dark"
             />
-            <Button outlined aria-label="Emoji" @click="toggleOpenEmojiPicker">
+            <Button
+              outlined
+              rounded
+              aria-label="Emoji"
+              class="p-2"
+              @click="toggleOpenEmojiPicker"
+            >
               <font-awesome-icon
                 icon="fa-regular fa-face-smile"
               ></font-awesome-icon>
@@ -261,6 +270,7 @@ const appendEmoji = (emoji: any) => {
               icon="pi pi-send"
               outlined
               aria-label="Chat"
+              :loading="sendingMessage"
               @click="send"
             />
           </div>
