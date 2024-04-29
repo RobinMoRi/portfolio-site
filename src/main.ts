@@ -32,7 +32,7 @@ import {
   faPeopleGroup,
   faScrewdriverWrench,
 } from "@fortawesome/free-solid-svg-icons";
-import { faComments } from "@fortawesome/free-regular-svg-icons";
+import { faComments, faFaceSmile } from "@fortawesome/free-regular-svg-icons";
 
 // TODO: FIX GLOBALSTATE... with functions etc... chatSession should be on mount and setup with a discords websocket...
 const globalState = reactive({
@@ -60,7 +60,8 @@ library.add(
   faBrain,
   faBook,
   faComments,
-  faChessKnight
+  faChessKnight,
+  faFaceSmile
 );
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(PrimeVue, { ripple: true });

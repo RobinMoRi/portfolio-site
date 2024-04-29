@@ -4,6 +4,10 @@ import InputText from "primevue/inputtext";
 import TextArea from "primevue/textarea";
 import Avatar from "primevue/avatar";
 import { inject, onMounted } from "vue";
+import { useBreakpoints, breakpointsPrimeFlex } from "@vueuse/core";
+import Skeleton from "primevue/skeleton";
+import EmojiPicker from "vue3-emoji-picker";
+import "vue3-emoji-picker/css";
 
 import { ChatSession, GlobalState } from "@/types";
 import {
@@ -19,6 +23,9 @@ import Card from "primevue/card";
 import Message from "@/components/Message.vue";
 import { ref } from "vue";
 
+let breakpoints = useBreakpoints(breakpointsPrimeFlex);
+const isSmallerThanMd = breakpoints.isSmallerOrEqual("md");
+
 const globalState = inject("globalState") as GlobalState;
 
 /**
@@ -26,6 +33,11 @@ const globalState = inject("globalState") as GlobalState;
  */
 
 const open = ref();
+const openEmojiPicker = ref(false);
+const loadingChatHistory = ref({
+  initFetch: true,
+  loading: true,
+});
 
 const threadMessages = ref<GetThreadMessageResponse[]>([]);
 
@@ -49,8 +61,18 @@ onMounted(() => {
   setThreadMessages();
 });
 
+const toggleChatHistoryLoading = (loading: boolean, setInitFetch = false) => {
+  if (loadingChatHistory.value.initFetch) {
+    loadingChatHistory.value.loading = loading;
+    if (setInitFetch) {
+      loadingChatHistory.value.initFetch = false;
+    }
+  }
+};
+
 const setThreadMessages = async () => {
   if (globalState.chatSession && globalState.chatSession.sessionId) {
+    toggleChatHistoryLoading(true);
     const messages = await getThreadMessages(globalState.chatSession.sessionId);
     messages.sort((a, b) => {
       return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
@@ -60,6 +82,7 @@ const setThreadMessages = async () => {
       (msg) => msg.embeds.length === 0 && msg.content !== ""
     );
     threadMessages.value = filtered;
+    toggleChatHistoryLoading(false, true);
   }
 };
 
@@ -133,6 +156,13 @@ const send = async () => {
   };
   scrollToBottom();
 };
+const toggleOpenEmojiPicker = () => {
+  openEmojiPicker.value = !openEmojiPicker.value;
+};
+
+const appendEmoji = (emoji: any) => {
+  data.value.message = data.value.message + emoji.i;
+};
 </script>
 
 <template>
@@ -140,7 +170,7 @@ const send = async () => {
     <Card
       v-if="globalState.chatSession.sessionId"
       id="chat-card"
-      class="surface-50 p-0"
+      :class="`surface-50 p-0 ${isSmallerThanMd ? 'portable-device' : ''} `"
       style="border: 1px solid var(--gray-900)"
     >
       <template #header>
@@ -152,7 +182,10 @@ const send = async () => {
         </div>
       </template>
       <template #content>
-        <div class="flex flex-column gap-2 m-4 card-content-messages">
+        <div
+          v-if="!loadingChatHistory.loading"
+          class="flex flex-column gap-2 m-4 card-content-messages"
+        >
           <Message
             v-for="message in threadMessages"
             :user="message.author.bot"
@@ -178,6 +211,18 @@ const send = async () => {
             </template>
           </Message>
         </div>
+        <div
+          v-else
+          class="flex flex-column gap-3 justify-content-center h-full p-2"
+        >
+          <Skeleton width="10rem" height="4rem"></Skeleton>
+          <Skeleton width="10rem" height="4rem"></Skeleton>
+          <Skeleton
+            width="10rem"
+            height="4rem"
+            class="align-self-end"
+          ></Skeleton>
+        </div>
       </template>
       <template #footer>
         <div class="grid mx-4 my-2 justify-content-between">
@@ -200,6 +245,18 @@ const send = async () => {
             </div>
           </div>
           <div class="col-2">
+            <EmojiPicker
+              v-if="openEmojiPicker"
+              class="emoji-picker"
+              :native="true"
+              @select="appendEmoji"
+              theme="dark"
+            />
+            <Button outlined aria-label="Emoji" @click="toggleOpenEmojiPicker">
+              <font-awesome-icon
+                icon="fa-regular fa-face-smile"
+              ></font-awesome-icon>
+            </Button>
             <Button
               icon="pi pi-send"
               outlined
@@ -263,11 +320,25 @@ const send = async () => {
 .text {
   width: 100%;
 }
+.emoji-picker {
+  position: absolute;
+  z-index: 1200;
+  left: 0;
+  top: 0;
+}
 .chat-card {
   position: fixed;
   bottom: 5rem;
   right: 2rem;
 }
+/* .portable-device {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  bottom: -5rem;
+  right: -2rem;
+} */
 .chat-button {
   position: fixed;
   bottom: 4rem;
@@ -278,12 +349,13 @@ const send = async () => {
 }
 .chat-card .p-card-body {
   padding: 0;
+  max-width: 20rem;
   gap: 0;
 }
 .chat-card .p-card-content {
   position: relative;
   height: 20rem;
-  width: 20rem;
+  width: 100%;
   overflow-y: scroll;
   background-color: var(--surface-ground);
 }
