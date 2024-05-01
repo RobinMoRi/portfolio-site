@@ -3,6 +3,8 @@ import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import TextArea from "primevue/textarea";
 import Avatar from "primevue/avatar";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
 import { inject, onMounted } from "vue";
 import { useBreakpoints, breakpointsPrimeFlex } from "@vueuse/core";
 import Skeleton from "primevue/skeleton";
@@ -191,7 +193,7 @@ const appendEmoji = (emoji: any) => {
         >
           <Message
             v-for="message in threadMessages"
-            :user="message.author.bot"
+            :isUser="message.author.bot"
             :timestamp="new Date(message.timestamp)"
             :class="`${
               message.author.bot ? 'align-self-end' : 'align-self-start'
@@ -204,6 +206,7 @@ const appendEmoji = (emoji: any) => {
             </template>
             <template #avatar>
               <Avatar
+                style="width: 24px; height: 24px"
                 :image="
                   !message.author.bot
                     ? '/robin.svg'
@@ -228,15 +231,35 @@ const appendEmoji = (emoji: any) => {
         </div>
       </template>
       <template #footer>
-        <div class="grid mx-4 my-2 justify-content-between">
-          <div class="col-10 flex flex-column align-items-center">
-            <InputText
-              v-model="data.message"
-              v-on:keyup.enter="send"
-              type="text"
-              class="surface-100 w-full mb-2"
-              placeholder="Write something"
-            />
+        <div class="flex mx-4 my-2 justify-content-between gap-1">
+          <div class="flex flex-column align-items-center gap-2">
+            <div class="flex gap-1">
+              <IconField>
+                <InputIcon
+                  @click="toggleOpenEmojiPicker"
+                  style="cursor: pointer"
+                >
+                  <font-awesome-icon
+                    icon="fa-regular fa-face-smile"
+                    slot="icon"
+                  ></font-awesome-icon
+                ></InputIcon>
+                <InputText
+                  v-model="data.message"
+                  v-on:keyup.enter="send"
+                  type="text"
+                  class="surface-100"
+                  placeholder="Write something"
+                />
+              </IconField>
+              <EmojiPicker
+                v-if="openEmojiPicker"
+                class="emoji-picker"
+                :native="true"
+                @select="appendEmoji"
+                theme="dark"
+              />
+            </div>
             <div class="text-xs text-200">
               Powered with
               <a
@@ -247,25 +270,7 @@ const appendEmoji = (emoji: any) => {
               >
             </div>
           </div>
-          <div class="col-2">
-            <EmojiPicker
-              v-if="openEmojiPicker"
-              class="emoji-picker"
-              :native="true"
-              @select="appendEmoji"
-              theme="dark"
-            />
-            <Button
-              outlined
-              rounded
-              aria-label="Emoji"
-              class="p-2"
-              @click="toggleOpenEmojiPicker"
-            >
-              <font-awesome-icon
-                icon="fa-regular fa-face-smile"
-              ></font-awesome-icon>
-            </Button>
+          <div>
             <Button
               icon="pi pi-send"
               outlined

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { formatDistanceStrict } from "date-fns";
 defineProps({
-  user: Boolean,
+  isUser: Boolean,
+  name: String,
   timestamp: {
     type: Date,
     required: true,
@@ -13,23 +14,24 @@ defineProps({
   <div
     class="message-wrapper flex flex-column"
     :style="
-      user
+      isUser
         ? 'background-color: var(--green-600)'
         : 'background-color: var(--blue-500)'
     "
   >
-    <div class="flex flex-row align-items-center justify-content-between">
-      <div :class="`text-wrapper ${user ? 'flex-order-0' : 'flex-order-1'}`">
+    <div class="flex flex-row justify-content-between">
+      <div :class="`text-wrapper ${isUser ? 'flex-order-0' : 'flex-order-1'}`">
         <slot name="text"></slot>
       </div>
-      <div :class="`avatar-wrapper ${user ? 'flex-order-1' : 'flex-order-0'}`">
+      <div
+        :class="`avatar-wrapper ${isUser ? 'flex-order-1' : 'flex-order-0'}`"
+      >
         <slot name="avatar"></slot>
-        <slot name="time"></slot>
       </div>
     </div>
     <div
       :class="`text-xs mt-1 ${
-        user
+        isUser
           ? 'text-green-300 align-self-end'
           : 'text-blue-200 align-self-start'
       }`"
