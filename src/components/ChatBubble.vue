@@ -162,12 +162,16 @@ const send = async () => {
   scrollToBottom();
 };
 const toggleOpenEmojiPicker = () => {
+  console.log("hejej");
   openEmojiPicker.value = !openEmojiPicker.value;
 };
 
 const appendEmoji = (emoji: any) => {
   data.value.message = data.value.message + emoji.i;
 };
+// const closeEmojiPicker = () => {
+//   openEmojiPicker.value = false;
+// };
 </script>
 
 <template>
@@ -193,6 +197,7 @@ const appendEmoji = (emoji: any) => {
         >
           <Message
             v-for="message in threadMessages"
+            :name="message.author.bot ? globalState.chatSession.name : 'Robin'"
             :isUser="message.author.bot"
             :timestamp="new Date(message.timestamp)"
             :class="`${
@@ -206,7 +211,7 @@ const appendEmoji = (emoji: any) => {
             </template>
             <template #avatar>
               <Avatar
-                style="width: 24px; height: 24px"
+                style="width: 20px; height: 20px"
                 :image="
                   !message.author.bot
                     ? '/robin.svg'
@@ -231,7 +236,11 @@ const appendEmoji = (emoji: any) => {
         </div>
       </template>
       <template #footer>
-        <div class="flex mx-4 my-2 justify-content-between gap-1">
+        <div
+          :class="`flex mx-4 my-2 ${
+            isSmallerThanMd ? 'justify-content-even' : 'justify-content-between'
+          } gap-1`"
+        >
           <div class="flex flex-column align-items-center gap-2">
             <div class="flex gap-1">
               <IconField>
@@ -285,14 +294,14 @@ const appendEmoji = (emoji: any) => {
     <Card
       v-else
       id="chat-card"
-      class="surface-50 p-0"
+      :class="`surface-50 p-0 ${isSmallerThanMd ? 'portable-device' : ''}`"
       style="border: 1px solid var(--gray-900)"
     >
       <template #header>
         <p class="ml-4">Chat with me!</p>
       </template>
       <template #content>
-        <div class="flex flex-column gap-2 m-4 card-content-messages">
+        <div class="flex flex-column gap-2 m-4 card-content-messages h-full">
           <InputText
             placeholder="Subject"
             v-model="intro.title"
@@ -346,14 +355,7 @@ const appendEmoji = (emoji: any) => {
   bottom: 5rem;
   right: 2rem;
 }
-/* .portable-device {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1000;
-  bottom: -5rem;
-  right: -2rem;
-} */
+
 .chat-button {
   position: fixed;
   bottom: 4rem;
@@ -383,5 +385,17 @@ const appendEmoji = (emoji: any) => {
 .card-content-messages {
   max-height: 20rem;
   padding-bottom: 2rem;
+}
+.portable-device {
+  position: relative;
+  width: 100vw;
+  max-width: 100%;
+  z-index: 1000;
+  bottom: -5rem;
+  right: -2rem;
+
+  .p-card-body {
+    max-width: 100%;
+  }
 }
 </style>

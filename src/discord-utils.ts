@@ -111,7 +111,6 @@ export async function createThreadMessage(
 export async function getThreadMessages(
   thread_id: string
 ): Promise<GetThreadMessageResponse[]> {
-  console.log({ DISCORD_PROXY_HOST });
   const url = `${DISCORD_PROXY_HOST}/getThreadMessages?thread_id=${thread_id}`;
 
   return fetch(url, {

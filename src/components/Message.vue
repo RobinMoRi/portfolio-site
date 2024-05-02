@@ -19,7 +19,7 @@ defineProps({
         : 'background-color: var(--blue-500)'
     "
   >
-    <div class="flex flex-row justify-content-between">
+    <div class="flex flex-row gap-2 justify-content-between">
       <div :class="`text-wrapper ${isUser ? 'flex-order-0' : 'flex-order-1'}`">
         <slot name="text"></slot>
       </div>
