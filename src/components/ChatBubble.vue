@@ -37,6 +37,7 @@ const globalState = inject("globalState") as GlobalState;
 const open = ref();
 const openEmojiPicker = ref(false);
 const sendingMessage = ref(false);
+const createMessageError = ref("");
 const loadingChatHistory = ref({
   initFetch: true,
   loading: true,
@@ -115,63 +116,72 @@ const scrollToBottom = () => {
 };
 
 const sendIntro = async () => {
-  const thread = await startNewThread(
-    `${intro.value.name} - ${intro.value.title}`
-  );
+  try {
+    const thread = await startNewThread(
+      `${intro.value.name} - ${intro.value.title}`
+    );
 
-  const session: ChatSession = {
-    title: intro.value.title,
-    sessionId: thread.id,
-    name: intro.value.name,
-  };
+    const session: ChatSession = {
+      title: intro.value.title,
+      sessionId: thread.id,
+      name: intro.value.name,
+    };
 
-  await addBotToThread(thread.id);
+    await addBotToThread(thread.id);
 
-  // IP-info etc
-  const ip = localStorage.getItem("IP_ADDRESS") || "No IP info available";
-  await createThreadMessage(
-    thread.id,
-    `\`\`\`\n${JSON.stringify(JSON.parse(ip))}\n\`\`\``,
-    true
-  );
+    // IP-info etc
+    const ip = localStorage.getItem("ip_address");
+    await createThreadMessage(thread.id, `\`\`\`\n${ip}\n\`\`\``, true);
 
-  await createThreadMessage(thread.id, intro.value.message);
+    await createThreadMessage(thread.id, intro.value.message);
 
-  globalState.chatSession = session;
-  localStorage.setItem("chat_session", JSON.stringify(session));
+    globalState.chatSession = session;
+    localStorage.setItem("chat_session", JSON.stringify(session));
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const send = async () => {
-  if (data.value.message.length < 3) {
+  createMessageError.value = "";
+  if (data.value.message.trim() === "") {
+    createMessageError.value = "Message cannot be empty";
     return;
   }
   sendingMessage.value = true;
 
-  const msg = await createThreadMessage(
-    globalState.chatSession.sessionId,
-    data.value.message
-  );
+  try {
+    const msg = await createThreadMessage(
+      globalState.chatSession.sessionId,
+      data.value.message
+    );
 
-  threadMessages.value.push(msg);
-  data.value = {
-    title: "",
-    name: "",
-    message: "",
-  };
-  sendingMessage.value = false;
-  scrollToBottom();
+    threadMessages.value.push(msg);
+    data.value = {
+      title: "",
+      name: "",
+      message: "",
+    };
+    sendingMessage.value = false;
+    scrollToBottom();
+  } catch (err) {
+    createMessageError.value = "Something went wrong trying to send message";
+    sendingMessage.value = false;
+    return;
+  }
 };
 const toggleOpenEmojiPicker = () => {
-  console.log("hejej");
   openEmojiPicker.value = !openEmojiPicker.value;
 };
 
 const appendEmoji = (emoji: any) => {
   data.value.message = data.value.message + emoji.i;
 };
-// const closeEmojiPicker = () => {
-//   openEmojiPicker.value = false;
-// };
+const onMessageChange = () => {
+  if (createMessageError.value !== "") {
+    createMessageError.value = "";
+  }
+};
 </script>
 
 <template>
@@ -243,24 +253,35 @@ const appendEmoji = (emoji: any) => {
         >
           <div class="flex flex-column align-items-center gap-2">
             <div class="flex gap-1">
-              <IconField>
-                <InputIcon
-                  @click="toggleOpenEmojiPicker"
-                  style="cursor: pointer"
+              <div class="flex flex-column gap-2">
+                <IconField>
+                  <InputIcon
+                    @click="toggleOpenEmojiPicker"
+                    style="cursor: pointer"
+                  >
+                    <font-awesome-icon
+                      icon="fa-regular fa-face-smile"
+                      slot="icon"
+                    ></font-awesome-icon
+                  ></InputIcon>
+                  <InputText
+                    id="message"
+                    v-model="data.message"
+                    v-on:keyup.enter="send"
+                    type="text"
+                    class="surface-100"
+                    placeholder="Write something"
+                    :invalid="createMessageError !== ''"
+                    @input="onMessageChange"
+                  />
+                </IconField>
+                <small
+                  id="message-help"
+                  class="text-xs text-red-300"
+                  v-if="createMessageError !== ''"
+                  >{{ createMessageError }}</small
                 >
-                  <font-awesome-icon
-                    icon="fa-regular fa-face-smile"
-                    slot="icon"
-                  ></font-awesome-icon
-                ></InputIcon>
-                <InputText
-                  v-model="data.message"
-                  v-on:keyup.enter="send"
-                  type="text"
-                  class="surface-100"
-                  placeholder="Write something"
-                />
-              </IconField>
+              </div>
               <EmojiPicker
                 v-if="openEmojiPicker"
                 class="emoji-picker"
