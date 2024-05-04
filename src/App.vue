@@ -20,12 +20,19 @@ function updateWindowSize() {
 }
 
 function getIpAddress() {
-  fetch("https://ipinfo.io/json")
-    .then((res) => res.json())
-    .then((ip) => {
-      console.log(ip);
-      localStorage.setItem("IP_ADDRESS", JSON.stringify(ip));
-    });
+  if (!localStorage.getItem("ip_address")) {
+    fetch("https://ipinfo.io/json")
+      .then((res) => res.json())
+      .then((ip) => {
+        localStorage.setItem("ip_address", JSON.stringify(ip));
+      })
+      .catch(() => {
+        localStorage.setItem(
+          "ip_address",
+          JSON.stringify({ ip: "No IP info available" })
+        );
+      });
+  }
 }
 
 function getChatSession() {
