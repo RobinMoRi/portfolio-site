@@ -193,11 +193,16 @@ const onMessageChange = () => {
       style="border: 1px solid var(--gray-900)"
     >
       <template #header>
-        <div class="ml-4">
-          <p>{{ globalState.chatSession.title }}</p>
-          <p class="text-color-secondary text-xs">
-            Chat between {{ globalState.chatSession.name }} and Robin
-          </p>
+        <div class="flex flex-row justify-content-between align-items-center">
+          <div class="ml-4">
+            <p>{{ globalState.chatSession.title }}</p>
+            <p class="text-color-secondary text-xs">
+              Chat between {{ globalState.chatSession.name }} and Robin
+            </p>
+          </div>
+          <div v-if="isSmallerThanMd">
+            <Button icon="pi pi-times" text rounded @click="toggle" />
+          </div>
         </div>
       </template>
       <template #content>
@@ -246,11 +251,7 @@ const onMessageChange = () => {
         </div>
       </template>
       <template #footer>
-        <div
-          :class="`flex mx-4 my-2 ${
-            isSmallerThanMd ? 'justify-content-even' : 'justify-content-between'
-          } gap-1`"
-        >
+        <div :class="`flex mx-4 my-2 justify-content-between gap-1`">
           <div class="flex flex-column align-items-center gap-2">
             <div class="flex gap-1">
               <div class="flex flex-column gap-2">
@@ -354,6 +355,7 @@ const onMessageChange = () => {
     <Button
       class="chat-bubble"
       :icon="open ? 'pi pi-times' : 'pi pi-comment'"
+      v-if="(!open && isSmallerThanMd) || !isSmallerThanMd"
       rounded
       aria-label="Chat"
       @click="toggle"
