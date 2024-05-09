@@ -14,6 +14,7 @@ origins = [
     "http://localhost",
     "http://localhost:8000",
     "https://www.romori.se",
+    "https://romori.se",
 ]
 
 app.add_middleware(
@@ -25,7 +26,6 @@ app.add_middleware(
 )
 
 
-# TODO: PUT THIS IN SOME ENV
 CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
 BOT_ID = os.getenv("DISCORD_BOT_ID")
 AUTH_TOKEN = os.getenv("DISCORD_AUTH_TOKEN")

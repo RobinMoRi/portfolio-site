@@ -14,4 +14,4 @@ The app is deployed using the following tools:
 - Github workflows
 - Hosted at Digital Ocean
 
-My portfolio can be found here: [www.romori.se](https://orca-app-3goy3.ondigitalocean.app/)
+My portfolio can be found here: [romori.se](https://romori.se/)
