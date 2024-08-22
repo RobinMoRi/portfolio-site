@@ -106,7 +106,7 @@ def get_gh_repos():
 def get_gh_languages(url: str):
     res = requests.get(
         url=url,
-        headers=HEADERS,
+        headers=GITHUB_API_HEADERS,
     )
     res.raise_for_status()
     return res.json()

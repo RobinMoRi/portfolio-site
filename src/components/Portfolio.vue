@@ -6,6 +6,7 @@ import Tag from "primevue/tag";
 import { onMounted, ref, watch, inject } from "vue";
 import { GlobalState } from "../types";
 import Carousel from "primevue/carousel";
+import { fetchRepos, fetchLanguages } from "@/discord-utils";
 
 const globalState = inject("globalState") as GlobalState;
 const windowHeight = ref(0);
@@ -27,17 +28,8 @@ const VERTICAL_BREAKPOINT = ref<number>(500);
 
 async function getRepos() {
   loading.value = true;
-  let api_token = import.meta.env.VITE_GITHUB_API_TOKEN;
 
-  const url = "https://api.github.com/user/repos";
-  const res = await fetch(url, {
-    headers: {
-      accept: "application/vnd.github+json",
-      authorization: `Bearer ${api_token}`,
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
-  const data: Repo[] = await res.json();
+  const data = await fetchRepos();
   repos.value = data
     .filter((el) => el.name !== "RobinMoRi")
     .sort((a, b) => {
@@ -50,24 +42,13 @@ async function getRepos() {
   for (let idx in repos.value) {
     let repo = repos.value[idx];
 
-    getLanguages(repo.languages_url).then((lang) => {
+    fetchLanguages(repo.languages_url).then((lang) => {
       repos.value[idx] = { ...repo, languges: Object.keys(lang) };
       loadingContent.value.push(repo.id);
     });
   }
 
   console.log({ data });
-}
-
-async function getLanguages(url: string): Promise<{ [key: string]: number }> {
-  const res = await fetch(url, {
-    headers: {
-      accept: "application/vnd.github+json",
-      authorization: `Bearer ${import.meta.env.VITE_GITHUB_API_TOKEN}`,
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
-  return res.json();
 }
 
 function openRepo(url: string, target = "_blank") {
