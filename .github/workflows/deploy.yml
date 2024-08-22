@@ -46,3 +46,4 @@ jobs:
             DISCORD_AUTH_TOKEN=${{ secrets.DISCORD_AUTH_TOKEN }}
             DISCORD_BOT_ID=${{ secrets.DISCORD_BOT_ID }}
             DISCORD_CHANNEL_ID=${{ secrets.DISCORD_CHANNEL_ID }}
+            VITE_GITHUB_API_TOKEN=${{ secrets.VITE_GITHUB_API_TOKEN }}
