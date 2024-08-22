@@ -19,13 +19,32 @@ const currentExperience = ref<Experience | null>(null);
 
 const workExperience = ref<Experience[]>([
   {
+    institute: "Betao",
+    title: "Fullstack Developer",
+    description: [
+      "As a Fullstack Developer at Betao Group AB, I work on developing and optimizing a platform that streamlines the process of starting and managing a self-employed business. My role involves utilizing Vue/Nuxt for the frontend and Django/Python for the backend to create a reliable and efficient tool that reduces the administrative burden for entrepreneurs, enabling them to focus on their core business activities.",
+    ],
+    start: "April. 2023",
+    end: "Ongoing",
+    skills: [
+      "Javscript",
+      "Vue",
+      "Nuxt",
+      "Python",
+      "Django/DRF",
+      "MySQL",
+      "Docker",
+      "Celery",
+    ],
+  },
+  {
     institute: "Morpheus Tribe",
     title: "Fullstack Developer",
     description: [
-      "In my current role, I am deeply involved in fullstack development for an automation solution designed to streamline search and recruitment processes. Working within a small team reminiscent of a startup environment, I hold a wide range of responsibilities. I collaborate closely with the solution's end-users and maintain a primary focus on optimizing, streamlining, and advancing the solution, both on the backend and frontend.",
+      "At Morpheus, I was deeply involved in fullstack development for an automation solution designed to streamline search and recruitment processes. Within a small team reminiscent of a startup environment, I held a wide range of responsibilities. I collaborated closely with the solution's end-users and maintained a primary focus on optimizing, streamlining, and advancing the solution, both on the backend and frontend.",
     ],
     start: "Feb. 2023",
-    end: "Ongoing",
+    end: "Mar. 2024",
     skills: [
       "Typescript",
       "Javscript",

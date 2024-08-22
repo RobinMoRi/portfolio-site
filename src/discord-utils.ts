@@ -119,7 +119,7 @@ export async function getThreadMessages(
 }
 
 // FIXME: should not be inside of here but it is using same proxy
-type Repo = {
+export type Repo = {
   id: number;
   name: string;
   description: string;
@@ -128,6 +128,8 @@ type Repo = {
   languges: string[];
   created_at: string;
 };
+
+export type Repos = Repo[];
 
 type Languages = { [key: string]: number };
 

@@ -33,7 +33,7 @@ async function copyToClipboard(text: string) {
 
 <template>
   <div id="contacts">
-    <Toolbar style="border: none">
+    <Toolbar style="border: none" class="z-5">
       <template #start>
         <div
           class="flex gap-4 justify-content-center align-items-center ml-4 my-4 md:my-2"
