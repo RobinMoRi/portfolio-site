@@ -117,3 +117,34 @@ export async function getThreadMessages(
     method: "GET",
   }).then((res) => res.json());
 }
+
+// FIXME: should not be inside of here but it is using same proxy
+export type Repo = {
+  id: number;
+  name: string;
+  description: string;
+  html_url: string;
+  languages_url: string;
+  languges: string[];
+  created_at: string;
+};
+
+export type Repos = Repo[];
+
+type Languages = { [key: string]: number };
+
+export async function fetchRepos(): Promise<Repo[]> {
+  const url = `${DISCORD_PROXY_HOST}/getGithubRepos`;
+
+  return fetch(url, {
+    method: "GET",
+  }).then((res) => res.json());
+}
+
+export async function fetchLanguages(languagesUrl: string): Promise<Languages> {
+  const url = `${DISCORD_PROXY_HOST}/getGithubLanguages?url=${languagesUrl}`;
+
+  return fetch(url, {
+    method: "GET",
+  }).then((res) => res.json());
+}

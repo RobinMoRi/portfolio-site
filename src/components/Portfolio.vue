@@ -5,39 +5,19 @@ import ProgressBar from "primevue/progressbar";
 import Tag from "primevue/tag";
 import { onMounted, ref, watch, inject } from "vue";
 import { GlobalState } from "../types";
-import Carousel from "primevue/carousel";
+import { fetchRepos, fetchLanguages, Repos } from "@/discord-utils";
 
 const globalState = inject("globalState") as GlobalState;
 const windowHeight = ref(0);
 
-type Repo = {
-  id: number;
-  name: string;
-  description: string;
-  html_url: string;
-  languages_url: string;
-  languges: string[];
-  created_at: string;
-};
-
-const repos = ref<Repo[]>([]);
+const repos = ref<Repos>([]);
 const loading = ref(false);
 const loadingContent = ref<number[]>([]);
-const VERTICAL_BREAKPOINT = ref<number>(500);
 
 async function getRepos() {
   loading.value = true;
-  let api_token = import.meta.env.VITE_GITHUB_API_TOKEN;
 
-  const url = "https://api.github.com/user/repos";
-  const res = await fetch(url, {
-    headers: {
-      accept: "application/vnd.github+json",
-      authorization: `Bearer ${api_token}`,
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
-  const data: Repo[] = await res.json();
+  const data = await fetchRepos();
   repos.value = data
     .filter((el) => el.name !== "RobinMoRi")
     .sort((a, b) => {
@@ -50,24 +30,13 @@ async function getRepos() {
   for (let idx in repos.value) {
     let repo = repos.value[idx];
 
-    getLanguages(repo.languages_url).then((lang) => {
+    fetchLanguages(repo.languages_url).then((lang) => {
       repos.value[idx] = { ...repo, languges: Object.keys(lang) };
       loadingContent.value.push(repo.id);
     });
   }
 
   console.log({ data });
-}
-
-async function getLanguages(url: string): Promise<{ [key: string]: number }> {
-  const res = await fetch(url, {
-    headers: {
-      accept: "application/vnd.github+json",
-      authorization: `Bearer ${import.meta.env.VITE_GITHUB_API_TOKEN}`,
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
-  return res.json();
 }
 
 function openRepo(url: string, target = "_blank") {
@@ -77,6 +46,7 @@ function openRepo(url: string, target = "_blank") {
 onMounted(() => {
   getRepos();
 });
+
 watch(
   () => globalState.window.height,
   (newVal) => {
@@ -86,94 +56,47 @@ watch(
     immediate: true,
   }
 );
-
-const responsiveOptions = ref([
-  {
-    breakpoint: "2000px",
-    numVisible: 4,
-    numScroll: 4,
-  },
-
-  {
-    breakpoint: "1300px",
-    numVisible: 3,
-    numScroll: 3,
-  },
-  {
-    breakpoint: "1100px",
-    numVisible: 2,
-    numScroll: 2,
-  },
-  {
-    breakpoint: "375px",
-    numVisible: 1,
-    numScroll: 1,
-  },
-]);
 </script>
 
 <template>
   <div
     id="portfolio"
     class="w-screen p-4"
-    :style="{ minHeight: windowHeight + 'px' }"
+    :style="{ height: windowHeight + 'px' }"
   >
     <div id="title-group col-12">
       <p class="name-title my-2">Portfolio</p>
     </div>
-    <Carousel
-      v-if="!loading"
-      :numVisible="1"
-      :numScroll="1"
-      :value="repos"
-      circular
-      :autoplayInterval="5000"
-      :responsiveOptions="responsiveOptions"
-      :verticalViewPortHeight="0.7 * windowHeight + 'px'"
-      :orientation="
-        globalState.window.width < VERTICAL_BREAKPOINT
-          ? 'vertical'
-          : 'horizontal'
-      "
-    >
-      <template #item="slotProps">
-        <Card
-          class="m-1"
-          :style="
-            globalState.window.width < VERTICAL_BREAKPOINT
-              ? { height: '250px' }
-              : { width: '300px' }
-          "
-        >
+    <div v-if="!loading" class="grid w-full h-full overflow-y-scroll p-3">
+      <div v-for="repo in repos" class="sm:col-12 md:col-6 lg:col-4 xl:col-3">
+        <Card class="m-1 z-4 h-full">
           <template #title>
             <Button
-              @click="openRepo(slotProps.data.html_url)"
+              @click="openRepo(repo.html_url)"
               link
               v-tooltip.top="{
-                value: slotProps.data.html_url,
+                value: repo.html_url,
                 autoHide: false,
               }"
-              >{{ slotProps.data.name }}</Button
+              >{{ repo.name }}</Button
             >
           </template>
           <template #subtitle>
             <div>
               Created:
-              {{
-                new Date(slotProps.data.created_at).toLocaleDateString("sv-SE")
-              }}
+              {{ new Date(repo.created_at).toLocaleDateString("sv-SE") }}
             </div>
           </template>
           <template #content>
-            <div v-tooltip.bottom="slotProps.data.description" class="clipped">
-              {{ slotProps.data.description }}
+            <div v-tooltip.bottom="repo.description">
+              {{ repo.description }}
             </div>
           </template>
           <template #footer>
             <div class="flex flex-wrap">
               <div
-                v-if="loadingContent.includes(slotProps.data.id)"
-                v-for="lang in slotProps.data.languges"
+                v-if="loadingContent.includes(repo.id)"
+                v-for="lang in repo.languges"
                 class="mr-1 mb-1"
               >
                 <Tag :value="lang" />
@@ -188,8 +111,8 @@ const responsiveOptions = ref([
             </div>
           </template>
         </Card>
-      </template>
-    </Carousel>
+      </div>
+    </div>
 
     <div v-else class="card">
       <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar>
@@ -208,5 +131,9 @@ const responsiveOptions = ref([
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+:deep(.p-button) {
+  position: static;
 }
 </style>
