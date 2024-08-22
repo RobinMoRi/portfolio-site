@@ -67,9 +67,9 @@ watch(
     <div id="title-group col-12">
       <p class="name-title my-2">Portfolio</p>
     </div>
-    <div v-if="!loading" class="grid w-full h-full overflow-y-scroll p-3">
+    <div v-if="!loading" class="grid gap-2 w-full h-full overflow-y-scroll p-3">
       <div v-for="repo in repos" class="sm:col-12 md:col-6 lg:col-4 xl:col-3">
-        <Card class="m-1 z-4 h-full">
+        <Card class="z-4 h-full w-full">
           <template #title>
             <Button
               @click="openRepo(repo.html_url)"
