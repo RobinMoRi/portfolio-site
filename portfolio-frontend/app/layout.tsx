@@ -4,6 +4,11 @@ import localFont from "next/font/local";
 import NavBar from "../components/navigation/NavBar";
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/toaster";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
+
 export const metadata: Metadata = {
   title: "Robin Moreno Rinding Portfolio",
   description: "Portfolio for Robin Moreno Rinding",
@@ -19,7 +24,8 @@ export default function RootLayout({
       <body>
         <Providers>
           <NavBar />
-          {children}
+          <main>{children}</main>
+          <Toaster />
         </Providers>
       </body>
     </html>

@@ -1,13 +1,35 @@
 "use client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Code, User } from "lucide-react";
+import { toast, useToast } from "@/hooks/use-toast";
+import { faGithub, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  BriefcaseBusiness,
+  Code,
+  File,
+  Folder,
+  Mail,
+  Menu,
+  Smartphone,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { useMediaQuery } from "react-responsive";
 
 function scrollToDivWithOffset(id: string) {
   const element = document.getElementById(id);
@@ -40,51 +62,154 @@ const items = [
   },
   {
     label: "Resume",
-    icon: <User />,
+    icon: <File />,
     id: "resume",
     onClick: () => scrollToDivWithOffset("resume"),
   },
   {
     label: "Side Projects",
-    icon: <User />,
+    icon: <BriefcaseBusiness />,
     id: "side-projects",
     onClick: () => scrollToDivWithOffset("side-projects"),
   },
   {
     label: "Portfolio",
-    icon: <User />,
+    icon: <Folder />,
     id: "portfolio",
     onClick: () => scrollToDivWithOffset("portfolio"),
-  },
-  {
-    label: "Contacts",
-    icon: <User />,
-    id: "contacts",
-    onClick: () => scrollToDivWithOffset("contacts"),
   },
 ];
 
 const NavBar = () => {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 768px)", //From tailwind: https://tailwindcss.com/docs/screens
+  });
+  const { toast } = useToast();
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: "Clipboard",
+        description: "Number copied to clipboard",
+        variant: "success",
+      });
+    } catch (err) {
+      toast({
+        title: "Clipboard",
+        description: "Could not copy to clipboard",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const contacts = [
+    {
+      label: "Linkedin",
+      icon: <FontAwesomeIcon size="xl" icon={faLinkedinIn} className="fa-fw" />,
+      url: "https://www.linkedin.com/in/romori/",
+    },
+    {
+      label: "Github",
+      icon: <FontAwesomeIcon size="xl" icon={faGithub} />,
+      url: "https://github.com/RobinMoRi",
+    },
+    {
+      label: "Email",
+      icon: <Mail />,
+      url: "mailto:robin.moreno.rinding@gmail.com",
+    },
+    {
+      label: "Phone",
+      icon: <Smartphone />,
+      url: "+46737514695",
+      onClick: () => copyToClipboard("+46737514695"),
+    },
+  ];
+
   return (
-    <div>
-      <NavigationMenu className="w-screen p-4">
-        <NavigationMenuList>
-          {items.map((item) => {
-            return (
-              <NavigationMenuItem key={item.id}>
-                <Button
-                  className="bg-primary"
-                  variant="outline"
-                  onClick={item.onClick}
-                >
-                  {item.icon} {item.label}
-                </Button>
-              </NavigationMenuItem>
-            );
-          })}
-        </NavigationMenuList>
-      </NavigationMenu>
-    </div>
+    <NavigationMenu className="w-screen p-4 bg-navbar flex justify-between ">
+      <Avatar>
+        <AvatarImage src="/robin.png" alt="@shadcn" />
+        <AvatarFallback className="bg-primary">R</AvatarFallback>
+      </Avatar>
+      {isDesktopOrLaptop ? (
+        <>
+          <NavigationMenuList>
+            {items.map((item) => {
+              return (
+                <NavigationMenuItem key={item.id}>
+                  <Button className="bg-primary" onClick={item.onClick}>
+                    {item.label}
+                  </Button>
+                </NavigationMenuItem>
+              );
+            })}
+          </NavigationMenuList>
+          <NavigationMenuList>
+            {contacts.map((contact) => {
+              return (
+                <NavigationMenuItem key={contact.url}>
+                  {contact.onClick ? (
+                    <Button className="bg-primary" onClick={contact.onClick}>
+                      {contact.icon}
+                    </Button>
+                  ) : (
+                    <Link href={contact.url}>
+                      <Button className="bg-primary">{contact.icon}</Button>
+                    </Link>
+                  )}
+                </NavigationMenuItem>
+              );
+            })}
+          </NavigationMenuList>
+        </>
+      ) : (
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Menu />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Robin Moreno Rinding</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+
+            {items.map((item) => {
+              return (
+                <DropdownMenuItem key={item.id}>
+                  <Button
+                    className="bg-primary w-full flex justify-between"
+                    onClick={item.onClick}
+                  >
+                    {item.icon} {item.label}
+                  </Button>
+                </DropdownMenuItem>
+              );
+            })}
+            <DropdownMenuSeparator />
+            {contacts.map((contact) => {
+              return (
+                <DropdownMenuItem key={contact.url}>
+                  {contact.onClick ? (
+                    <Button
+                      className="bg-primary w-full flex justify-between"
+                      onClick={contact.onClick}
+                    >
+                      {contact.icon} {contact.label}
+                    </Button>
+                  ) : (
+                    <Link href={contact.url} className="w-full">
+                      <Button className="bg-primary w-full flex justify-between">
+                        {contact.icon} {contact.label}
+                      </Button>
+                    </Link>
+                  )}
+                </DropdownMenuItem>
+              );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    </NavigationMenu>
   );
 };
 
