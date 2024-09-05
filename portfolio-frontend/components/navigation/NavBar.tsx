@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -26,9 +27,10 @@ import {
   Menu,
   Smartphone,
   User,
+  X,
 } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 function scrollToDivWithOffset(id: string) {
@@ -85,6 +87,7 @@ const NavBar = () => {
     query: "(min-width: 768px)", //From tailwind: https://tailwindcss.com/docs/screens
   });
   const { toast } = useToast();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const copyToClipboard = async (text: string) => {
     try {
@@ -155,7 +158,7 @@ const NavBar = () => {
                       {contact.icon}
                     </Button>
                   ) : (
-                    <Link href={contact.url}>
+                    <Link href={contact.url} target="__blank">
                       <Button className="bg-primary">{contact.icon}</Button>
                     </Link>
                   )}
@@ -165,47 +168,57 @@ const NavBar = () => {
           </NavigationMenuList>
         </>
       ) : (
-        <DropdownMenu>
+        <DropdownMenu onOpenChange={setIsMenuOpen}>
           <DropdownMenuTrigger>
-            <Menu />
+            {!isMenuOpen ? <Menu /> : <X />}
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Robin Moreno Rinding</DropdownMenuLabel>
             <DropdownMenuSeparator />
-
-            {items.map((item) => {
-              return (
-                <DropdownMenuItem key={item.id}>
-                  <Button
-                    className="bg-primary w-full flex justify-between"
-                    onClick={item.onClick}
-                  >
-                    {item.icon} {item.label}
-                  </Button>
-                </DropdownMenuItem>
-              );
-            })}
-            <DropdownMenuSeparator />
-            {contacts.map((contact) => {
-              return (
-                <DropdownMenuItem key={contact.url}>
-                  {contact.onClick ? (
+            <DropdownMenuGroup>
+              {items.map((item) => {
+                return (
+                  <DropdownMenuItem key={item.id}>
                     <Button
                       className="bg-primary w-full flex justify-between"
-                      onClick={contact.onClick}
+                      onClick={item.onClick}
                     >
-                      {contact.icon} {contact.label}
+                      {item.label}
+                      {item.icon}
                     </Button>
-                  ) : (
-                    <Link href={contact.url} className="w-full">
-                      <Button className="bg-primary w-full flex justify-between">
-                        {contact.icon} {contact.label}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {contacts.map((contact) => {
+                return (
+                  <DropdownMenuItem key={contact.url}>
+                    {contact.onClick ? (
+                      <Button
+                        className="bg-primary w-full flex justify-between"
+                        onClick={contact.onClick}
+                      >
+                        {contact.label}
+                        {contact.icon}
                       </Button>
-                    </Link>
-                  )}
-                </DropdownMenuItem>
-              );
-            })}
+                    ) : (
+                      <Link
+                        href={contact.url}
+                        target="__blank"
+                        className="w-full"
+                      >
+                        <Button className="bg-primary w-full flex justify-between">
+                          {contact.label}
+                          {contact.icon}
+                        </Button>
+                      </Link>
+                    )}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       )}
