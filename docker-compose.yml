@@ -12,6 +12,19 @@ services:
     environment:
       - NODE_ENV=dev
 
+  frontend-dev-v2:
+    build:
+      context: ./portfolio-frontend
+      dockerfile: Dockerfile.dev
+    container_name: vhk-frontend-dev-v2
+    volumes:
+      - ./portfolio-frontend:/app
+      - ./portfolio-frontend/node_modules:/app/node_modules
+    ports:
+      - "8000:3000"
+    environment:
+      - ENVIRONMENT=dev
+
   frontend-deploy:
     build:
       context: .
