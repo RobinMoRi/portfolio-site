@@ -9,10 +9,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #282a3e;
+    --background: rgb(40, 42, 62);
     --foreground: #ededed;
   }
 }
+
 
 body {
   color: var(--foreground);
@@ -54,6 +55,7 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
     --navbar: 240, 55%, 9%;
+    --navbar-sheet: 235, 22%, 20%;
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -81,6 +83,7 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --navbar: 240, 55%, 9%;
+    --navbar-sheet: 235, 22%, 20%;
   }
 }
 

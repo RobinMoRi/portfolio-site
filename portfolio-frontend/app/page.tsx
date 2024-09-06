@@ -1,5 +1,5 @@
-import Image from "next/image";
+import Intro from "@/app/components/sections/Intro";
 
 export default function Home() {
-  return <div></div>;
+  return <Intro />;
 }

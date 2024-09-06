@@ -1,6 +1,5 @@
 import Providers from "@/components/providers";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import NavBar from "../components/navigation/NavBar";
 import "./globals.css";
 
@@ -21,10 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="h-screen">
         <Providers>
           <NavBar />
-          <main>{children}</main>
+          <main className="h-[calc(100vh-72px)]">{children}</main>
           <Toaster />
         </Providers>
       </body>

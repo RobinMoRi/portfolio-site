@@ -2,226 +2,158 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+
+import useNavbarItems from "@/app/hooks/useContacts";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { toast, useToast } from "@/hooks/use-toast";
-import { faGithub, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  BriefcaseBusiness,
-  Code,
-  File,
-  Folder,
-  Mail,
-  Menu,
-  Smartphone,
-  User,
-  X,
-} from "lucide-react";
+import Image from "next/image";
+
+import { Menu } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
-function scrollToDivWithOffset(id: string) {
-  const element = document.getElementById(id);
-  const offset = 72; //Fix offset
-  if (element) {
-    const elementPosition =
-      element.getBoundingClientRect().top + window.pageYOffset;
-    const offsetPosition = elementPosition - offset;
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: "smooth",
-    });
-  } else {
-    console.error("Element with ID " + id + " not found.");
-  }
-}
+const NavBarMobile = () => {
+  const { contacts, items } = useNavbarItems();
+  const [isOpen, setIsOpen] = useState(false);
 
-const items = [
-  {
-    label: "About Me",
-    icon: <User />,
-    id: "about-me",
-    onClick: () => scrollToDivWithOffset("about-me"),
-  },
-  {
-    label: "Skills",
-    icon: <Code />,
-    id: "skills",
-    onClick: () => scrollToDivWithOffset("skills"),
-  },
-  {
-    label: "Resume",
-    icon: <File />,
-    id: "resume",
-    onClick: () => scrollToDivWithOffset("resume"),
-  },
-  {
-    label: "Side Projects",
-    icon: <BriefcaseBusiness />,
-    id: "side-projects",
-    onClick: () => scrollToDivWithOffset("side-projects"),
-  },
-  {
-    label: "Portfolio",
-    icon: <Folder />,
-    id: "portfolio",
-    onClick: () => scrollToDivWithOffset("portfolio"),
-  },
-];
+  const handleClickItem = (onClick: () => void) => {
+    onClick();
+    setIsOpen(false);
+  };
+
+  return (
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Button className="bg-primary p-2">
+          <Menu />
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="bg-navbarsheet border-none grid grid-cols-1 gap-2">
+        <div className="flex items-center justify-center">
+          <Image
+            src="/robin.png"
+            width={120}
+            height={120}
+            alt="Robin Moreno Rinding"
+            className="rounded-full shadow-md"
+          />
+        </div>
+        <SheetHeader>
+          <SheetTitle className="text-white">Robin Moreno Rinding</SheetTitle>
+          <SheetDescription>
+            Fullstack Developer • Tech Enthusiast • Lifelong Learner
+          </SheetDescription>
+          <div className="grid grid-cols-1 gap-1 mt-2">
+            {items.map((item) => {
+              return (
+                <Button
+                  key={item.id}
+                  className="bg-navbarsheet flex justify-start gap-3"
+                  onClick={() => handleClickItem(item.onClick)}
+                >
+                  {item.icon}
+                  {item.label}
+                </Button>
+              );
+            })}
+          </div>
+        </SheetHeader>
+        <SheetFooter className="flex-col justify-end gap-3">
+          <SheetDescription>
+            Feel free to contact me on any of the options below
+          </SheetDescription>
+          <div className="grid grid-cols-4 gap-1">
+            {contacts.map((contact) => {
+              return (
+                <div key={contact.url}>
+                  {contact.onClick ? (
+                    <Button
+                      className="bg-primary w-full"
+                      onClick={contact.onClick}
+                    >
+                      {contact.icon}
+                    </Button>
+                  ) : (
+                    <Link
+                      href={contact.url}
+                      target="__blank"
+                      className="w-full"
+                    >
+                      <Button className="bg-primary w-full">
+                        {contact.icon}
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+};
+
+const NavBarDesktop = () => {
+  const { contacts, items } = useNavbarItems();
+  return (
+    <>
+      <NavigationMenuList>
+        {items.map((item) => {
+          return (
+            <NavigationMenuItem key={item.id}>
+              <Button className="bg-primary" onClick={item.onClick}>
+                {item.label}
+              </Button>
+            </NavigationMenuItem>
+          );
+        })}
+      </NavigationMenuList>
+      <NavigationMenuList>
+        {contacts.map((contact) => {
+          return (
+            <NavigationMenuItem key={contact.url}>
+              {contact.onClick ? (
+                <Button className="bg-primary" onClick={contact.onClick}>
+                  {contact.icon}
+                </Button>
+              ) : (
+                <Link href={contact.url} target="__blank">
+                  <Button className="bg-primary">{contact.icon}</Button>
+                </Link>
+              )}
+            </NavigationMenuItem>
+          );
+        })}
+      </NavigationMenuList>
+    </>
+  );
+};
 
 const NavBar = () => {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 768px)", //From tailwind: https://tailwindcss.com/docs/screens
   });
-  const { toast } = useToast();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast({
-        title: "Clipboard",
-        description: "Number copied to clipboard",
-        variant: "success",
-      });
-    } catch (err) {
-      toast({
-        title: "Clipboard",
-        description: "Could not copy to clipboard",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const contacts = [
-    {
-      label: "Linkedin",
-      icon: <FontAwesomeIcon size="xl" icon={faLinkedinIn} className="fa-fw" />,
-      url: "https://www.linkedin.com/in/romori/",
-    },
-    {
-      label: "Github",
-      icon: <FontAwesomeIcon size="xl" icon={faGithub} />,
-      url: "https://github.com/RobinMoRi",
-    },
-    {
-      label: "Email",
-      icon: <Mail />,
-      url: "mailto:robin.moreno.rinding@gmail.com",
-    },
-    {
-      label: "Phone",
-      icon: <Smartphone />,
-      url: "+46737514695",
-      onClick: () => copyToClipboard("+46737514695"),
-    },
-  ];
 
   return (
     <NavigationMenu className="w-screen p-4 bg-navbar flex justify-between ">
       <Avatar>
-        <AvatarImage src="/robin.png" alt="@shadcn" />
+        <AvatarImage src="/robin.png" alt="R" />
         <AvatarFallback className="bg-primary">R</AvatarFallback>
       </Avatar>
-      {isDesktopOrLaptop ? (
-        <>
-          <NavigationMenuList>
-            {items.map((item) => {
-              return (
-                <NavigationMenuItem key={item.id}>
-                  <Button className="bg-primary" onClick={item.onClick}>
-                    {item.label}
-                  </Button>
-                </NavigationMenuItem>
-              );
-            })}
-          </NavigationMenuList>
-          <NavigationMenuList>
-            {contacts.map((contact) => {
-              return (
-                <NavigationMenuItem key={contact.url}>
-                  {contact.onClick ? (
-                    <Button className="bg-primary" onClick={contact.onClick}>
-                      {contact.icon}
-                    </Button>
-                  ) : (
-                    <Link href={contact.url} target="__blank">
-                      <Button className="bg-primary">{contact.icon}</Button>
-                    </Link>
-                  )}
-                </NavigationMenuItem>
-              );
-            })}
-          </NavigationMenuList>
-        </>
-      ) : (
-        <DropdownMenu onOpenChange={setIsMenuOpen}>
-          <DropdownMenuTrigger>
-            {!isMenuOpen ? <Menu /> : <X />}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Robin Moreno Rinding</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              {items.map((item) => {
-                return (
-                  <DropdownMenuItem key={item.id}>
-                    <Button
-                      className="bg-primary w-full flex justify-between"
-                      onClick={item.onClick}
-                    >
-                      {item.label}
-                      {item.icon}
-                    </Button>
-                  </DropdownMenuItem>
-                );
-              })}
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              {contacts.map((contact) => {
-                return (
-                  <DropdownMenuItem key={contact.url}>
-                    {contact.onClick ? (
-                      <Button
-                        className="bg-primary w-full flex justify-between"
-                        onClick={contact.onClick}
-                      >
-                        {contact.label}
-                        {contact.icon}
-                      </Button>
-                    ) : (
-                      <Link
-                        href={contact.url}
-                        target="__blank"
-                        className="w-full"
-                      >
-                        <Button className="bg-primary w-full flex justify-between">
-                          {contact.label}
-                          {contact.icon}
-                        </Button>
-                      </Link>
-                    )}
-                  </DropdownMenuItem>
-                );
-              })}
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+      {isDesktopOrLaptop ? <NavBarDesktop /> : <NavBarMobile />}
     </NavigationMenu>
   );
 };
