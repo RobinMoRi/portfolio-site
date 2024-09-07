@@ -15,3 +15,12 @@ export interface NavBarItem {
 }
 
 export type NavBarItems = NavBarItem[];
+
+export enum Section {
+  Init = "section-intro",
+  AboutMe = "section-about-me",
+  Skills = "section-skills",
+  SideProjects = "section-side-projects",
+  Resume = "section-resume",
+  Portfolio = "section-portfolio",
+}

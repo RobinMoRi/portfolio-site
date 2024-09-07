@@ -1,5 +1,21 @@
-import Intro from "@/app/components/sections/Intro";
+import {
+  AboutMe,
+  Intro,
+  Portfolio,
+  Resume,
+  SideProjects,
+  Skills,
+} from "@/app/components/sections";
 
 export default function Home() {
-  return <Intro />;
+  return (
+    <>
+      <Intro />
+      <AboutMe />
+      <Skills />
+      <Resume />
+      <SideProjects />
+      <Portfolio />
+    </>
+  );
 }

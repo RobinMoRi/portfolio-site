@@ -19,6 +19,10 @@ import {
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
 
+import useProgression from "@/app/hooks/useProgression";
+import { Progress } from "@/components/ui/progress";
+import { Section } from "@/types/navbar";
+import { scrollToDivWithOffset } from "@/utils";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -41,7 +45,12 @@ const NavBarMobile = () => {
         </Button>
       </SheetTrigger>
       <SheetContent className="bg-navbarsheet border-none grid grid-cols-1 gap-2">
-        <div className="flex items-center justify-center">
+        <div
+          className="flex items-center justify-center"
+          onClick={() =>
+            handleClickItem(() => scrollToDivWithOffset(Section.Init))
+          }
+        >
           <Image
             src="/robin.png"
             width={120}
@@ -146,14 +155,22 @@ const NavBar = () => {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 768px)", //From tailwind: https://tailwindcss.com/docs/screens
   });
+  const scrollPercentage = useProgression();
 
   return (
-    <NavigationMenu className="w-screen p-4 bg-navbar flex justify-between ">
-      <Avatar>
-        <AvatarImage src="/robin.png" alt="R" />
-        <AvatarFallback className="bg-primary">R</AvatarFallback>
-      </Avatar>
-      {isDesktopOrLaptop ? <NavBarDesktop /> : <NavBarMobile />}
+    <NavigationMenu id="navbar-container" className="w-screen bg-navbar fixed">
+      <div className="p-4 w-full h-full flex justify-between">
+        <Avatar onClick={() => scrollToDivWithOffset(Section.Init)}>
+          <AvatarImage src="/robin.png" alt="R" />
+          <AvatarFallback className="bg-primary">R</AvatarFallback>
+        </Avatar>
+        {isDesktopOrLaptop ? <NavBarDesktop /> : <NavBarMobile />}
+      </div>
+      <Progress
+        value={scrollPercentage}
+        // className="bg-indigo-500 [&>*]:bg-indigo-500'"
+        style={{ height: "1px" }}
+      />
     </NavigationMenu>
   );
 };

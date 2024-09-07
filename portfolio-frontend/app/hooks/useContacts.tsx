@@ -1,6 +1,6 @@
 "use client";
 
-import { Contacts, NavBarItems } from "@/types/navbar";
+import { Contacts, NavBarItems, Section } from "@/types/navbar";
 import { scrollToDivWithOffset } from "@/utils";
 import { faGithub, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -57,32 +57,32 @@ const useNavbarItems = () => {
     {
       label: "About Me",
       icon: <User />,
-      id: "about-me",
-      onClick: () => writeStepToUrl("about-me"),
+      id: Section.AboutMe,
+      onClick: () => writeStepToUrl(Section.AboutMe),
     },
     {
       label: "Skills",
       icon: <Code />,
-      id: "skills",
-      onClick: () => writeStepToUrl("skills"),
+      id: Section.Skills,
+      onClick: () => writeStepToUrl(Section.Skills),
     },
     {
       label: "Resume",
       icon: <File />,
-      id: "resume",
-      onClick: () => writeStepToUrl("resume"),
+      id: Section.Resume,
+      onClick: () => writeStepToUrl(Section.Resume),
     },
     {
       label: "Side Projects",
       icon: <BriefcaseBusiness />,
-      id: "side-projects",
-      onClick: () => writeStepToUrl("side-projects"),
+      id: Section.SideProjects,
+      onClick: () => writeStepToUrl(Section.SideProjects),
     },
     {
       label: "Portfolio",
       icon: <Folder />,
-      id: "portfolio",
-      onClick: () => writeStepToUrl("portfolio"),
+      id: Section.Portfolio,
+      onClick: () => writeStepToUrl(Section.Portfolio),
     },
   ];
 
