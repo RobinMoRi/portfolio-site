@@ -1,5 +1,4 @@
 "use client";
-import useNavbarHeight from "@/app/hooks/useNavbarHeight";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/types/navbar";
 import { scrollToDivWithOffset } from "@/utils";
@@ -13,9 +12,11 @@ const Intro = () => {
     <SectionWrapper id={Section.Init} className="h-screen">
       <div className="section-intro__content h-full">
         <div className="section-intro__overlay h-full w-full flex flex-col items-center gap-4">
-          <p className="tracking-widest text-3xl md:text-5xl mt-4 md:mt-16">
-            ROBIN MORENO RINDING
-          </p>
+          <div className="mt-4 md:mt-16 typewriter">
+            <h1 className="tracking-widest text-3xl md:text-5xl">
+              ROBIN MORENO RINDING
+            </h1>
+          </div>
           <p className="tracking-wide text-slate-200 md:text-slate-400">
             Fullstack Developer | Tech Enthusiast | Lifelong Learner
           </p>
