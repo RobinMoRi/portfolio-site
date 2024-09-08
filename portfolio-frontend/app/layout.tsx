@@ -19,11 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="h-screen">
+    <html lang="en">
+      <body>
         <Providers>
           <NavBar />
-          <main className="h-[calc(100vh-72px)]">{children}</main>
+          <main className="md:h-[calc(100vh-72px)]">{children}</main>
           <Toaster />
         </Providers>
       </body>

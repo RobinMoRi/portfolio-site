@@ -3,7 +3,7 @@ import React from "react";
 
 interface SectionWrapperProps {
   children: React.ReactNode;
-  className: string;
+  className?: string;
   title?: string;
   id: string;
 }

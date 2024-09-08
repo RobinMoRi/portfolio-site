@@ -160,17 +160,20 @@ const NavBar = () => {
   return (
     <NavigationMenu id="navbar-container" className="w-screen bg-navbar fixed">
       <div className="p-4 w-full h-full flex justify-between">
-        <Avatar onClick={() => scrollToDivWithOffset(Section.Init)}>
-          <AvatarImage src="/robin.png" alt="R" />
-          <AvatarFallback className="bg-primary">R</AvatarFallback>
-        </Avatar>
+        <div className="flex gap-2 items-center">
+          <Avatar
+            onClick={() => scrollToDivWithOffset(Section.Init)}
+            className="cursor-pointer"
+          >
+            <AvatarImage src="/robin.png" alt="R" />
+            <AvatarFallback className="bg-primary">R</AvatarFallback>
+          </Avatar>
+          <div>Robin Moreno Rinding</div>
+        </div>
+
         {isDesktopOrLaptop ? <NavBarDesktop /> : <NavBarMobile />}
       </div>
-      <Progress
-        value={scrollPercentage}
-        // className="bg-indigo-500 [&>*]:bg-indigo-500'"
-        style={{ height: "1px" }}
-      />
+      <Progress value={scrollPercentage} style={{ height: "1px" }} />
     </NavigationMenu>
   );
 };

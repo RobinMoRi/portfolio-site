@@ -9,10 +9,10 @@ import SectionWrapper from "./SectionWrapper";
 
 const Intro = () => {
   return (
-    <SectionWrapper id={Section.Init} className="h-screen">
-      <div className="section-intro__content h-full">
+    <SectionWrapper id={Section.Init}>
+      <div className="section-intro__content h-[calc(100vh-72px-40px)]">
         <div className="section-intro__overlay h-full w-full flex flex-col items-center gap-4">
-          <div className="mt-4 md:mt-16 typewriter">
+          <div className="md:mt-16 typewriter">
             <h1 className="tracking-widest text-3xl md:text-5xl">
               ROBIN MORENO RINDING
             </h1>
