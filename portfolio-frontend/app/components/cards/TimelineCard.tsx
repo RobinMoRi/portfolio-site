@@ -1,6 +1,6 @@
 import { TimelineItemTitle } from "@/components/ui/timeline";
-import { createClient } from "@/prismicio";
 import { ReusableexperienceDocument } from "@/prismicio-types";
+import { format } from "date-fns";
 import { Calendar } from "lucide-react";
 import React from "react";
 
@@ -17,8 +17,10 @@ const TimelineCard = ({
       <div className="flex gap-2 text-slate-400 text-sm">
         <Calendar size={18} />
         <div>
-          {experience.data.start} -{" "}
-          {experience.data.end ? experience.data.end : "Ongoing"}
+          {format(new Date(String(experience.data.start)), "MMM. yyyy")} -{" "}
+          {experience.data.end
+            ? format(new Date(String(experience.data.end)), "MMM. yyyy")
+            : "Ongoing"}
         </div>
       </div>
     </div>
