@@ -1,4 +1,3 @@
-"use client";
 import { Section } from "@/types/navbar";
 import React from "react";
 import SkillCard from "../cards/SkillCard";
@@ -70,8 +69,7 @@ const Skills = () => {
             );
           })}
         </SkillsContainer>
-
-        <SkillsContainer title="Technical Skills">
+        <SkillsContainer title="Soft Skills">
           {softSkills.map((skill) => {
             return (
               <SkillCard

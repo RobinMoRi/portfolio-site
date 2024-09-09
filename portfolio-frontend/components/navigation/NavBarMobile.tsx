@@ -68,7 +68,7 @@ const NavBarMobile = () => {
             })}
           </div>
         </SheetHeader>
-        <SheetFooter className="flex-col justify-end gap-3">
+        <SheetFooter className="flex flex-col justify-end gap-3">
           <SheetDescription>
             Feel free to contact me on any of the options below
           </SheetDescription>

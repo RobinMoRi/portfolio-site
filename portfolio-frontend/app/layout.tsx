@@ -24,7 +24,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <NavBar />
-          <main className="md:h-[calc(100vh-72px)]">{children}</main>
+          <main>{children}</main>
           <Toaster />
         </Providers>
       </body>

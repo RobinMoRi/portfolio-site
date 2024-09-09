@@ -57,6 +57,7 @@ body {
     --radius: 0.5rem;
     --navbar: 240, 55%, 9%;
     --navbar-sheet: 235, 22%, 20%;
+    --skillscard-background: 224, 45%, 17%;
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -85,7 +86,8 @@ body {
     --chart-5: 340 75% 55%;
     --navbar: 240, 55%, 9%;
     --navbar-sheet: 235, 22%, 20%;
-  }
+    --skillscard-background: 224, 45%, 17%;
+  } 
 }
 
 @layer base {
@@ -119,11 +121,11 @@ body {
 
 .typewriter h1 {
   @media (min-width: 640px){
-    overflow: hidden; /* Ensures the content is not revealed until the animation */
-    border-right: .15em solid orange; /* The typwriter cursor */
-    white-space: nowrap; /* Keeps the content on a single line */
-    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-    letter-spacing: .15em; /* Adjust as needed */
+    overflow: hidden;
+    border-right: .15em solid orange;
+    white-space: nowrap; 
+    margin: 0 auto; 
+    letter-spacing: .15em;
     animation: 
       typing 3.5s steps(40, end),
       blink-caret 1s step-end infinite;
