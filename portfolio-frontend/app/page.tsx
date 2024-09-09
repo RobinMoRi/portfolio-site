@@ -1,4 +1,3 @@
-"use client";
 import {
   AboutMe,
   Intro,
@@ -20,3 +19,5 @@ export default function Home() {
     </>
   );
 }
+
+// OBS: Do NOT make client component

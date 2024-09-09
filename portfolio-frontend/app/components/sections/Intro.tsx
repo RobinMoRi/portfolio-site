@@ -1,10 +1,8 @@
-"use client";
-import { Button } from "@/components/ui/button";
 import { Section } from "@/types/navbar";
-import { scrollToDivWithOffset } from "@/utils";
-import { ChevronsDown } from "lucide-react";
+
 import Image from "next/image";
 import React from "react";
+import NavigateToSectionButton from "../buttons/NavigateToSectionButton";
 import SectionWrapper from "./SectionWrapper";
 
 const Intro = () => {
@@ -30,9 +28,7 @@ const Intro = () => {
             />
           </div>
           <div className="h-full flex items-end p-8">
-            <Button onClick={() => scrollToDivWithOffset(Section.AboutMe)}>
-              <ChevronsDown />
-            </Button>
+            <NavigateToSectionButton />
           </div>
         </div>
       </div>

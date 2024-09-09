@@ -1,6 +1,7 @@
 import Providers from "@/components/providers";
 import type { Metadata } from "next";
 import NavBar from "../components/navigation/NavBar";
+
 import "./globals.css";
 
 import { Toaster } from "@/components/ui/toaster";

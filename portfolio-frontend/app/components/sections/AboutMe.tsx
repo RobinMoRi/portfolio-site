@@ -1,4 +1,3 @@
-"use client";
 import { Section } from "@/types/navbar";
 import { SliceZone } from "@prismicio/react";
 import { Metadata } from "next";
