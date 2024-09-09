@@ -18,10 +18,8 @@ const useProgression = () => {
 
   useEffect(() => {
     onScroll();
-    console.log("Add eventlistener");
     window.addEventListener("scroll", onScroll);
 
-    console.log("Add eventlistener");
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 

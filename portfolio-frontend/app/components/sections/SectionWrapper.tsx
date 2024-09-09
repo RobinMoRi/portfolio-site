@@ -18,7 +18,7 @@ const SectionWrapper = ({
       id={id}
       className={`${className} px-2 md:px-20 lg:px-52`}
       style={{
-        paddingTop: id === Section.Init ? "72px" : 0,
+        paddingTop: id === Section.Init ? "73px" : 0,
       }}
     >
       <div className="pt-10 max-h-full overflow-scroll">

@@ -1,6 +1,6 @@
 export function scrollToDivWithOffset(id: string) {
   const element = document.getElementById(id);
-  const offset = 72; //Fix offset
+  const offset = 73; //Fix offset
   if (element) {
     const elementPosition =
       element.getBoundingClientRect().top + window.pageYOffset;

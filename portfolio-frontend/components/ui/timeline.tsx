@@ -23,7 +23,7 @@ export const TimelineItemDescription = ({
 };
 
 export type TimelineItemProps = {
-  title: ReactNode;
+  title?: ReactNode;
   bullet?: ReactNode;
   children: ReactNode;
   isLast?: boolean;
@@ -48,8 +48,8 @@ export const TimelineItemBullet = ({
   return (
     <div
       className={cn(
-        "absolute border top-0 rounded-full bg-orange flex items-center justify-center",
-        isActive && "border-primary"
+        "absolute border border-slate-500 top-0 rounded-full bg-timeline-inactive flex items-center justify-center",
+        isActive && "border-timeline-active"
       )}
       style={{
         width: bulletSize,
@@ -85,7 +85,7 @@ export const TimelineItem = ({
   return (
     <li
       className={cn(
-        "pl-8 pb-8 relative border-l",
+        "pl-8 pb-8 relative border-l border-slate-500",
         isLast && "border-l-transparent pb-0",
         isActive && !isLast && "border-l-primary",
         className
@@ -102,7 +102,7 @@ export const TimelineItem = ({
       >
         {bullet}
       </TimelineItemBullet>
-      <TimelineItemTitle>{title}</TimelineItemTitle>
+      {title ? <TimelineItemTitle>{title}</TimelineItemTitle> : null}
       {children}
     </li>
   );

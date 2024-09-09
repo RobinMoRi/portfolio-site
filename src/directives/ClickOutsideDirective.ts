@@ -8,7 +8,6 @@ export default {
         binding.value(event);
       }
     };
-    console.log({ el });
     document.addEventListener("click", el.clickOutsideEvent);
   },
   unmounted(el: any) {

@@ -58,6 +58,8 @@ body {
     --navbar: 240, 55%, 9%;
     --navbar-sheet: 235, 22%, 20%;
     --skillscard-background: 224, 45%, 17%;
+    --timeline-active: 39, 100%, 50%;
+    --timeline-inactive: 224, 45%, 17%;
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -87,6 +89,8 @@ body {
     --navbar: 240, 55%, 9%;
     --navbar-sheet: 235, 22%, 20%;
     --skillscard-background: 224, 45%, 17%;
+    --timeline-active: 39, 100%, 50%;
+    --timeline-inactive: 224, 45%, 17%;
   } 
 }
 

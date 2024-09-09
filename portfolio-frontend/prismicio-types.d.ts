@@ -69,7 +69,134 @@ export type AboutmeDocument<Lang extends string = string> =
     Lang
   >;
 
-export type AllDocumentTypes = AboutmeDocument;
+/**
+ * Item in *ReusableExperience → skills*
+ */
+export interface ReusableexperienceDocumentDataSkillsItem {
+  /**
+   * skill field in *ReusableExperience → skills*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: reusableexperience.skills[].skill
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  skill: prismic.KeyTextField;
+}
+
+/**
+ * Content for ReusableExperience documents
+ */
+interface ReusableexperienceDocumentData {
+  /**
+   * title field in *ReusableExperience*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: reusableexperience.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * description field in *ReusableExperience*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: reusableexperience.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * start field in *ReusableExperience*
+   *
+   * - **Field Type**: Date
+   * - **Placeholder**: *None*
+   * - **API ID Path**: reusableexperience.start
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#date
+   */
+  start: prismic.DateField;
+
+  /**
+   * end field in *ReusableExperience*
+   *
+   * - **Field Type**: Date
+   * - **Placeholder**: *None*
+   * - **API ID Path**: reusableexperience.end
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#date
+   */
+  end: prismic.DateField;
+
+  /**
+   * active field in *ReusableExperience*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: reusableexperience.active
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  active: prismic.BooleanField;
+
+  /**
+   * skills field in *ReusableExperience*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: reusableexperience.skills[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  skills: prismic.GroupField<
+    Simplify<ReusableexperienceDocumentDataSkillsItem>
+  >;
+
+  /**
+   * institute field in *ReusableExperience*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: reusableexperience.institute
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  institute: prismic.KeyTextField;
+
+  /**
+   * location field in *ReusableExperience*
+   *
+   * - **Field Type**: GeoPoint
+   * - **Placeholder**: *None*
+   * - **API ID Path**: reusableexperience.location
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#geopoint
+   */
+  location: prismic.GeoPointField;
+}
+
+/**
+ * ReusableExperience document from Prismic
+ *
+ * - **API ID**: `reusableexperience`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ReusableexperienceDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<ReusableexperienceDocumentData>,
+    "reusableexperience",
+    Lang
+  >;
+
+export type AllDocumentTypes = AboutmeDocument | ReusableexperienceDocument;
 
 /**
  * Primary content in *TextBlock → Default → Primary*
@@ -129,6 +256,9 @@ declare module "@prismicio/client" {
       AboutmeDocument,
       AboutmeDocumentData,
       AboutmeDocumentDataSlicesSlice,
+      ReusableexperienceDocument,
+      ReusableexperienceDocumentData,
+      ReusableexperienceDocumentDataSkillsItem,
       AllDocumentTypes,
       TextBlockSlice,
       TextBlockSliceDefaultPrimary,

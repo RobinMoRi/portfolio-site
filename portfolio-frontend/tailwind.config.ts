@@ -48,7 +48,11 @@ const config: Config = {
         ring: "hsl(var(--ring))",
         navbar: "hsl(var(--navbar))",
         navbarsheet: "hsl(var(--navbar-sheet))",
-        skillscard: "hsl(var(--skillscard-background: 224, 45%, 17%))",
+        skillscard: "hsl(var(--skillscard-background))",
+        timeline: {
+          active: "hsl(var(--timeline-active))",
+          inactive: "hsl(var(--timeline-inactive))",
+        },
         chart: {
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",

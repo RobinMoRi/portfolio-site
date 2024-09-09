@@ -7,7 +7,6 @@ function useNavbarHeight() {
   const calculateNavbarHeight = useCallback(() => {
     const navbar = document.getElementById("navbar-container");
     if (navbar) {
-      console.debug({ navbarHeight: navbar.offsetHeight });
       setNavbarHeight(navbar.offsetHeight);
     }
   }, []);

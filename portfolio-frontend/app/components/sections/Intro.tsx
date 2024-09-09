@@ -8,7 +8,7 @@ import SectionWrapper from "./SectionWrapper";
 const Intro = () => {
   return (
     <SectionWrapper id={Section.Init}>
-      <div className="section-intro__content h-[calc(100vh-72px-40px)]">
+      <div className="section-intro__content h-[calc(100vh-73px-40px)]">
         <div className="section-intro__overlay h-full w-full flex flex-col items-center gap-4">
           <div className="md:mt-16 typewriter">
             <h1 className="tracking-widest text-3xl md:text-5xl">
