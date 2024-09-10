@@ -6,6 +6,8 @@ from fastapi import FastAPI
 import requests
 from fastapi.middleware.cors import CORSMiddleware
 import os
+from geopy.geocoders import Nominatim
+
 
 app = FastAPI()
 origins = [
@@ -110,3 +112,10 @@ def get_gh_languages(url: str):
     )
     res.raise_for_status()
     return res.json()
+
+
+@app.get("/locationNameFromLongLat")
+def get_name_from_long_lat(long: str, lat: str):
+    geolocator = Nominatim(user_agent="robin.moreno.rinding@gmail.com")
+    location = geolocator.reverse(f"{lat},{long}")
+    return location.raw
