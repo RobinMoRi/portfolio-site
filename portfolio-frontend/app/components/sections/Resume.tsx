@@ -46,15 +46,16 @@ const Resume = () => {
   return (
     <SectionWrapper id={Section.Resume} className="h-full" title="Resume">
       <div className="mb-4">
-        <Link
-          href="https://drive.usercontent.google.com/uc?id=1PvwN_ImQx2JK-es-hp2kAd3qv87IHzLI&export=download"
-          target="_blank"
-        >
-          <Button className="flex gap-2">
+        <Button>
+          <Link
+            className="flex gap-2 items-center"
+            href="https://drive.usercontent.google.com/uc?id=1PvwN_ImQx2JK-es-hp2kAd3qv87IHzLI&export=download"
+            target="_blank"
+          >
             <FileDown />
             Download CV
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>

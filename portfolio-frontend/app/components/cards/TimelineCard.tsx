@@ -1,3 +1,4 @@
+import TimelineDialog from "@/app/components/overlays/TimelineDialog";
 import { TimelineItemTitle } from "@/components/ui/timeline";
 import { ReusableexperienceDocument } from "@/prismicio-types";
 import { format } from "date-fns";
@@ -9,11 +10,16 @@ const TimelineCard = ({
 }: {
   experience: ReusableexperienceDocument<string>;
 }) => {
-  console.log("end", experience.data.end);
   return (
     <div className="flex flex-col gap-2">
       <TimelineItemTitle>{experience.data.title}</TimelineItemTitle>
-      <div className="text-slate-400">{experience.data.institute}</div>
+      <TimelineDialog
+        experience={experience}
+        trigger={
+          <div className="text-slate-400">{experience.data.institute}</div>
+        }
+      />
+
       <div className="flex gap-2 text-slate-400 text-sm">
         <Calendar size={18} />
         <div>

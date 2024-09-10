@@ -10,7 +10,7 @@ import {
  */
 export type TextBlockProps = SliceComponentProps<Content.TextBlockSlice>;
 
-const components: JSXMapSerializer = {
+export const components: JSXMapSerializer = {
   heading1: ({ children }) => (
     <h1 className="mb-6 text-4xl font-extrabold text-gray-900">{children}</h1>
   ),
