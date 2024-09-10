@@ -23,6 +23,28 @@ import { format } from "date-fns";
 import { Calendar } from "lucide-react";
 import React from "react";
 
+const TimelineTitle = ({
+  experience,
+}: {
+  experience: ReusableexperienceDocument<string>;
+}) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <div>{experience.data.title}</div>
+      <div className="text-slate-400">{experience.data.institute}</div>
+      <div className="flex gap-2 text-slate-400 text-sm">
+        <Calendar size={18} />
+        <div>
+          {format(new Date(String(experience.data.start)), "MMM. yyyy")} -{" "}
+          {experience.data.end
+            ? format(new Date(String(experience.data.end)), "MMM. yyyy")
+            : "Ongoing"}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const TimelineDialogMobile = ({
   experience,
   trigger,
@@ -36,17 +58,7 @@ const TimelineDialogMobile = ({
       <DrawerContent className="bg-navbarsheet">
         <DrawerHeader>
           <DrawerTitle>
-            <div>{experience.data.title}</div>
-            <div>{experience.data.institute}</div>
-            <div className="flex gap-2 text-slate-400 text-sm">
-              <Calendar size={18} />
-              <div>
-                {format(new Date(String(experience.data.start)), "MMM. yyyy")} -{" "}
-                {experience.data.end
-                  ? format(new Date(String(experience.data.end)), "MMM. yyyy")
-                  : "Ongoing"}
-              </div>
-            </div>
+            <TimelineTitle experience={experience} />
           </DrawerTitle>
           <DrawerDescription>
             <PrismicRichText
@@ -74,7 +86,9 @@ const TimelineDialogDesktop = ({
       </DialogTrigger>
       <DialogContent className="bg-navbarsheet">
         <DialogHeader>
-          <DialogTitle>{experience.data.title}</DialogTitle>
+          <DialogTitle>
+            <TimelineTitle experience={experience} />
+          </DialogTitle>
           <DialogDescription>
             <PrismicRichText
               field={experience.data.description}
