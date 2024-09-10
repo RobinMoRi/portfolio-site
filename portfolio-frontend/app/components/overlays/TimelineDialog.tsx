@@ -66,9 +66,11 @@ const TimelineTitle = ({
   useEffect(() => {
     const long = experience.data.location.longitude;
     const lat = experience.data.location.latitude;
-    fetchLocationFromLongLat({ long: String(long), lat: String(lat) }).then(
-      setLocation
-    );
+    fetchLocationFromLongLat({
+      long: String(long),
+      lat: String(lat),
+      client: true,
+    }).then(setLocation);
   }, []);
   if (experience.data.skills.length <= 0) return;
   return (
@@ -87,7 +89,9 @@ const TimelineTitle = ({
       {location ? (
         <div className="flex gap-2 text-slate-400 text-sm">
           <MapPin size={18} />
-          <div>{location.address.county}</div>
+          <div>
+            {location.address.county}, {location.address.country}
+          </div>
         </div>
       ) : (
         <div className="flex gap-2 items-center">

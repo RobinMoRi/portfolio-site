@@ -1,4 +1,5 @@
-const DISCORD_PROXY_HOST = process.env.NEXT_PUBLIC_DISCORD_PROXY_HOST; //TODO: a bit unclear naming here...
+const CLIENT_HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
+const SERVER_HOST = process.env.NEXT_PUBLIC_SERVER_HOST;
 
 export interface CreateThreadResponse {
   id: string;
@@ -75,17 +76,29 @@ export interface Author {
 }
 
 export async function startNewThread(
-  name: string
+  name: string,
+  client = false
 ): Promise<CreateThreadResponse> {
-  const url = `${DISCORD_PROXY_HOST}/startNewThread?name=${name}`;
+  let HOST = SERVER_HOST;
+  if (client) {
+    HOST = CLIENT_HOST;
+  }
+  const url = `${HOST}/startNewThread?name=${name}`;
 
   return fetch(url, {
     method: "POST",
   }).then((res) => res.json());
 }
 
-export async function addBotToThread(thread_id: string): Promise<null> {
-  const url = `${DISCORD_PROXY_HOST}/addBotToThread?thread_id=${thread_id}`;
+export async function addBotToThread(
+  thread_id: string,
+  client: boolean = false
+): Promise<null> {
+  let HOST = SERVER_HOST;
+  if (client) {
+    HOST = CLIENT_HOST;
+  }
+  const url = `${HOST}/addBotToThread?thread_id=${thread_id}`;
 
   return fetch(url, {
     method: "PUT",
@@ -95,9 +108,14 @@ export async function addBotToThread(thread_id: string): Promise<null> {
 export async function createThreadMessage(
   thread_id: string,
   message: string,
-  meta: boolean = false
+  meta: boolean = false,
+  client: boolean = false
 ): Promise<GetThreadMessageResponse> {
-  let url = `${DISCORD_PROXY_HOST}/createThreadMessage?thread_id=${thread_id}&message=${message}`;
+  let HOST = SERVER_HOST;
+  if (client) {
+    HOST = CLIENT_HOST;
+  }
+  let url = `${HOST}/createThreadMessage?thread_id=${thread_id}&message=${message}`;
 
   if (meta) {
     url += `&meta=True`;
@@ -109,9 +127,14 @@ export async function createThreadMessage(
 }
 
 export async function getThreadMessages(
-  thread_id: string
+  thread_id: string,
+  client = false
 ): Promise<GetThreadMessageResponse[]> {
-  const url = `${DISCORD_PROXY_HOST}/getThreadMessages?thread_id=${thread_id}`;
+  let HOST = SERVER_HOST;
+  if (client) {
+    HOST = CLIENT_HOST;
+  }
+  const url = `${HOST}/getThreadMessages?thread_id=${thread_id}`;
 
   return fetch(url, {
     method: "GET",
@@ -132,16 +155,27 @@ export type Repos = Repo[];
 
 type Languages = { [key: string]: number };
 
-export async function fetchRepos(): Promise<Repo[]> {
-  const url = `${DISCORD_PROXY_HOST}/getGithubRepos`;
+export async function fetchRepos(client = false): Promise<Repo[]> {
+  let HOST = SERVER_HOST;
+  if (client) {
+    HOST = CLIENT_HOST;
+  }
+  const url = `${HOST}/getGithubRepos`;
 
   return fetch(url, {
     method: "GET",
   }).then((res) => res.json());
 }
 
-export async function fetchLanguages(languagesUrl: string): Promise<Languages> {
-  const url = `${DISCORD_PROXY_HOST}/getGithubLanguages?url=${languagesUrl}`;
+export async function fetchLanguages(
+  languagesUrl: string,
+  client: boolean = false
+): Promise<Languages> {
+  let HOST = SERVER_HOST;
+  if (client) {
+    HOST = CLIENT_HOST;
+  }
+  const url = `${HOST}/getGithubLanguages?url=${languagesUrl}`;
 
   return fetch(url, {
     method: "GET",
@@ -180,11 +214,17 @@ export type GeoLocation = {
 export async function fetchLocationFromLongLat({
   long,
   lat,
+  client = false,
 }: {
   long: string;
   lat: string;
+  client?: boolean;
 }): Promise<GeoLocation> {
-  const url = `${DISCORD_PROXY_HOST}/locationNameFromLongLat?long=${long}&lat=${lat}`;
+  let HOST = SERVER_HOST;
+  if (client) {
+    HOST = CLIENT_HOST;
+  }
+  const url = `${HOST}/locationNameFromLongLat?long=${long}&lat=${lat}`;
 
   return fetch(url, {
     method: "GET",

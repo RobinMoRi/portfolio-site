@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Timeline, TimelinePropsItem } from "@/components/ui/timeline";
+import { Timeline } from "@/components/ui/timeline";
 import { createClient } from "@/prismicio";
 import { Section } from "@/types/navbar";
 import { filter } from "@prismicio/client";
@@ -49,7 +49,7 @@ const Resume = () => {
         <Button>
           <Link
             className="flex gap-2 items-center"
-            href="https://drive.usercontent.google.com/uc?id=1PvwN_ImQx2JK-es-hp2kAd3qv87IHzLI&export=download"
+            href="https://drive.usercontent.google.com/uc?id=1PvwN_ImQx2JK-es-hp2kAd3qv87IHzLI&export=download" //TOOD: move to prismic
             target="_blank"
           >
             <FileDown />

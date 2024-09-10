@@ -5,7 +5,7 @@ import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { Progress } from "@/components/ui/progress";
 import { Section } from "@/types/navbar";
 import { scrollToDivWithOffset } from "@/utils";
-import React from "react";
+import React, { useEffect } from "react";
 import NavBarDesktop from "./NavBarDesktop";
 import NavBarMobile from "./NavBarMobile";
 
@@ -16,6 +16,15 @@ const NavBar = () => {
   const { isDesktopOrLaptop } = useDevice();
   const scrollPercentage = useProgression();
   const { isMounted } = useClient();
+
+  useEffect(() => {
+    console.info(
+      "\r\n  ___     _    _        __  __                        ___ _         _ _           \r\n | _ \\___| |__(_)_ _   |  \\/  |___ _ _ ___ _ _  ___  | _ (_)_ _  __| (_)_ _  __ _ \r\n |   / _ \\ '_ \\ | ' \\  | |\\/| / _ \\ '_/ -_) ' \\/ _ \\ |   / | ' \\/ _` | | ' \\/ _` |\r\n |_|_\\___/_.__/_|_||_| |_|  |_\\___/_| \\___|_||_\\___/ |_|_\\_|_||_\\__,_|_|_||_\\__, |\r\n                                                                            |___/ "
+    );
+    console.info(
+      "Welcome to my portfolio site.\n\nFeel free to contact me at:\nTel: +46737514695\nEmail: robin.moreno.rinding@gmail.com"
+    );
+  }, []);
 
   const content = isDesktopOrLaptop ? <NavBarDesktop /> : <NavBarMobile />;
 
