@@ -1,5 +1,6 @@
 import {
   AboutMe,
+  Footer,
   Intro,
   Portfolio,
   Resume,
@@ -16,6 +17,7 @@ export default function Home() {
       <Resume />
       <SideProjects />
       <Portfolio />
+      <Footer />
     </>
   );
 }

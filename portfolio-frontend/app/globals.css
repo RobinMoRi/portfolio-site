@@ -115,7 +115,7 @@ body {
 }
 
 .section-intro__content{
-  background-image: url('./assets/code.png');
+  /* background-image: url('./assets/code.png'); */
   background-repeat: no-repeat;
 
   @media (max-width: 640px){

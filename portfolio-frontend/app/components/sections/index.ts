@@ -1,4 +1,5 @@
 export { default as AboutMe } from "@/app/components/sections/AboutMe";
+export { default as Footer } from "@/app/components/sections/Footer";
 export { default as Intro } from "@/app/components/sections/Intro";
 export { default as Portfolio } from "@/app/components/sections/Portfolio";
 export { default as Resume } from "@/app/components/sections/Resume";
