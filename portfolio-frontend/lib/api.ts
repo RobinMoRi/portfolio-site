@@ -45,9 +45,12 @@ export interface GetThreadMessageResponse {
   content: string;
   channel_id: string;
   author: Author;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   attachments: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   embeds: any[];
   mentions: Author[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mention_roles: any[];
   pinned: boolean;
   mention_everyone: boolean;
@@ -55,6 +58,7 @@ export interface GetThreadMessageResponse {
   timestamp: Date;
   edited_timestamp: null;
   flags: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   components: any[];
   position: number;
 }

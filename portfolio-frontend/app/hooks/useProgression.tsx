@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useNavbarHeight from "./useNavbarHeight";
 
 const useProgression = () => {
@@ -21,7 +21,7 @@ const useProgression = () => {
     window.addEventListener("scroll", onScroll);
 
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [onScroll]);
 
   return scrollPercentage;
 };

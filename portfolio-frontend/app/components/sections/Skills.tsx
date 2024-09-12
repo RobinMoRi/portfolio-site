@@ -6,7 +6,6 @@ import SectionWrapper from "./SectionWrapper";
 import {
   faDocker,
   faGitAlt,
-  faJava,
   faJs,
   faNodeJs,
   faPython,

@@ -51,7 +51,7 @@ const TimelineSkills = ({
   return (
     <div className="flex flex-wrap gap-2">
       {experience.data.skills.map((skill) => {
-        return <Badge>{skill.skill}</Badge>;
+        return <Badge key={skill.skill}>{skill.skill}</Badge>;
       })}
     </div>
   );
@@ -71,7 +71,8 @@ const TimelineTitle = ({
       lat: String(lat),
       client: true,
     }).then(setLocation);
-  }, []);
+  }, [experience.data.location.longitude, experience.data.location.latitude]);
+
   if (experience.data.skills.length <= 0) return;
   return (
     <div className="flex flex-col gap-2">

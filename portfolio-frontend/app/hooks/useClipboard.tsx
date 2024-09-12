@@ -1,5 +1,4 @@
 import { useToast } from "@/hooks/use-toast";
-import React from "react";
 
 const useClipboard = () => {
   const { toast } = useToast();

@@ -1,8 +1,6 @@
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -23,12 +21,6 @@ const RepoCard = ({ repo }: { repo: Repo }) => {
           {repo.description}
         </CardDescription>
       </CardHeader>
-      {/* <CardContent className="text-white">
-        <p>Card Content</p>
-      </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
-      </CardFooter> */}
     </Card>
   );
 };

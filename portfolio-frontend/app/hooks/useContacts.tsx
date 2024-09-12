@@ -13,20 +13,13 @@ import {
   Smartphone,
   User,
 } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import useClipboard from "./useClipboard";
 
 const useNavbarItems = () => {
   const { copyToClipboard } = useClipboard();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
 
   const writeStepToUrl = (step: string) => {
-    // const params = new URLSearchParams(searchParams);
-    // params.set("step", step);
-    // router.replace(`${pathname}?${params.toString()}`);
     scrollToDivWithOffset(step);
   };
 
