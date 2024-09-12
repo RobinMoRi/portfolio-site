@@ -15,5 +15,5 @@ COPY --from=build-stage /app/.next .next
 COPY --from=build-stage /app/public public
 COPY --from=build-stage /app/package.json package.json
 COPY --from=build-stage /app/node_modules node_modules
-EXPOSE 3000
+EXPOSE 8000
 CMD ["npm", "run", "start"]
