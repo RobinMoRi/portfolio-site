@@ -5,7 +5,11 @@ import SectionWrapper from "./SectionWrapper";
 
 const SideProjects = () => {
   return (
-    <SectionWrapper id={Section.SideProjects} className="h-full">
+    <SectionWrapper
+      id={Section.SideProjects}
+      className="h-full"
+      title="Side Projects"
+    >
       <div className="h-full">SideProjects</div>
     </SectionWrapper>
   );

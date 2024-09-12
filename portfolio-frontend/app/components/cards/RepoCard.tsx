@@ -14,12 +14,14 @@ const RepoCard = ({ repo }: { repo: Repo }) => {
   return (
     <Card className="bg-slate-900 border-slate-500 shadow-md">
       <CardHeader>
-        <CardTitle className="text-white text-md hover:text-timeline-active">
+        <CardTitle className="text-white text-xs hover:text-timeline-active">
           <Link href={repo.html_url} target="_blank">
             {repo.name}
           </Link>
         </CardTitle>
-        <CardDescription>{repo.description}</CardDescription>
+        <CardDescription className="truncate">
+          {repo.description}
+        </CardDescription>
       </CardHeader>
       {/* <CardContent className="text-white">
         <p>Card Content</p>

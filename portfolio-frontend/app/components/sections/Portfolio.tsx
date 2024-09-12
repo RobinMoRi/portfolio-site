@@ -32,7 +32,7 @@ const Portfolio = async () => {
   if (!repos) return <div>Repos not found</div>;
   return (
     <SectionWrapper id={Section.Portfolio} className="h-full" title="Portfolio">
-      <div className="grid gap-2 grid-cols-4">
+      <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {repos.map((repo) => {
           return <RepoCard key={repo.id} repo={repo} />;
         })}

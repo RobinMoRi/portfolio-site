@@ -4,6 +4,7 @@ import {
   PrismicRichText,
   SliceComponentProps,
 } from "@prismicio/react";
+import Link from "next/link";
 
 /**
  * Props for `TextBlock`.
@@ -20,15 +21,23 @@ export const components: JSXMapSerializer = {
   heading3: ({ children }) => (
     <h3 className="mb-4 text-2xl font-bold text-gray-900">{children}</h3>
   ),
-  paragraph: ({ children }) => <p className="mb-4 text-gray-500">{children}</p>,
-  // preformatted: ({ children }) => <Code size="sm">{children}</Code>,
-  // hyperlink: ({ children, node }) => {
-  //   return (
-  //     <Link href={node.data.url} target="_blank">
-  //       {children}
-  //     </Link>
-  //   );
-  // },
+  paragraph: ({ children }) => (
+    <p className="mb-4 font-light text-slate-400">{children}</p>
+  ),
+  strong: ({ children }) => (
+    <span className="Link text-slate-200">{children}</span>
+  ),
+  hyperlink: ({ children, node }) => {
+    return (
+      <Link
+        href={node.data.url || ""}
+        target="_blank"
+        className="Link hover:text-timeline-active text-slate-200"
+      >
+        {children}
+      </Link>
+    );
+  },
 };
 
 /**
