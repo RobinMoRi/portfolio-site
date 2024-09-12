@@ -141,19 +141,18 @@ export async function getThreadMessages(
   }).then((res) => res.json());
 }
 
+type Languages = { [key: string]: number };
 export type Repo = {
   id: number;
   name: string;
   description: string;
   html_url: string;
   languages_url: string;
-  languges: string[];
+  languges: Languages;
   created_at: string;
 };
 
 export type Repos = Repo[];
-
-type Languages = { [key: string]: number };
 
 export async function fetchRepos(client = false): Promise<Repo[]> {
   let HOST = SERVER_HOST;
