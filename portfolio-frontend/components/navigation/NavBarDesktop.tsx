@@ -17,7 +17,10 @@ const NavBarDesktop = () => {
         {items.map((item) => {
           return (
             <NavigationMenuItem key={item.id}>
-              <Button className="bg-primary" onClick={item.onClick}>
+              <Button
+                className="bg-primary hover:text-timeline-active"
+                onClick={item.onClick}
+              >
                 {item.label}
               </Button>
             </NavigationMenuItem>
@@ -29,12 +32,17 @@ const NavBarDesktop = () => {
           return (
             <NavigationMenuItem key={contact.url}>
               {contact.onClick ? (
-                <Button className="bg-primary" onClick={contact.onClick}>
+                <Button
+                  className="bg-primary hover:text-timeline-active"
+                  onClick={contact.onClick}
+                >
                   {contact.icon}
                 </Button>
               ) : (
                 <Link href={contact.url} target="__blank">
-                  <Button className="bg-primary">{contact.icon}</Button>
+                  <Button className="bg-primary hover:text-timeline-active">
+                    {contact.icon}
+                  </Button>
                 </Link>
               )}
             </NavigationMenuItem>

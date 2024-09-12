@@ -1,3 +1,8 @@
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Content } from "@prismicio/client";
 import {
   JSXMapSerializer,
@@ -29,13 +34,20 @@ export const components: JSXMapSerializer = {
   ),
   hyperlink: ({ children, node }) => {
     return (
-      <Link
-        href={node.data.url || ""}
-        target="_blank"
-        className="Link hover:text-timeline-active text-slate-200"
-      >
-        {children}
-      </Link>
+      <Tooltip>
+        <TooltipTrigger>
+          <Link
+            href={node.data.url || ""}
+            target="_blank"
+            className="Link hover:text-timeline-active text-slate-200"
+          >
+            {children}
+          </Link>
+        </TooltipTrigger>
+        <TooltipContent className="bg-navbar text-slate-200 border-slate-800">
+          <p>Go to {node.data.url}</p>
+        </TooltipContent>
+      </Tooltip>
     );
   },
 };
