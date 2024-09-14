@@ -114,7 +114,7 @@ const TimelineDialogMobile = ({
   return (
     <Drawer>
       <DrawerTrigger className="w-fit">{trigger}</DrawerTrigger>
-      <DrawerContent className="bg-navbarsheet border-slate-800">
+      <DrawerContent className="bg-navbarsheet dark:bg-navbarsheet border-slate-800">
         <DrawerHeader>
           <DrawerTitle>
             <TimelineTitle experience={experience} />
@@ -127,7 +127,7 @@ const TimelineDialogMobile = ({
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter className="pt-0">
-          <Separator className="mb-4 bg-slate-500" />
+          <Separator className="mb-4 bg-slate-500 dark:bg-slate-500" />
           <TimelineSkills experience={experience} />
         </DrawerFooter>
       </DrawerContent>
@@ -147,7 +147,7 @@ const TimelineDialogDesktop = ({
       <DialogTrigger className="flex justify-start w-fit">
         {trigger}
       </DialogTrigger>
-      <DialogContent className="bg-navbarsheet border-slate-800">
+      <DialogContent className="bg-navbarsheet dark:bg-navbarsheet border-slate-800">
         <DialogHeader>
           <DialogTitle>
             <TimelineTitle experience={experience} />
@@ -159,7 +159,7 @@ const TimelineDialogDesktop = ({
             />
           </DialogDescription>
         </DialogHeader>
-        <Separator className="bg-slate-500" />
+        <Separator className="bg-slate-500 dark:bg-slate-500" />
         <DialogFooter>
           <TimelineSkills experience={experience} />
         </DialogFooter>

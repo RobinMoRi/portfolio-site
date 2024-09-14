@@ -33,7 +33,7 @@ const NavBarMobile = () => {
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent className="bg-navbarsheet border-none grid grid-cols-1 gap-2">
+      <SheetContent className="bg-navbarsheet dark:bg-navbarsheet border-none grid grid-cols-1 gap-2">
         <div
           className="flex items-center justify-center"
           onClick={() =>

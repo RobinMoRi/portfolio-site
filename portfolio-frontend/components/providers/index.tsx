@@ -5,7 +5,9 @@ import { ThemeProvider } from "./theme-provider";
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <TooltipProvider>
-      <ThemeProvider defaultTheme="dark">{children}</ThemeProvider>
+      <ThemeProvider defaultTheme="dark" attribute="class">
+        {children}
+      </ThemeProvider>
     </TooltipProvider>
   );
 };
