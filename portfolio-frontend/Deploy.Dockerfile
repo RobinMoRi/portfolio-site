@@ -1,7 +1,12 @@
 # build stage
 ARG NEXT_PUBLIC_CLIENT_HOST
 ARG NEXT_PUBLIC_SERVER_HOST
+
 FROM node:18-alpine AS build-stage
+
+ENV NEXT_PUBLIC_CLIENT_HOST=${NEXT_PUBLIC_CLIENT_HOST}
+ENV NEXT_PUBLIC_SERVER_HOST=${NEXT_PUBLIC_SERVER_HOST}
+
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
@@ -16,5 +21,9 @@ COPY --from=build-stage /app/public public
 COPY --from=build-stage /app/package.json package.json
 COPY --from=build-stage /app/node_modules node_modules
 COPY --from=build-stage /app/.env .env
+
+ENV NEXT_PUBLIC_CLIENT_HOST=${NEXT_PUBLIC_CLIENT_HOST}
+ENV NEXT_PUBLIC_SERVER_HOST=${NEXT_PUBLIC_SERVER_HOST}
+
 EXPOSE 8000
 CMD ["npm", "run", "start"]
