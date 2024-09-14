@@ -20,7 +20,6 @@ COPY --from=build-stage /app/.next .next
 COPY --from=build-stage /app/public public
 COPY --from=build-stage /app/package.json package.json
 COPY --from=build-stage /app/node_modules node_modules
-COPY --from=build-stage /app/.env .env
 
 ENV NEXT_PUBLIC_CLIENT_HOST=${NEXT_PUBLIC_CLIENT_HOST}
 ENV NEXT_PUBLIC_SERVER_HOST=${NEXT_PUBLIC_SERVER_HOST}
