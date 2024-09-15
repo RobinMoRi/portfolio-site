@@ -261,10 +261,115 @@ export type ReusableexperienceDocument<Lang extends string = string> =
     Lang
   >;
 
+/**
+ * Item in *SideProject → externalurls*
+ */
+export interface SideprojectDocumentDataExternalurlsItem {
+  /**
+   * externalurl field in *SideProject → externalurls*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sideproject.externalurls[].externalurl
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  externalurl: prismic.LinkField;
+}
+
+/**
+ * Content for SideProject documents
+ */
+interface SideprojectDocumentData {
+  /**
+   * image field in *SideProject*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sideproject.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * title field in *SideProject*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sideproject.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * description field in *SideProject*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sideproject.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * externalurls field in *SideProject*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sideproject.externalurls[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  externalurls: prismic.GroupField<
+    Simplify<SideprojectDocumentDataExternalurlsItem>
+  >;
+
+  /**
+   * start field in *SideProject*
+   *
+   * - **Field Type**: Date
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sideproject.start
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#date
+   */
+  start: prismic.DateField;
+
+  /**
+   * end field in *SideProject*
+   *
+   * - **Field Type**: Date
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sideproject.end
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#date
+   */
+  end: prismic.DateField;
+}
+
+/**
+ * SideProject document from Prismic
+ *
+ * - **API ID**: `sideproject`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SideprojectDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<SideprojectDocumentData>,
+    "sideproject",
+    Lang
+  >;
+
 export type AllDocumentTypes =
   | AboutmeDocument
   | FootercontentDocument
-  | ReusableexperienceDocument;
+  | ReusableexperienceDocument
+  | SideprojectDocument;
 
 /**
  * Primary content in *TextBlock → Default → Primary*
@@ -330,6 +435,9 @@ declare module "@prismicio/client" {
       ReusableexperienceDocument,
       ReusableexperienceDocumentData,
       ReusableexperienceDocumentDataSkillsItem,
+      SideprojectDocument,
+      SideprojectDocumentData,
+      SideprojectDocumentDataExternalurlsItem,
       AllDocumentTypes,
       TextBlockSlice,
       TextBlockSliceDefaultPrimary,

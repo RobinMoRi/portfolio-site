@@ -12,7 +12,7 @@ interface LineProgressProps {
 
 const LineProgress = ({ dataPoints }: LineProgressProps) => {
   return (
-    <div className="flex h-1 min-w-full rounded-sm">
+    <div className="flex h-1 min-w-full rounded-sm overflow-hidden">
       {dataPoints.map((point, index) => {
         return (
           <div
