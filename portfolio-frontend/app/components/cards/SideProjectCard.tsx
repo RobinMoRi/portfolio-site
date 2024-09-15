@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { SideprojectDocument } from "@/prismicio-types";
 import { asLink } from "@prismicio/client";
-import { JSXMapSerializer, PrismicRichText } from "@prismicio/react";
+import {
+  JSXMapSerializer,
+  PrismicImage,
+  PrismicRichText,
+} from "@prismicio/react";
 import { format } from "date-fns";
 import { Calendar, Link as LinkIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -48,14 +51,7 @@ const SideProjectCard = ({
             );
           })}
         </div>
-        <Image
-          src={`${data.image.url}` || ""} //TODO: add default image...
-          alt={data.image.alt || "Side project image"}
-          width={0}
-          height={0}
-          sizes="100vw"
-          style={{ width: "100%", height: "100%" }}
-        />
+        <PrismicImage field={data.image} />
       </div>
       <div className="px-2 pb-2">
         <div className="mt-4">{data.title}</div>
