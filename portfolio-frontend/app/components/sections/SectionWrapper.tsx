@@ -21,7 +21,7 @@ const SectionWrapper = ({
         paddingTop: id === Section.Init ? "73px" : 0,
       }}
     >
-      <div className="pt-10 max-h-full overflow-scroll">
+      <div className="pt-10 max-h-full">
         {title ? <div className="text-5xl pb-6">{title}</div> : null}
         {children}
       </div>
