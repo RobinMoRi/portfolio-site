@@ -152,7 +152,7 @@ export type Repo = {
   description: string;
   html_url: string;
   languages_url: string;
-  languges: Languages;
+  languages: Languages;
   created_at: string;
 };
 
