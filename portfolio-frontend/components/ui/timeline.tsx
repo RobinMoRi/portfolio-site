@@ -66,7 +66,9 @@ export const TimelineItemBullet = ({
 
 export const TimelineItemTitle = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="font-semibold text-base leading-none mb-1">{children}</div>
+    <div className="font-semibold text-base leading-none mb-1 text-left">
+      {children}
+    </div>
   );
 };
 

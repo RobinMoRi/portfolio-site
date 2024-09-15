@@ -12,6 +12,7 @@ import {
 import { Repo } from "@/lib/api";
 import { languageColorMap } from "@/lib/contants";
 import { Separator } from "@radix-ui/react-separator";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -37,8 +38,13 @@ const RepoCard = ({ repo }: { repo: Repo }) => {
     <Card className="bg-slate-900 border-slate-500 shadow-md">
       <CardHeader>
         <CardTitle className="text-white text-xs hover:text-timeline-active">
-          <Link href={repo.html_url} target="_blank">
+          <Link
+            href={repo.html_url}
+            target="_blank"
+            className="flex items-center"
+          >
             {repo.name}
+            <ChevronRight size={18} />
           </Link>
         </CardTitle>
         <CardDescription className="truncate">
