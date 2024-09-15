@@ -69,6 +69,71 @@ export type AboutmeDocument<Lang extends string = string> =
     Lang
   >;
 
+type FootercontentDocumentDataSlicesSlice = TextBlockSlice;
+
+/**
+ * Content for footercontent documents
+ */
+interface FootercontentDocumentData {
+  /**
+   * Slice Zone field in *footercontent*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footercontent.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<FootercontentDocumentDataSlicesSlice> /**
+   * Meta Title field in *footercontent*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: footercontent.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *footercontent*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: footercontent.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *footercontent*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footercontent.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * footercontent document from Prismic
+ *
+ * - **API ID**: `footercontent`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FootercontentDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<FootercontentDocumentData>,
+    "footercontent",
+    Lang
+  >;
+
 /**
  * Item in *ReusableExperience → skills*
  */
@@ -196,7 +261,10 @@ export type ReusableexperienceDocument<Lang extends string = string> =
     Lang
   >;
 
-export type AllDocumentTypes = AboutmeDocument | ReusableexperienceDocument;
+export type AllDocumentTypes =
+  | AboutmeDocument
+  | FootercontentDocument
+  | ReusableexperienceDocument;
 
 /**
  * Primary content in *TextBlock → Default → Primary*
@@ -256,6 +324,9 @@ declare module "@prismicio/client" {
       AboutmeDocument,
       AboutmeDocumentData,
       AboutmeDocumentDataSlicesSlice,
+      FootercontentDocument,
+      FootercontentDocumentData,
+      FootercontentDocumentDataSlicesSlice,
       ReusableexperienceDocument,
       ReusableexperienceDocumentData,
       ReusableexperienceDocumentDataSkillsItem,

@@ -1,3 +1,4 @@
+// import ScrollContainer from "@/components/ui/scroll-container";
 import { fetchLanguages, fetchRepos } from "@/lib/api";
 import { Section } from "@/types/navbar";
 import React from "react";
@@ -32,11 +33,13 @@ const Portfolio = async () => {
   if (!repos) return <div>Repos not found</div>;
   return (
     <SectionWrapper id={Section.Portfolio} className="h-full" title="Portfolio">
+      {/* <ScrollContainer> */}
       <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-h-[calc(60vh)] overflow-y-scroll">
         {repos.map((repo) => {
           return <RepoCard key={repo.id} repo={repo} />;
         })}
       </div>
+      {/* </ScrollContainer> */}
     </SectionWrapper>
   );
 };
