@@ -1,15 +1,32 @@
 "use client";
 
+import useLocalStorage from "@/app/hooks/useLocalStorage";
 import { MessageSquare } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChatModal from "./ChatModal";
 
 const ChatFab = () => {
-  const [openedOnce, setOpenedOnce] = useState(false);
+  const [value, setValue] = useLocalStorage("openedChatBox", "false");
+  const [openedOnce, setOpenedOnce] = useState(true);
+
+  useEffect(() => {
+    if (value === "true") {
+      setOpenedOnce(true);
+    }
+    if (value === "false") {
+      setOpenedOnce(false);
+    }
+  }, [value]);
+
+  const setOpened = () => {
+    setOpenedOnce(true);
+    setValue("true");
+  };
+
   const trigger = (
     <div
       className="z-50 w-10 h-10 p-2 bg-navbar rounded-lg"
-      onClick={() => setOpenedOnce(true)}
+      onClick={setOpened}
     >
       <MessageSquare />
     </div>
