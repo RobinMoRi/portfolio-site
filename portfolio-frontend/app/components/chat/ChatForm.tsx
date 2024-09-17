@@ -9,9 +9,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Send } from "lucide-react";
+import { LogIn, Send } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -33,7 +34,13 @@ const chatFormSchema = z.object({
     }),
 });
 
-const ChatForm = () => {
+const chatFormLoginSchema = z.object({
+  login_id: z.string().min(2, {
+    message: "Password must be min 2 characters.",
+  }),
+});
+
+const ChatFormInit = () => {
   const form = useForm<z.infer<typeof chatFormSchema>>({
     resolver: zodResolver(chatFormSchema),
     defaultValues: {
@@ -102,6 +109,62 @@ const ChatForm = () => {
         </Button>
       </form>
     </Form>
+  );
+};
+
+const ChatFormLogin = () => {
+  const form = useForm<z.infer<typeof chatFormLoginSchema>>({
+    resolver: zodResolver(chatFormLoginSchema),
+    defaultValues: {
+      login_id: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof chatFormLoginSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <FormField
+          control={form.control}
+          name="login_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Login ID</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter login id" {...field} />
+              </FormControl>
+              <FormMessage className="text-xs" />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" className="w-full flex gap-4">
+          Login
+          <LogIn size={16} />
+        </Button>
+      </form>
+    </Form>
+  );
+};
+
+const ChatForm = () => {
+  return (
+    <Tabs defaultValue="new" className="w-[400px] relative">
+      <TabsList>
+        <TabsTrigger value="new">New message</TabsTrigger>
+        <TabsTrigger value="login">Login</TabsTrigger>
+      </TabsList>
+      <TabsContent value="new" className="wrap">
+        <ChatFormInit />
+      </TabsContent>
+      <TabsContent value="login">
+        <ChatFormLogin />
+      </TabsContent>
+    </Tabs>
   );
 };
 
