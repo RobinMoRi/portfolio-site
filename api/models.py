@@ -1,5 +1,5 @@
 from typing import Optional, List
-from pydantic import BaseModel, RootModel
+from pydantic import BaseModel
 from datetime import datetime
 
 
@@ -41,6 +41,12 @@ class Thread(BaseModel):
     member: Member
 
 
+class InitThreadResponse(BaseModel):
+    id: str
+    name: str
+    message_count: int
+
+
 # TODO: add pydantic validators
 class InitThreadData(BaseModel):
     name: str
@@ -48,6 +54,12 @@ class InitThreadData(BaseModel):
     email: str
     message: str
     meta: str
+
+
+class MessageDataResponse(BaseModel):
+    message: str
+    thread_id: str
+    meta: Optional[bool] = False
 
 
 class User(BaseModel):
@@ -72,40 +84,11 @@ class Embed(BaseModel):
     content_scan_version: Optional[int]
 
 
-class Mention(BaseModel):
-    id: str
-    username: str
-    avatar: Optional[str]
-    discriminator: str
-    public_flags: int
-    flags: int
-    banner: Optional[str]
-    accent_color: Optional[str]
-    global_name: Optional[str]
-    avatar_decoration_data: Optional[dict]
-    banner_color: Optional[str]
-    clan: Optional[str]
-
-
 class Message(BaseModel):
+    id: str
     type: int
     content: str
-    mentions: List[Mention]
-    mention_roles: List[str]  # Assuming roles are represented by their IDs as strings
-    attachments: List[
-        dict
-    ]  # Assuming attachments are represented by generic dictionaries
     embeds: List[Embed]
     timestamp: str
     edited_timestamp: Optional[str]
-    flags: int
-    components: List[
-        dict
-    ]  # Assuming components are represented by generic dictionaries
-    id: str
-    channel_id: str
     author: User
-    pinned: bool
-    mention_everyone: bool
-    tts: bool
-    position: Optional[int]  # This field is not present in all objects

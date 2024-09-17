@@ -3,12 +3,11 @@ Proxy for discord - used to go around discords stupid cors policy
 """
 
 from fastapi import APIRouter, FastAPI
-import requests
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from geopy.geocoders import Nominatim
 
-from models import InitThreadData
+from models import InitThreadData, Message, MessageDataResponse, InitThreadResponse
 from discord import DiscordApi
 from github import GithubApi
 
@@ -28,17 +27,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
-BOT_ID = os.getenv("DISCORD_BOT_ID")
-AUTH_TOKEN = os.getenv("DISCORD_AUTH_TOKEN")
-HEADERS = {
-    "Authorization": f"Bot {AUTH_TOKEN}",
-    "Accept": "*/*",
-    "Content-Type": "application/json",
-}
-
 
 api_router = APIRouter(
     prefix="/api/v1",
@@ -72,7 +60,7 @@ location_router = APIRouter(
 
 # New endpoint to init thread - merges endpoints: startNewThread, addBotToThread and createThreadMessage
 @thread_router.post("/init")
-def init_conversation(data: InitThreadData):
+def init_conversation(data: InitThreadData) -> InitThreadResponse:
     # Start new thread
     api = DiscordApi()
     thread = api.start_thread(data.name)
@@ -87,52 +75,23 @@ def init_conversation(data: InitThreadData):
     return thread
 
 
-# TODO: include in init-conversation
-@app.post("/startNewThread")
-def start_new_thread(name: str):
-    res = requests.post(
-        url=f"https://discord.com/api/v10/channels/{CHANNEL_ID}/threads",
-        json={
-            "name": name,
-            "auto_archive_duration": 10080,
-        },
-        headers=HEADERS,
-    )
-    res.raise_for_status()
-    return res.json()
-
-
-# TODO: include in init-conversation
-@app.put("/addBotToThread")
-def add_bot_to_thread(thread_id: str):
-    res = requests.put(
-        url=f"https://discord.com/api/v10/channels/{thread_id}/thread-members/{BOT_ID}",
-        headers=HEADERS,
-    )
-    res.raise_for_status()
-    return
-
-
 @thread_router.post("/message")
-def create_thread_message(message: str, thread_id: str, meta=False):
-    data = {
-        "content": message,
-    }
-    if meta:
-        data.setdefault("embeds", [{"title": "Meta"}])
-    res = requests.post(
-        url=f"https://discord.com/api/v10/channels/{thread_id}/messages",
-        json=data,
-        headers=HEADERS,
+def create_thread_message(data: MessageDataResponse):
+    api = DiscordApi()
+    return api.create_thread_message(
+        message=data.message, thread_id=data.thread_id, meta=data.meta
     )
-    res.raise_for_status()
-    return res.json()
 
 
 @thread_router.get("/messages")
-def get_thread_message(thread_id: str):
+def get_thread_message(thread_id: str, exclude_meta: bool = True) -> list[Message]:
     api = DiscordApi()
-    return api.get_thread_messages(thread_id=thread_id)
+    messages = [
+        Message(**message) for message in api.get_thread_messages(thread_id=thread_id)
+    ]
+    if exclude_meta:
+        return filter(lambda x: len(x.embeds) == 0 and x.content != "", messages)
+    return messages
 
 
 @github_router.get("/repos")

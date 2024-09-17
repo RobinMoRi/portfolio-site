@@ -1,4 +1,4 @@
-from models import Message, Thread
+from models import Thread
 import requests
 import os
 
@@ -53,4 +53,4 @@ class DiscordApi:
             headers=self.headers,
         )
         res.raise_for_status()
-        return [Message(**message) for message in res.json()]
+        return res.json()
