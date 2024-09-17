@@ -58,51 +58,56 @@ const ChatFormInit = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Your full name" {...field} />
-              </FormControl>
-              <FormMessage className="text-xs" />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="Your email address" {...field} />
-              </FormControl>
-              <FormMessage className="text-xs" />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="message"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Message</FormLabel>
-              <FormControl>
-                <Textarea
-                  className="resize-none"
-                  placeholder="Write something to me..."
-                  rows={5}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage className="text-xs" />
-            </FormItem>
-          )}
-        />
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col justify-between"
+      >
+        <div className="md:max-h-80 md:overflow-y-scroll">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your full name" {...field} />
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your email address" {...field} />
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Message</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="resize-none"
+                    placeholder="Write something to me..."
+                    rows={5}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+        </div>
         <Button type="submit" className="w-full flex gap-4">
           Send
           <Send size={16} />
@@ -128,20 +133,25 @@ const ChatFormLogin = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <FormField
-          control={form.control}
-          name="login_id"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Login ID</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter login id" {...field} />
-              </FormControl>
-              <FormMessage className="text-xs" />
-            </FormItem>
-          )}
-        />
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col justify-between"
+      >
+        <div className="md:min-h-80">
+          <FormField
+            control={form.control}
+            name="login_id"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Login ID</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter login id" {...field} />
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            )}
+          />
+        </div>
         <Button type="submit" className="w-full flex gap-4">
           Login
           <LogIn size={16} />
@@ -153,18 +163,20 @@ const ChatFormLogin = () => {
 
 const ChatForm = () => {
   return (
-    <Tabs defaultValue="new" className="w-[400px] relative">
-      <TabsList>
-        <TabsTrigger value="new">New message</TabsTrigger>
-        <TabsTrigger value="login">Login</TabsTrigger>
-      </TabsList>
-      <TabsContent value="new" className="wrap">
-        <ChatFormInit />
-      </TabsContent>
-      <TabsContent value="login">
-        <ChatFormLogin />
-      </TabsContent>
-    </Tabs>
+    <div>
+      <Tabs defaultValue="new" className="h-full">
+        <TabsList>
+          <TabsTrigger value="new">New message</TabsTrigger>
+          <TabsTrigger value="login">Login</TabsTrigger>
+        </TabsList>
+        <TabsContent value="new" className="wrap">
+          <ChatFormInit />
+        </TabsContent>
+        <TabsContent value="login">
+          <ChatFormLogin />
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 
