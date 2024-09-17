@@ -1,10 +1,10 @@
 """
 Proxy for discord - used to go around discords stupid cors policy
+Now also used for other backend tasks as fetching github and location data
 """
 
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import os
 from geopy.geocoders import Nominatim
 
 from models import InitThreadData, Message, MessageDataResponse, InitThreadResponse
@@ -58,7 +58,18 @@ location_router = APIRouter(
 )
 
 
-# New endpoint to init thread - merges endpoints: startNewThread, addBotToThread and createThreadMessage
+@thread_router.post("/login")
+def get_thread_id(login_id: str) -> str:
+    api = DiscordApi()
+    return api.get_thread_id_by_login_id(login_id)
+
+
+@thread_router.get("/key")
+def get_login_id(thread_id: str) -> str:
+    api = DiscordApi()
+    return api.get_encrypted_key_by_thread_id(thread_id)
+
+
 @thread_router.post("/init")
 def init_conversation(data: InitThreadData) -> InitThreadResponse:
     # Start new thread

@@ -1,13 +1,16 @@
 "use client";
 
+import useIpInfo from "@/app/hooks/useIpInfo";
 import useLocalStorage from "@/app/hooks/useLocalStorage";
 import { MessageSquare } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import ChatForm from "./ChatForm";
 import ChatModal from "./ChatModal";
 
 const ChatFab = () => {
   const [value, setValue] = useLocalStorage("openedChatBox", "false");
   const [openedOnce, setOpenedOnce] = useState(true);
+  const { ipinfo } = useIpInfo();
 
   useEffect(() => {
     if (value === "true") {
@@ -31,7 +34,7 @@ const ChatFab = () => {
       <MessageSquare />
     </div>
   );
-  const content = <div>KUSS UCHTA</div>;
+  const content = <ChatForm />;
   return (
     <div
       className={`fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 ${!openedOnce ? "animate-bounce" : ""}`}

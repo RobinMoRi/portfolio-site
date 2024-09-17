@@ -17,7 +17,9 @@ const ChatModalMobile = (props: ChatModalProps) => {
   return (
     <Drawer>
       <DrawerTrigger>{trigger}</DrawerTrigger>
-      <DrawerContent>{content}</DrawerContent>
+      <DrawerContent className="p-4 h-full overflow-y-scroll">
+        {content}
+      </DrawerContent>
     </Drawer>
   );
 };

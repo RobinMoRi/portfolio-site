@@ -1,6 +1,9 @@
 from models import Thread
 import requests
 import os
+import string
+
+BASE62_ALPHABET = string.digits + string.ascii_letters
 
 
 class DiscordApi:
@@ -54,3 +57,26 @@ class DiscordApi:
         )
         res.raise_for_status()
         return res.json()
+
+    def get_encrypted_key_by_thread_id(self, thread_id: str):
+        num = int(thread_id)  # Convert string to integer (base-10)
+        if num == 0:
+            return BASE62_ALPHABET[0]
+
+        base62 = []
+        base = len(BASE62_ALPHABET)  # Base-62
+
+        while num > 0:
+            num, remainder = divmod(num, base)
+            base62.append(BASE62_ALPHABET[remainder])
+
+        return "".join(reversed(base62))
+
+    def get_thread_id_by_login_id(self, login_id: str):
+        base = len(BASE62_ALPHABET)
+        num = 0
+
+        for char in login_id:
+            num = num * base + BASE62_ALPHABET.index(char)
+
+        return str(num)
