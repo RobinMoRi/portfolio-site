@@ -163,7 +163,7 @@ export async function fetchRepos(client = false): Promise<Repo[]> {
   if (client) {
     HOST = CLIENT_HOST;
   }
-  const url = `${HOST}/getGithubRepos`;
+  const url = `${HOST}/api/v1/github/repos`;
 
   return fetch(url, {
     method: "GET",
@@ -178,7 +178,7 @@ export async function fetchLanguages(
   if (client) {
     HOST = CLIENT_HOST;
   }
-  const url = `${HOST}/getGithubLanguages?url=${languagesUrl}`;
+  const url = `${HOST}/api/v1/github/languages?url=${languagesUrl}`;
 
   return fetch(url, {
     method: "GET",
@@ -227,7 +227,7 @@ export async function fetchLocationFromLongLat({
   if (client) {
     HOST = CLIENT_HOST;
   }
-  const url = `${HOST}/locationNameFromLongLat?long=${long}&lat=${lat}`;
+  const url = `${HOST}/api/v1/location/name?long=${long}&lat=${lat}`;
 
   return fetch(url, {
     method: "GET",
