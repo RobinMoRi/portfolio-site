@@ -27,7 +27,7 @@ const ChatModalDesktop = (props: ChatModalProps) => {
   return (
     <Popover>
       <PopoverTrigger>{trigger}</PopoverTrigger>
-      <PopoverContent side="top" align="end">
+      <PopoverContent side="top" align="end" className="h-96">
         {content}
       </PopoverContent>
     </Popover>

@@ -8,7 +8,7 @@ import {
   initSession,
   loginToThread,
 } from "@/lib/api/discord";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useChatStore } from "../stores/chat";
 import useLocalStorage from "./useLocalStorage";
 
@@ -18,13 +18,11 @@ const useChat = () => {
   const [value, setValue] = useLocalStorage("thread_id", "");
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (value) {
-      getMessages(value, true).then(setMessages);
-      setThreadId(value);
-      getLoginId(value, true).then(setLoginId);
-    }
-  }, [value]);
+  const updateLoggedInState = () => {
+    getMessages(value, true).then(setMessages);
+    setThreadId(value);
+    getLoginId(value, true).then(setLoginId);
+  };
 
   const init = (data: DiscordInitSessionData) => {
     /**
@@ -70,15 +68,25 @@ const useChat = () => {
     /**
      * Send message to thread
      */
+    setLoading(true);
     await createMessage(data, true);
     await getMessages(data.thread_id, true).then(setMessages);
+    setLoading(false);
+  };
+
+  const getChatMessages = () => {
+    if (threadId) {
+      getMessages(threadId, true).then(setMessages);
+    }
   };
 
   return {
+    updateLoggedInState,
     init,
     login,
     logout,
     sendMessage,
+    getChatMessages,
     loginId,
     threadId,
     messages,

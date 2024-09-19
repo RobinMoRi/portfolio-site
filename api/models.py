@@ -69,7 +69,7 @@ class User(BaseModel):
     discriminator: str
     public_flags: int
     flags: int
-    bot: bool
+    bot: Optional[bool] = False
     banner: Optional[str]
     accent_color: Optional[str]
     global_name: Optional[str]

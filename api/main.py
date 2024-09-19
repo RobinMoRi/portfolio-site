@@ -5,10 +5,10 @@ Now also used for other backend tasks as fetching github and location data
 
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
 from geopy.geocoders import Nominatim
+from datetime import datetime
 
 from models import InitThreadData, Message, MessageDataResponse, InitThreadResponse
 from discord import DiscordApi
@@ -116,6 +116,10 @@ def get_thread_message(thread_id: str, exclude_meta: bool = True) -> list[Messag
     messages = [
         Message(**message) for message in api.get_thread_messages(thread_id=thread_id)
     ]
+
+    messages.sort(
+        key=lambda x: datetime.strptime(x.timestamp, "%Y-%m-%dT%H:%M:%S.%f%z")
+    )
     if exclude_meta:
         return filter(lambda x: len(x.embeds) == 0 and x.content != "", messages)
     return messages

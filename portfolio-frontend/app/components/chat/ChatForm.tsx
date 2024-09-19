@@ -18,6 +18,7 @@ import { Key, Loader2, LogIn, Pencil, Send } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Chat from "./Chat";
 
 const chatFormSchema = z.object({
   name: z.string().min(2, {
@@ -66,15 +67,19 @@ const ChatFormInit = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="h-full mb-10">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="h-full mb-10 md:h-72 md:overflow-y-scroll"
+      >
         <div className="flex flex-col gap-4 p-2 h-full">
-          <div className="flex items-center justify-center text-slate-400 p-8">
+          <div className="flex items-center justify-center text-slate-400 p-8 md:p-2">
             <div className="rounded-full border-2 border-slate-600 p-4">
-              <Pencil size={60} />
+              <Pencil className="w-14 h-14 md:w-8 md:h-8" />
             </div>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 md:gap-2">
             <FormField
+              disabled={thread.loading}
               control={form.control}
               name="name"
               render={({ field }) => (
@@ -88,6 +93,7 @@ const ChatFormInit = () => {
               )}
             />
             <FormField
+              disabled={thread.loading}
               control={form.control}
               name="email"
               render={({ field }) => (
@@ -101,6 +107,7 @@ const ChatFormInit = () => {
               )}
             />
             <FormField
+              disabled={thread.loading}
               control={form.control}
               name="message"
               render={({ field }) => (
@@ -119,9 +126,13 @@ const ChatFormInit = () => {
               )}
             />
           </div>
-          <Button type="submit" className="w-full h-14 flex gap-4">
+          <Button type="submit" className="w-full h-14 md:h-10 flex gap-4">
             Send
-            <Send size={16} />
+            {!thread.loading ? (
+              <Send size={16} />
+            ) : (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}
           </Button>
         </div>
       </form>
@@ -144,15 +155,19 @@ const ChatFormLogin = () => {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="md:overflow-y-scroll"
+      >
         <div className="flex flex-col justify-between p-2">
-          <div className="flex items-center justify-center text-slate-400 p-8">
+          <div className="flex items-center justify-center text-slate-400 p-8 md:p-2">
             <div className="rounded-full border-2 border-slate-600 p-4">
-              <Key size={60} />
+              <Key className="w-14 h-14 md:w-8 md:h-8" />
             </div>
           </div>
           <div className="flex flex-col gap-4">
             <FormField
+              disabled={thread.loading}
               control={form.control}
               name="login_id"
               render={({ field }) => (
@@ -167,7 +182,7 @@ const ChatFormLogin = () => {
             />
             <Button
               type="submit"
-              className="w-full flex gap-4 h-14"
+              className="w-full flex gap-4 h-14 md:h-10"
               disabled={thread.loading}
             >
               Login
@@ -187,19 +202,10 @@ const ChatFormLogin = () => {
 const ChatForm = () => {
   const thread = useChat();
 
-  const logoutHandler = () => {
-    thread.logout();
-  };
   return (
     <>
       {thread.threadId ? (
-        <div>
-          <div>
-            Your login id is (use this if you want to chat from another computer
-            or if you are mistakenly logged out): {thread.loginId}
-          </div>
-          <Button onClick={logoutHandler}>Logout</Button>
-        </div>
+        <Chat />
       ) : (
         <Tabs defaultValue="new" className="h-full">
           <TabsList>

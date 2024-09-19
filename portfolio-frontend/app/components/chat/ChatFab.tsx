@@ -1,5 +1,6 @@
 "use client";
 
+import useChat from "@/app/hooks/useChat";
 import useLocalStorage from "@/app/hooks/useLocalStorage";
 import { MessageSquare } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -9,6 +10,23 @@ import ChatModal from "./ChatModal";
 const ChatFab = () => {
   const [value, setValue] = useLocalStorage("openedChatBox", "false");
   const [openedOnce, setOpenedOnce] = useState(true);
+  const thread = useChat();
+  const [updated, setUpdated] = useState(false);
+
+  useEffect(() => {
+    if (!updated) {
+      thread.updateLoggedInState();
+      setUpdated(true);
+    }
+
+    const intervalId = setInterval(() => {
+      thread.getChatMessages();
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [thread]);
 
   useEffect(() => {
     if (value === "true") {
