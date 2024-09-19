@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { loginToThread } from "@/lib/api/discord";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LogIn, Send } from "lucide-react";
 import React from "react";
@@ -126,9 +127,9 @@ const ChatFormLogin = () => {
   });
 
   function onSubmit(values: z.infer<typeof chatFormLoginSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    loginToThread(values.login_id, true).then((res) => {
+      console.log(res);
+    });
   }
 
   return (
