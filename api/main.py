@@ -5,6 +5,9 @@ Now also used for other backend tasks as fetching github and location data
 
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.staticfiles import StaticFiles
 from geopy.geocoders import Nominatim
 
 from models import InitThreadData, Message, MessageDataResponse, InitThreadResponse
@@ -56,6 +59,19 @@ location_router = APIRouter(
     tags=["location"],
     responses={404: {"description": "Not found"}},
 )
+
+favicon_path = "favicon.ico"
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+@app.get("/docs", include_in_schema=False)
+async def swagger_ui_html():
+    return get_swagger_ui_html(
+        openapi_url="/openapi.json",
+        title="RMR Portfolio API",
+        swagger_favicon_url="/static/favicon.ico",
+    )
 
 
 @thread_router.post("/login")

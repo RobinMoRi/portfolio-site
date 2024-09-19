@@ -42,7 +42,7 @@ export interface Author {
   clan: string;
 }
 
-export interface DiscordMessagesReponse {
+export interface DiscordMessage {
   id: string;
   type: number;
   content: string;
@@ -51,6 +51,8 @@ export interface DiscordMessagesReponse {
   edited_timestamp: string;
   author: Author;
 }
+
+export type DiscordMessagesReponse = DiscordMessage[];
 
 export async function loginToThread(
   loginId: string,

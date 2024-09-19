@@ -1,4 +1,6 @@
 "use client";
+import useChat from "@/app/hooks/useChat";
+import useIpInfo from "@/app/hooks/useIpInfo";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,9 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { loginToThread } from "@/lib/api/discord";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LogIn, Send } from "lucide-react";
+import { Loader2, LogIn, Send } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -50,11 +51,17 @@ const ChatFormInit = () => {
       message: "",
     },
   });
+  const { ipinfo } = useIpInfo();
+  const thread = useChat();
 
   function onSubmit(values: z.infer<typeof chatFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    thread.init({
+      name: values.name,
+      phone: "",
+      email: values.email,
+      message: values.message,
+      meta: JSON.stringify(ipinfo),
+    });
   }
 
   return (
@@ -126,10 +133,10 @@ const ChatFormLogin = () => {
     },
   });
 
+  const thread = useChat();
+
   function onSubmit(values: z.infer<typeof chatFormLoginSchema>) {
-    loginToThread(values.login_id, true).then((res) => {
-      console.log(res);
-    });
+    thread.login(values.login_id);
   }
 
   return (
@@ -153,9 +160,17 @@ const ChatFormLogin = () => {
             )}
           />
         </div>
-        <Button type="submit" className="w-full flex gap-4">
+        <Button
+          type="submit"
+          className="w-full flex gap-4"
+          disabled={thread.loading}
+        >
           Login
-          <LogIn size={16} />
+          {!thread.loading ? (
+            <LogIn size={16} />
+          ) : (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          )}
         </Button>
       </form>
     </Form>
@@ -163,20 +178,35 @@ const ChatFormLogin = () => {
 };
 
 const ChatForm = () => {
+  const thread = useChat();
+
+  const logoutHandler = () => {
+    thread.logout();
+  };
   return (
     <div>
-      <Tabs defaultValue="new">
-        <TabsList>
-          <TabsTrigger value="new">New message</TabsTrigger>
-          <TabsTrigger value="login">Login</TabsTrigger>
-        </TabsList>
-        <TabsContent value="new" className="wrap">
-          <ChatFormInit />
-        </TabsContent>
-        <TabsContent value="login">
-          <ChatFormLogin />
-        </TabsContent>
-      </Tabs>
+      {thread.threadId ? (
+        <div>
+          <div>
+            Your login id is (use this if you want to chat from another computer
+            or if you are mistakenly logged out): {thread.loginId}
+          </div>
+          <Button onClick={logoutHandler}>Logout</Button>
+        </div>
+      ) : (
+        <Tabs defaultValue="new">
+          <TabsList>
+            <TabsTrigger value="new">New message</TabsTrigger>
+            <TabsTrigger value="login">Login</TabsTrigger>
+          </TabsList>
+          <TabsContent value="new" className="wrap">
+            <ChatFormInit />
+          </TabsContent>
+          <TabsContent value="login">
+            <ChatFormLogin />
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 };

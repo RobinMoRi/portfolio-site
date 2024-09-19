@@ -1,6 +1,5 @@
 "use client";
 
-import useIpInfo from "@/app/hooks/useIpInfo";
 import useLocalStorage from "@/app/hooks/useLocalStorage";
 import { MessageSquare } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -10,7 +9,6 @@ import ChatModal from "./ChatModal";
 const ChatFab = () => {
   const [value, setValue] = useLocalStorage("openedChatBox", "false");
   const [openedOnce, setOpenedOnce] = useState(true);
-  const { ipinfo } = useIpInfo();
 
   useEffect(() => {
     if (value === "true") {

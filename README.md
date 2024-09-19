@@ -2,14 +2,20 @@
 
 This portfolio site is built using the following languages and tools:
 
+### Frontend
+- Nextjs
 - Typescript
-- Vue3
-- Vite
-- PrimeVue, PrimeFlex, PrimeIcons, Fontawesome
-- Docker and docker compose for setting up a dev environment
+- Prismic
+- Github/discord api integrations
+- Shadcn and Tailwind
+- Zustand
 
-The app is deployed using the following tools:
+### Backend
+- Python
+- Fast API
+- Pydantic
 
+### Deployment and dev-environment
 - Docker, Dockerhub
 - Github workflows
 - Hosted at Digital Ocean
