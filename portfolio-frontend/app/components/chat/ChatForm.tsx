@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, LogIn, Send } from "lucide-react";
+import { Key, Loader2, LogIn, Pencil, Send } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -66,60 +66,64 @@ const ChatFormInit = () => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col justify-between"
-      >
-        <div className="md:overflow-y-scroll">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your full name" {...field} />
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your email address" {...field} />
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="message"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Message</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="resize-none"
-                    placeholder="Write something to me..."
-                    rows={5}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="h-full mb-10">
+        <div className="flex flex-col gap-4 p-2 h-full">
+          <div className="flex items-center justify-center text-slate-400 p-8">
+            <div className="rounded-full border-2 border-slate-600 p-4">
+              <Pencil size={60} />
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your full name" {...field} />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your email address" {...field} />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Message</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="resize-none"
+                      placeholder="Write something to me..."
+                      rows={5}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button type="submit" className="w-full h-14 flex gap-4">
+            Send
+            <Send size={16} />
+          </Button>
         </div>
-        <Button type="submit" className="w-full flex gap-4">
-          Send
-          <Send size={16} />
-        </Button>
       </form>
     </Form>
   );
@@ -138,40 +142,43 @@ const ChatFormLogin = () => {
   function onSubmit(values: z.infer<typeof chatFormLoginSchema>) {
     thread.login(values.login_id);
   }
-
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col justify-between"
-      >
-        <div>
-          <FormField
-            control={form.control}
-            name="login_id"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Login ID</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter login id" {...field} />
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="flex flex-col justify-between p-2">
+          <div className="flex items-center justify-center text-slate-400 p-8">
+            <div className="rounded-full border-2 border-slate-600 p-4">
+              <Key size={60} />
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <FormField
+              control={form.control}
+              name="login_id"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Login ID</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter login id" {...field} />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              className="w-full flex gap-4 h-14"
+              disabled={thread.loading}
+            >
+              Login
+              {!thread.loading ? (
+                <LogIn size={16} />
+              ) : (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+            </Button>
+          </div>
         </div>
-        <Button
-          type="submit"
-          className="w-full flex gap-4"
-          disabled={thread.loading}
-        >
-          Login
-          {!thread.loading ? (
-            <LogIn size={16} />
-          ) : (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          )}
-        </Button>
       </form>
     </Form>
   );
@@ -184,7 +191,7 @@ const ChatForm = () => {
     thread.logout();
   };
   return (
-    <div>
+    <>
       {thread.threadId ? (
         <div>
           <div>
@@ -194,12 +201,12 @@ const ChatForm = () => {
           <Button onClick={logoutHandler}>Logout</Button>
         </div>
       ) : (
-        <Tabs defaultValue="new">
+        <Tabs defaultValue="new" className="h-full">
           <TabsList>
             <TabsTrigger value="new">New message</TabsTrigger>
             <TabsTrigger value="login">Login</TabsTrigger>
           </TabsList>
-          <TabsContent value="new" className="wrap">
+          <TabsContent value="new" className="h-full">
             <ChatFormInit />
           </TabsContent>
           <TabsContent value="login">
@@ -207,7 +214,7 @@ const ChatForm = () => {
           </TabsContent>
         </Tabs>
       )}
-    </div>
+    </>
   );
 };
 
