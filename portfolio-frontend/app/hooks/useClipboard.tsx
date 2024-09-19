@@ -2,12 +2,12 @@ import { useToast } from "@/hooks/use-toast";
 
 const useClipboard = () => {
   const { toast } = useToast();
-  const copyToClipboard = async (text: string) => {
+  const copyToClipboard = async (text: string, description: string) => {
     try {
       await navigator.clipboard.writeText(text);
       toast({
         title: "Clipboard",
-        description: "Number copied to clipboard",
+        description: description,
         variant: "success",
       });
     } catch (err) {

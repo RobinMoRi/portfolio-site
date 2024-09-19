@@ -7,6 +7,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import ChatFab from "./components/chat/ChatFab";
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <NavBar />
+          <ChatFab />
           <main>{children}</main>
           <Toaster />
         </Providers>

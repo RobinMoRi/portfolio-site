@@ -43,7 +43,8 @@ const useNavbarItems = () => {
       label: "Phone",
       icon: <Smartphone />,
       url: "+46737514695",
-      onClick: () => copyToClipboard("+46737514695"),
+      onClick: () =>
+        copyToClipboard("+46737514695", "Number copied to clipboard"),
     },
   ];
   const items: NavBarItems = [

@@ -1,12 +1,18 @@
 """
 Proxy for discord - used to go around discords stupid cors policy
+Now also used for other backend tasks as fetching github and location data
 """
 
-from fastapi import FastAPI
-import requests
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import os
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.staticfiles import StaticFiles
 from geopy.geocoders import Nominatim
+from datetime import datetime
+
+from models import InitThreadData, Message, MessageDataResponse, InitThreadResponse
+from discord import DiscordApi
+from github import GithubApi
 
 
 app = FastAPI()
@@ -25,97 +31,121 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+api_router = APIRouter(
+    prefix="/api/v1",
+    responses={404: {"description": "Not found"}},
+)
 
-CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
-BOT_ID = os.getenv("DISCORD_BOT_ID")
-AUTH_TOKEN = os.getenv("DISCORD_AUTH_TOKEN")
-GITHUB_API_TOKEN = os.getenv("VITE_GITHUB_API_TOKEN")
-HEADERS = {
-    "Authorization": f"Bot {AUTH_TOKEN}",
-    "Accept": "*/*",
-    "Content-Type": "application/json",
-}
+discord_router = APIRouter(
+    prefix="/discord",
+    tags=["discord"],
+    responses={404: {"description": "Not found"}},
+)
+
+thread_router = APIRouter(
+    prefix="/thread",
+    tags=["thread"],
+    responses={404: {"description": "Not found"}},
+)
+
+github_router = APIRouter(
+    prefix="/github",
+    tags=["github"],
+    responses={404: {"description": "Not found"}},
+)
+
+location_router = APIRouter(
+    prefix="/location",
+    tags=["location"],
+    responses={404: {"description": "Not found"}},
+)
+
+favicon_path = "favicon.ico"
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-GITHUB_API_HEADERS = {
-    "accept": "application/vnd.github+json",
-    "authorization": f"Bearer {GITHUB_API_TOKEN}",
-    "X-GitHub-Api-Version": "2022-11-28",
-}
-
-
-@app.post("/startNewThread")
-def start_new_thread(name: str):
-    res = requests.post(
-        url=f"https://discord.com/api/v10/channels/{CHANNEL_ID}/threads",
-        json={
-            "name": name,
-            "auto_archive_duration": 10080,
-        },
-        headers=HEADERS,
+@app.get("/docs", include_in_schema=False)
+async def swagger_ui_html():
+    return get_swagger_ui_html(
+        openapi_url="/openapi.json",
+        title="RMR Portfolio API",
+        swagger_favicon_url="/static/favicon.ico",
     )
-    res.raise_for_status()
-    return res.json()
 
 
-@app.put("/addBotToThread")
-def add_bot_to_thread(thread_id: str):
-    res = requests.put(
-        url=f"https://discord.com/api/v10/channels/{thread_id}/thread-members/{BOT_ID}",
-        headers=HEADERS,
+@thread_router.post("/login")
+def get_thread_id(login_id: str) -> str:
+    api = DiscordApi()
+    return api.get_thread_id_by_login_id(login_id)
+
+
+@thread_router.get("/key")
+def get_login_id(thread_id: str) -> str:
+    api = DiscordApi()
+    return api.get_encrypted_key_by_thread_id(thread_id)
+
+
+@thread_router.post("/init")
+def init_conversation(data: InitThreadData) -> InitThreadResponse:
+    # Start new thread
+    api = DiscordApi()
+    thread = api.start_thread(data.name)
+    api.add_bot_to_thread(thread.id)
+
+    ## Meta data
+    api.create_thread_message(message=data.meta, thread_id=thread.id, meta=True)
+
+    ## Initial message
+    api.create_thread_message(message=data.message, thread_id=thread.id)
+
+    return thread
+
+
+@thread_router.post("/message")
+def create_thread_message(data: MessageDataResponse):
+    api = DiscordApi()
+    return api.create_thread_message(
+        message=data.message, thread_id=data.thread_id, meta=data.meta
     )
-    res.raise_for_status()
-    return
 
 
-@app.post("/createThreadMessage")
-def create_thread_message(message: str, thread_id: str, meta=False):
-    data = {
-        "content": message,
-    }
-    if meta:
-        data.setdefault("embeds", [{"title": "Meta"}])
-    res = requests.post(
-        url=f"https://discord.com/api/v10/channels/{thread_id}/messages",
-        json=data,
-        headers=HEADERS,
+@thread_router.get("/messages")
+def get_thread_message(thread_id: str, exclude_meta: bool = True) -> list[Message]:
+    api = DiscordApi()
+    messages = [
+        Message(**message) for message in api.get_thread_messages(thread_id=thread_id)
+    ]
+
+    messages.sort(
+        key=lambda x: datetime.strptime(x.timestamp, "%Y-%m-%dT%H:%M:%S.%f%z")
     )
-    res.raise_for_status()
-    return res.json()
+    if exclude_meta:
+        return filter(lambda x: len(x.embeds) == 0 and x.content != "", messages)
+    return messages
 
 
-@app.get("/getThreadMessages")
-def get_thread_message(thread_id: str):
-    res = requests.get(
-        url=f"https://discord.com/api/v10/channels/{thread_id}/messages",
-        headers=HEADERS,
-    )
-    res.raise_for_status()
-    return res.json()
-
-
-@app.get("/getGithubRepos")
+@github_router.get("/repos")
 def get_gh_repos():
-    res = requests.get(
-        url="https://api.github.com/user/repos",
-        headers=GITHUB_API_HEADERS,
-    )
-    res.raise_for_status()
-    return res.json()
+    api = GithubApi()
+    return api.get_repos()
 
 
-@app.get("/getGithubLanguages")
+@github_router.get("/languages")
 def get_gh_languages(url: str):
-    res = requests.get(
-        url=url,
-        headers=GITHUB_API_HEADERS,
-    )
-    res.raise_for_status()
-    return res.json()
+    api = GithubApi()
+    return api.get_langugages(url)
 
 
-@app.get("/locationNameFromLongLat")
+@location_router.get("/name")
 def get_name_from_long_lat(long: str, lat: str):
     geolocator = Nominatim(user_agent="robin.moreno.rinding@gmail.com")
     location = geolocator.reverse(f"{lat},{long}")
     return location.raw
+
+
+discord_router.include_router(thread_router)
+api_router.include_router(discord_router)
+api_router.include_router(location_router)
+api_router.include_router(github_router)
+app.include_router(api_router)
