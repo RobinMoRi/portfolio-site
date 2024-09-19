@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Repo } from "@/lib/api";
+import { Repo } from "@/lib/api/github";
 import { languageColorMap } from "@/lib/contants";
 import { Separator } from "@radix-ui/react-separator";
 import { ChevronRight } from "lucide-react";
