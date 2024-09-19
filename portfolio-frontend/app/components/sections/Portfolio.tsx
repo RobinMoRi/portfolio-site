@@ -1,5 +1,5 @@
 // import ScrollContainer from "@/components/ui/scroll-container";
-import { fetchLanguages, fetchRepos } from "@/lib/api";
+import { fetchLanguages, fetchRepos } from "@/lib/api/github";
 import { Section } from "@/types/navbar";
 import React from "react";
 import RepoCard from "../cards/RepoCard";

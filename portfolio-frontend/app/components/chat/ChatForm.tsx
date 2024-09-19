@@ -62,7 +62,7 @@ const ChatFormInit = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col justify-between"
       >
-        <div className="md:max-h-80 md:overflow-y-scroll">
+        <div className="md:overflow-y-scroll">
           <FormField
             control={form.control}
             name="name"
@@ -137,7 +137,7 @@ const ChatFormLogin = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col justify-between"
       >
-        <div className="md:min-h-80">
+        <div>
           <FormField
             control={form.control}
             name="login_id"
@@ -164,7 +164,7 @@ const ChatFormLogin = () => {
 const ChatForm = () => {
   return (
     <div>
-      <Tabs defaultValue="new" className="h-full">
+      <Tabs defaultValue="new">
         <TabsList>
           <TabsTrigger value="new">New message</TabsTrigger>
           <TabsTrigger value="login">Login</TabsTrigger>

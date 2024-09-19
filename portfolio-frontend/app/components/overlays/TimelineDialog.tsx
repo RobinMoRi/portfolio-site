@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { fetchLocationFromLongLat, GeoLocation } from "@/lib/api";
+import { fetchLocationFromLongLat, GeoLocation } from "@/lib/api/location";
 import { ReusableexperienceDocument } from "@/prismicio-types";
 import { JSXMapSerializer, PrismicRichText } from "@prismicio/react";
 import { format } from "date-fns";

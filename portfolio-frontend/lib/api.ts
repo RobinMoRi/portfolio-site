@@ -1,3 +1,5 @@
+// TODO: REMOVE EVERYTHING HERE
+
 const CLIENT_HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 const SERVER_HOST = process.env.NEXT_PUBLIC_SERVER_HOST;
 
@@ -139,95 +141,6 @@ export async function getThreadMessages(
     HOST = CLIENT_HOST;
   }
   const url = `${HOST}/getThreadMessages?thread_id=${thread_id}`;
-
-  return fetch(url, {
-    method: "GET",
-  }).then((res) => res.json());
-}
-
-type Languages = { [key: string]: number };
-export type Repo = {
-  id: number;
-  name: string;
-  description: string;
-  html_url: string;
-  languages_url: string;
-  languages: Languages;
-  created_at: string;
-};
-
-export type Repos = Repo[];
-
-export async function fetchRepos(client = false): Promise<Repo[]> {
-  let HOST = SERVER_HOST;
-  if (client) {
-    HOST = CLIENT_HOST;
-  }
-  const url = `${HOST}/api/v1/github/repos`;
-
-  return fetch(url, {
-    method: "GET",
-  }).then((res) => res.json());
-}
-
-export async function fetchLanguages(
-  languagesUrl: string,
-  client: boolean = false
-): Promise<Languages> {
-  let HOST = SERVER_HOST;
-  if (client) {
-    HOST = CLIENT_HOST;
-  }
-  const url = `${HOST}/api/v1/github/languages?url=${languagesUrl}`;
-
-  return fetch(url, {
-    method: "GET",
-  }).then((res) => res.json());
-}
-
-export type GeoLocation = {
-  place_id: number;
-  licence: string;
-  osm_type: string;
-  osm_id: number;
-  lat: string;
-  lon: string;
-  class: string;
-  type: string;
-  place_rank: number;
-  importance: number;
-  addresstype: string;
-  name: string;
-  display_name: string;
-  address: {
-    road: string;
-    isolated_dwelling?: string;
-    city_district?: string;
-    city: string;
-    municipality: string;
-    county: string;
-    "ISO3166-2-lvl4": string;
-    postcode: string;
-    country: string;
-    country_code: string;
-  };
-  boundingbox: [string, string, string, string];
-};
-
-export async function fetchLocationFromLongLat({
-  long,
-  lat,
-  client = false,
-}: {
-  long: string;
-  lat: string;
-  client?: boolean;
-}): Promise<GeoLocation> {
-  let HOST = SERVER_HOST;
-  if (client) {
-    HOST = CLIENT_HOST;
-  }
-  const url = `${HOST}/api/v1/location/name?long=${long}&lat=${lat}`;
 
   return fetch(url, {
     method: "GET",
