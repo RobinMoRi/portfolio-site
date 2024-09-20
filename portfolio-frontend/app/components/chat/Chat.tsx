@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Copy, Loader2, SendHorizontal } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ChatCard from "./ChatCard";
@@ -30,11 +30,15 @@ const chatSchema = z.object({
 
 const ChatMessagesContainer = () => {
   const thread = useChat();
+  const oldLength = useRef(0);
 
   useEffect(() => {
-    const el = document.getElementById("last-message-card");
-    if (el) {
-      el.scrollIntoView(false);
+    if (oldLength.current < thread.messages.length) {
+      const el = document.getElementById("last-message-card");
+      if (el) {
+        el.scrollIntoView(false);
+      }
+      oldLength.current = thread.messages.length;
     }
   }, [thread.messages]);
 

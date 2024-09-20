@@ -14,9 +14,11 @@ const useLocalStorage = (key: string, initialValue: string) => {
 
   const setValue = (value: string | ((val: string) => string)) => {
     try {
-      const valueToStore = value instanceof Function ? value(state) : value;
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
-      setState(valueToStore); // Update state with the stored value
+      if (window) {
+        const valueToStore = value instanceof Function ? value(state) : value;
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        setState(valueToStore); // Update state with the stored value
+      }
     } catch (error) {
       console.error(error);
     }
