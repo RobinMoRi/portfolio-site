@@ -19,6 +19,7 @@ const useChat = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const updateLoggedInState = () => {
+    if (!value) return;
     getMessages(value, true).then(setMessages);
     setThreadId(value);
     getLoginId(value, true).then(setLoginId);

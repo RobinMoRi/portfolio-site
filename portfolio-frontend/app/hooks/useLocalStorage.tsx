@@ -4,8 +4,10 @@ import { useState } from "react";
 const useLocalStorage = (key: string, initialValue: string) => {
   const [state, setState] = useState<string>(() => {
     try {
-      const value = window.localStorage.getItem(key);
-      return value ? JSON.parse(value) : initialValue;
+      if (window) {
+        const value = window.localStorage.getItem(key);
+        return value ? JSON.parse(value) : initialValue;
+      }
     } catch (error) {
       console.error(error);
       return initialValue; // Fallback in case of error

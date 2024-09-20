@@ -3,19 +3,42 @@ Proxy for discord - used to go around discords stupid cors policy
 Now also used for other backend tasks as fetching github and location data
 """
 
-from fastapi import APIRouter, FastAPI
+import secrets
+from fastapi import APIRouter, FastAPI, Depends, HTTPException, Request, status
+from contextlib import asynccontextmanager
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
 from geopy.geocoders import Nominatim
 from datetime import datetime
+import redis.asyncio as redis
 
 from models import InitThreadData, Message, MessageDataResponse, InitThreadResponse
 from discord import DiscordApi
 from github import GithubApi
 
 
-app = FastAPI()
+# TODO: Fix redis hos
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    redis_connection = redis.from_url("redis://redis-dev/0", encoding="utf8")
+    await FastAPILimiter.init(redis_connection)
+    yield
+    await FastAPILimiter.close()
+
+
+app = FastAPI(
+    lifespan=lifespan,
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
+)
+
+security = HTTPBasic()
+
 origins = [
     "http://localhost",
     "http://localhost:8000",
@@ -65,12 +88,26 @@ favicon_path = "favicon.ico"
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-@app.get("/docs", include_in_schema=False)
-async def swagger_ui_html():
+## TODO: Put username and password in .env
+def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
+    correct_username = secrets.compare_digest(credentials.username, "user")
+    correct_password = secrets.compare_digest(credentials.password, "password")
+    if not (correct_username and correct_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return credentials.username
+
+
+@app.get("/docs")
+async def get_documentation(
+    request: Request, username: str = Depends(get_current_username)
+):
+    print(request.scope.get("root_path"))
     return get_swagger_ui_html(
-        openapi_url="/openapi.json",
-        title="RMR Portfolio API",
-        swagger_favicon_url="/static/favicon.ico",
+        openapi_url=request.scope.get("root_path") + "/openapi.json", title="docs"
     )
 
 
@@ -86,7 +123,7 @@ def get_login_id(thread_id: str) -> str:
     return api.get_encrypted_key_by_thread_id(thread_id)
 
 
-@thread_router.post("/init")
+@thread_router.post("/init", dependencies=[Depends(RateLimiter(times=2, hours=1))])
 def init_conversation(data: InitThreadData) -> InitThreadResponse:
     # Start new thread
     api = DiscordApi()
