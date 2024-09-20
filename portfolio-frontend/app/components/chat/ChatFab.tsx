@@ -18,14 +18,6 @@ const ChatFab = () => {
       thread.updateLoggedInState();
       setUpdated(true);
     }
-
-    const intervalId = setInterval(() => {
-      thread.getChatMessages();
-    }, 5000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
   }, [thread]);
 
   useEffect(() => {

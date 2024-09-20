@@ -67,6 +67,16 @@ const Chat = () => {
     },
   });
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      thread.getChatMessages();
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [thread]);
+
   const logoutHandler = () => {
     thread.logout();
   };
