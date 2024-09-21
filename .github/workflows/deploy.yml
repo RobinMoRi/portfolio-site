@@ -19,6 +19,7 @@ jobs:
           echo "VITE_DISCORD_PROXY_HOST=${{ secrets.VITE_DISCORD_PROXY_HOST }}" >> .env
           echo "DOCS_USERNAME=${{ secrets.DOCS_USERNAME }}" >> .env
           echo "DOCS_PASSWORD=${{ secrets.DOCS_PASSWORD }}" >> .env
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> .env
 
       - name: Create .env file for frontend
         run: |
