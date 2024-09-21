@@ -24,12 +24,13 @@ from github import GithubApi
 
 DOCS_USERNAME = os.getenv("DOCS_USERNAME")
 DOCS_PASSWORD = os.getenv("DOCS_PASSWORD")
+REDIS_HOST = os.getenv("REDIS_HOST")
 
 
 # TODO: Fix redis hos
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    redis_connection = redis.from_url("redis://redis-dev/0", encoding="utf8")
+    redis_connection = redis.from_url(f"redis://{REDIS_HOST}/0", encoding="utf8")
     await FastAPILimiter.init(redis_connection)
     yield
     await FastAPILimiter.close()
