@@ -13,10 +13,12 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
 
-      - name: Create .env file
+      - name: Create .env file for backend
         run: |
           echo "VITE_GITHUB_API_TOKEN=${{ secrets.VITE_GITHUB_API_TOKEN }}" > .env
           echo "VITE_DISCORD_PROXY_HOST=${{ secrets.VITE_DISCORD_PROXY_HOST }}" >> .env
+          echo "DOCS_USERNAME=${{ secrets.DOCS_USERNAME }}" >> .env
+          echo "DOCS_PASSWORD=${{ secrets.DOCS_PASSWORD }}" >> .env
 
       - name: Create .env file for frontend
         run: |

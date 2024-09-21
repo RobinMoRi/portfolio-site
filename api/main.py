@@ -4,13 +4,15 @@ Now also used for other backend tasks as fetching github and location data
 """
 
 import secrets
-from fastapi import APIRouter, FastAPI, Depends, HTTPException, Request, status
+import os
+from fastapi import APIRouter, FastAPI, Depends, HTTPException, status
 from contextlib import asynccontextmanager
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.openapi.utils import get_openapi
 from fastapi.staticfiles import StaticFiles
 from geopy.geocoders import Nominatim
 from datetime import datetime
@@ -19,6 +21,9 @@ import redis.asyncio as redis
 from models import InitThreadData, Message, MessageDataResponse, InitThreadResponse
 from discord import DiscordApi
 from github import GithubApi
+
+DOCS_USERNAME = os.getenv("DOCS_USERNAME")
+DOCS_PASSWORD = os.getenv("DOCS_PASSWORD")
 
 
 # TODO: Fix redis hos
@@ -90,8 +95,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 ## TODO: Put username and password in .env
 def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
-    correct_username = secrets.compare_digest(credentials.username, "user")
-    correct_password = secrets.compare_digest(credentials.password, "password")
+    correct_username = secrets.compare_digest(credentials.username, DOCS_USERNAME)
+    correct_password = secrets.compare_digest(credentials.password, DOCS_PASSWORD)
     if not (correct_username and correct_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -101,29 +106,33 @@ def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
     return credentials.username
 
 
-@app.get("/docs")
-async def get_documentation(
-    request: Request, username: str = Depends(get_current_username)
-):
-    print(request.scope.get("root_path"))
+@app.get("/docs", include_in_schema=False)
+async def get_documentation(username: str = Depends(get_current_username)):
     return get_swagger_ui_html(
-        openapi_url=request.scope.get("root_path") + "/openapi.json", title="docs"
+        openapi_url="/openapi.json",
+        title="Romori API Docs",
+        swagger_favicon_url="/static/favicon.ico",
     )
 
 
-@thread_router.post("/login")
+@app.get("/openapi.json", include_in_schema=False)
+async def openapi(username: str = Depends(get_current_username)):
+    return get_openapi(title="FastAPI", version="0.1.0", routes=app.routes)
+
+
+@thread_router.post("/login", dependencies=[Depends(RateLimiter(times=10, minutes=1))])
 def get_thread_id(login_id: str) -> str:
     api = DiscordApi()
     return api.get_thread_id_by_login_id(login_id)
 
 
-@thread_router.get("/key")
+@thread_router.get("/key", dependencies=[Depends(RateLimiter(times=10, minutes=1))])
 def get_login_id(thread_id: str) -> str:
     api = DiscordApi()
     return api.get_encrypted_key_by_thread_id(thread_id)
 
 
-@thread_router.post("/init", dependencies=[Depends(RateLimiter(times=2, hours=1))])
+@thread_router.post("/init", dependencies=[Depends(RateLimiter(times=5, hours=1))])
 def init_conversation(data: InitThreadData) -> InitThreadResponse:
     # Start new thread
     api = DiscordApi()
@@ -139,7 +148,9 @@ def init_conversation(data: InitThreadData) -> InitThreadResponse:
     return thread
 
 
-@thread_router.post("/message")
+@thread_router.post(
+    "/message", dependencies=[Depends(RateLimiter(times=30, minutes=1))]
+)
 def create_thread_message(data: MessageDataResponse):
     api = DiscordApi()
     return api.create_thread_message(
@@ -147,7 +158,9 @@ def create_thread_message(data: MessageDataResponse):
     )
 
 
-@thread_router.get("/messages")
+@thread_router.get(
+    "/messages", dependencies=[Depends(RateLimiter(times=20, minutes=1))]
+)
 def get_thread_message(thread_id: str, exclude_meta: bool = True) -> list[Message]:
     api = DiscordApi()
     messages = [
@@ -162,19 +175,21 @@ def get_thread_message(thread_id: str, exclude_meta: bool = True) -> list[Messag
     return messages
 
 
-@github_router.get("/repos")
+@github_router.get("/repos", dependencies=[Depends(RateLimiter(times=10, minutes=1))])
 def get_gh_repos():
     api = GithubApi()
     return api.get_repos()
 
 
-@github_router.get("/languages")
+@github_router.get(
+    "/languages", dependencies=[Depends(RateLimiter(times=50, minutes=1))]
+)
 def get_gh_languages(url: str):
     api = GithubApi()
     return api.get_langugages(url)
 
 
-@location_router.get("/name")
+@location_router.get("/name", dependencies=[Depends(RateLimiter(times=20, minutes=1))])
 def get_name_from_long_lat(long: str, lat: str):
     geolocator = Nominatim(user_agent="robin.moreno.rinding@gmail.com")
     location = geolocator.reverse(f"{lat},{long}")
