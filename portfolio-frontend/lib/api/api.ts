@@ -38,6 +38,7 @@ const fetchApi = async <T, B = undefined>({
   }
 
   const url = `${HOST}${path}`;
+  console.debug(`[fetchApi] Fetching data from: ${url}`);
   const options: RequestInit = {
     method,
     headers: body ? { "Content-Type": "application/json" } : undefined,
@@ -51,6 +52,7 @@ const fetchApi = async <T, B = undefined>({
   }
 
   const data = await response.json();
+  console.debug(`[fetchApi] successful`);
 
   return data as T;
 };

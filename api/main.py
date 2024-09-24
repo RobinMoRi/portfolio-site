@@ -183,7 +183,7 @@ def get_gh_repos():
 
 
 @github_router.get(
-    "/languages", dependencies=[Depends(RateLimiter(times=50, minutes=1))]
+    "/languages", dependencies=[Depends(RateLimiter(times=100, minutes=1))]
 )
 def get_gh_languages(url: str):
     api = GithubApi()

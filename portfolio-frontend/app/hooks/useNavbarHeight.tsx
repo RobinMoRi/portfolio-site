@@ -12,6 +12,7 @@ function useNavbarHeight() {
   }, []);
 
   useEffect(() => {
+    if (!window) return;
     calculateNavbarHeight();
 
     window.addEventListener("resize", calculateNavbarHeight);
