@@ -43,7 +43,7 @@ fi
 
 # Run the images as containers
 echo "Running the Docker images as containers..."
-docker run -d -p 8000:8000 --name frontend-prod --network portfolio-nw romori1993/portfolio-site-frontend-deploy:latest
-docker run -d -p 8080:80 --name api-prod --network portfolio-nw romori1993/portfolio-site-api-deploy:latest
+docker run -d -p 127.0.0.1:8000:8000 --name frontend-prod --network portfolio-nw romori1993/portfolio-site-frontend-deploy:latest
+docker run -d -p 127.0.0.1:8080:80 --name api-prod --network portfolio-nw romori1993/portfolio-site-api-deploy:latest
 
 echo "Containers are up and running."
