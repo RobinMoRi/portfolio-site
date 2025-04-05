@@ -1,17 +1,4 @@
 services:
-  frontend-dev:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: portfolio-frontend
-    volumes:
-      - .:/app
-      - /app/node_modules
-    ports:
-      - "8000:8000"
-    environment:
-      - NODE_ENV=dev
-
   frontend-dev-v2:
     build:
       context: ./portfolio-frontend
@@ -24,6 +11,18 @@ services:
       - "8000:3000"
     environment:
       - ENVIRONMENT=dev
+
+  api-dev:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: portfolio-api-dev
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./api/.env
+    volumes:
+      - ./api:/app
 
   redis-dev:
     image: redis/redis-stack:latest
@@ -39,48 +38,3 @@ services:
       - REDIS_PASSWORD=rzCTybHG&HJib5xy #TODO: fix password
       - REDIS_PORT=6380
       - REDIS_DATABASES=16
-
-  frontend-deploy:
-    build:
-      context: .
-      dockerfile: Deploy.Dockerfile
-    container_name: portfolio-frontend-prod
-    ports:
-      - "80:80"
-    environment:
-      - NODE_ENV=prod
-      - GITHUB_API_TOKEN=sometokenhere
-
-  frontend-deploy-v2:
-    build:
-      context: ./portfolio-frontend
-      dockerfile: Deploy.Dockerfile
-    container_name: portfolio-frontend-prod-v2
-    ports:
-      - "80:8000"
-    environment:
-      - NODE_ENV=prod
-
-  api-dev:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    container_name: portfolio-api-dev
-    ports:
-      - "8080:8080"
-    env_file:
-      - ./api/.env
-    volumes:
-      - ./api:/app
-
-  api-prod:
-    build:
-      context: ./api
-      dockerfile: Deploy.Dockerfile
-    container_name: portfolio-api-prod
-    ports:
-      - "8080:8080"
-    environment:
-      # Define environment variables here, or better, use a secret management approach
-      ENV: prod
-    restart: unless-stopped

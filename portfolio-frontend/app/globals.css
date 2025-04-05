@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('./fonts/stylesheet.css');
+@import url("./fonts/stylesheet.css");
 
 :root {
   --background: rgb(40, 42, 62);
@@ -19,7 +19,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'GeistVF', sans-serif;
+  font-family: "GeistVF", sans-serif;
 }
 
 @layer utilities {
@@ -91,7 +91,7 @@ body {
     --skillscard-background: 224, 45%, 17%;
     --timeline-active: 39, 100%, 50%;
     --timeline-inactive: 224, 45%, 17%;
-  } 
+  }
 }
 
 @layer base {
@@ -103,26 +103,32 @@ body {
   }
 }
 
-
-.section-intro__overlay{
+.section-intro__overlay {
   backdrop-filter: blur(3px);
-  background: rgb(40,42,62);
-  background: linear-gradient(90deg, rgba(40,42,62,0.6) 0%, rgba(40,42,62,0.1) 40%, rgba(40,42,62,0) 50%, rgba(40,42,62,0.1) 60%, rgba(40,42,62,0.6) 100%);
+  background: rgb(40, 42, 62);
+  background: linear-gradient(
+    90deg,
+    rgba(40, 42, 62, 0.6) 0%,
+    rgba(40, 42, 62, 0.1) 40%,
+    rgba(40, 42, 62, 0) 50%,
+    rgba(40, 42, 62, 0.1) 60%,
+    rgba(40, 42, 62, 0.6) 100%
+  );
 }
 
-.section-intro__content{
-  background-image: url('./assets/code.png');
+.section-intro__content {
+  background-image: url("./assets/code.png");
   background-repeat: no-repeat;
 }
 
 .typewriter h1 {
-  @media (min-width: 640px){
+  @media (min-width: 640px) {
     overflow: hidden;
-    border-right: .15em solid orange;
-    white-space: nowrap; 
-    margin: 0 auto; 
-    letter-spacing: .15em;
-    animation: 
+    border-right: 0.15em solid orange;
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: 0.15em;
+    animation:
       typing 3.5s steps(40, end),
       blink-caret 1s step-end infinite;
   }
@@ -130,12 +136,74 @@ body {
 
 /* The typing effect */
 @keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 /* The typewriter cursor effect */
 @keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: orange; }
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: orange;
+  }
+}
+
+/* Clean appear animation */
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.appear {
+  animation: appear 0.6s ease-out forwards;
+}
+
+/* Staggered appear animation for multiple elements */
+.appear-stagger > * {
+  opacity: 0;
+  animation: appear 0.6s ease-out forwards;
+}
+
+.appear-stagger > *:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.appear-stagger > *:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.appear-stagger > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.appear-stagger > *:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.appear-stagger > *:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.appear-stagger > *:nth-child(6) {
+  animation-delay: 0.6s;
+}
+.appear-stagger > *:nth-child(7) {
+  animation-delay: 0.7s;
+}
+.appear-stagger > *:nth-child(8) {
+  animation-delay: 0.8s;
+}
+.appear-stagger > *:nth-child(9) {
+  animation-delay: 0.9s;
+}
+.appear-stagger > *:nth-child(10) {
+  animation-delay: 1s;
 }

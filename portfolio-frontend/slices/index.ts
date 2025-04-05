@@ -3,5 +3,6 @@
 import dynamic from "next/dynamic";
 
 export const components = {
+  skill: dynamic(() => import("./Skill")),
   text_block: dynamic(() => import("./TextBlock")),
 };

@@ -35,7 +35,7 @@ const RepoCard = ({ repo }: { repo: Repo }) => {
     }
   );
   return (
-    <Card className="bg-slate-900 border-slate-500 shadow-md">
+    <Card className="bg-slate-900 border-slate-500 shadow-md appear">
       <CardHeader>
         <CardTitle className="text-white text-xs hover:text-timeline-active">
           <Link

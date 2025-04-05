@@ -365,11 +365,100 @@ export type SideprojectDocument<Lang extends string = string> =
     Lang
   >;
 
+type SkillsDocumentDataSlicesSlice = SkillSlice;
+
+/**
+ * Content for skills documents
+ */
+interface SkillsDocumentData {
+  /**
+   * Slice Zone field in *skills*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: skills.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<SkillsDocumentDataSlicesSlice> /**
+   * Meta Title field in *skills*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: skills.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *skills*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: skills.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *skills*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: skills.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * skills document from Prismic
+ *
+ * - **API ID**: `skills`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SkillsDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<Simplify<SkillsDocumentData>, "skills", Lang>;
+
 export type AllDocumentTypes =
   | AboutmeDocument
   | FootercontentDocument
   | ReusableexperienceDocument
-  | SideprojectDocument;
+  | SideprojectDocument
+  | SkillsDocument;
+
+/**
+ * Default variation for Skill Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SkillSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Record<string, never>,
+  never
+>;
+
+/**
+ * Slice variation for *Skill*
+ */
+type SkillSliceVariation = SkillSliceDefault;
+
+/**
+ * Skill Shared Slice
+ *
+ * - **API ID**: `skill`
+ * - **Description**: Skill
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SkillSlice = prismic.SharedSlice<"skill", SkillSliceVariation>;
 
 /**
  * Primary content in *TextBlock → Default → Primary*
@@ -438,7 +527,13 @@ declare module "@prismicio/client" {
       SideprojectDocument,
       SideprojectDocumentData,
       SideprojectDocumentDataExternalurlsItem,
+      SkillsDocument,
+      SkillsDocumentData,
+      SkillsDocumentDataSlicesSlice,
       AllDocumentTypes,
+      SkillSlice,
+      SkillSliceVariation,
+      SkillSliceDefault,
       TextBlockSlice,
       TextBlockSliceDefaultPrimary,
       TextBlockSliceVariation,

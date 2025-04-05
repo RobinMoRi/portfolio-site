@@ -1,0 +1,16 @@
+{
+  "id": "skill",
+  "type": "SharedSlice",
+  "name": "Skill",
+  "description": "Skill",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": ""
+    }
+  ]
+}
