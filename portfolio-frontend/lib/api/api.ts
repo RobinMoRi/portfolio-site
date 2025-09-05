@@ -1,5 +1,13 @@
-const CLIENT_HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
-const SERVER_HOST = process.env.NEXT_PUBLIC_SERVER_HOST;
+const CLIENT_HOST =
+  process.env.NEXT_PUBLIC_CLIENT_HOST &&
+  process.env.NEXT_PUBLIC_CLIENT_HOST !== "undefined"
+    ? process.env.NEXT_PUBLIC_CLIENT_HOST
+    : "";
+const SERVER_HOST =
+  process.env.NEXT_PUBLIC_SERVER_HOST &&
+  process.env.NEXT_PUBLIC_SERVER_HOST !== "undefined"
+    ? process.env.NEXT_PUBLIC_SERVER_HOST
+    : "";
 
 const API_BASE = "/api/v1";
 const LOCATION = (long: string, lat: string) =>
@@ -37,7 +45,7 @@ const fetchApi = async <T, B = undefined>({
     HOST = CLIENT_HOST;
   }
 
-  const url = `${HOST}${path}`;
+  const url = HOST ? `${HOST}${path}` : `${path}`;
   console.debug(`[fetchApi] Fetching data from: ${url}`);
   const options: RequestInit = {
     method,
