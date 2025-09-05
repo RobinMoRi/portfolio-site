@@ -1,0 +1,40 @@
+services:
+  frontend-dev-v2:
+    build:
+      context: ./portfolio-frontend
+      dockerfile: Dockerfile.dev
+    container_name: vhk-frontend-dev-v2
+    volumes:
+      - ./portfolio-frontend:/app
+      - ./portfolio-frontend/node_modules:/app/node_modules
+    ports:
+      - "8000:3000"
+    environment:
+      - ENVIRONMENT=dev
+
+  api-dev:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: portfolio-api-dev
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./api/.env
+    volumes:
+      - ./api:/app
+
+  redis-dev:
+    image: redis/redis-stack:latest
+    container_name: portfolio-redis
+    restart: always
+    ports:
+      - "6380:6380" # redis stack server
+      - "8002:8001" # redis insights
+    volumes:
+      - ./backend/redis/dаta:/root/redis
+      - ./backend/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=rzCTybHG&HJib5xy #TODO: fix password
+      - REDIS_PORT=6380
+      - REDIS_DATABASES=16

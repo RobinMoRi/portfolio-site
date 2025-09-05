@@ -1,30 +1,31 @@
 services:
-  frontend-dev-v2:
-    build:
-      context: ./portfolio-frontend
-      dockerfile: Dockerfile.dev
-    container_name: vhk-frontend-dev-v2
-    volumes:
-      - ./portfolio-frontend:/app
-      - ./portfolio-frontend/node_modules:/app/node_modules
-    ports:
-      - "8000:3000"
+  frontend-prod:
+    image: romori1993/portfolio-site-frontend-deploy:latest
+    expose:
+      - "8000"
     environment:
-      - ENVIRONMENT=dev
-
-  api-dev:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    container_name: portfolio-api-dev
-    ports:
-      - "8080:8080"
+      - NODE_ENV=prod
     env_file:
-      - ./api/.env
-    volumes:
-      - ./api:/app
+      - /etc/secrets/portfolio.env
+    depends_on:
+      - api-prod
+    networks:
+      - portfolio-nw
 
-  redis-dev:
+  api-prod:
+    image: romori1993/portfolio-site-api-deploy:latest
+    expose:
+      - "8080"
+    env_file:
+      - /etc/secrets/portfolio.env
+    environment:
+      - ENV=prod
+    depends_on:
+      - redis-prod
+    networks:
+      - portfolio-nw
+
+  redis-prod:
     image: redis/redis-stack:latest
     container_name: portfolio-redis
     restart: always
@@ -32,9 +33,49 @@ services:
       - "6380:6380" # redis stack server
       - "8002:8001" # redis insights
     volumes:
-      - ./backend/redis/dаta:/root/redis
+      - ./backend/redis/data:/root/redis
       - ./backend/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    env_file:
+      - /etc/secrets/portfolio.env
     environment:
-      - REDIS_PASSWORD=rzCTybHG&HJib5xy #TODO: fix password
       - REDIS_PORT=6380
       - REDIS_DATABASES=16
+    networks:
+      - portfolio-nw
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api-prod
+      - frontend-prod
+    networks:
+      - portfolio-nw
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - portfolio-nw
+    entrypoint: >
+      sh -c "trap exit TERM; while :; do
+        certbot renew --webroot -w /var/www/certbot --quiet;
+        docker exec nginx nginx -s reload;
+        sleep 12h & wait $${!};
+      done"
+
+networks:
+  portfolio-nw:
