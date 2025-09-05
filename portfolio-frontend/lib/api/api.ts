@@ -8,7 +8,8 @@ const LOCATION = (long: string, lat: string) =>
 
 const GITHUB = `${API_BASE}/github`;
 const GITHUB_REPOS = `${GITHUB}/repos`;
-const GITHUB_LANGUAGES = (url: string) => `${GITHUB}/languages?url=${url}`;
+const GITHUB_LANGUAGES = (url: string) =>
+  `${GITHUB}/languages?url=${encodeURIComponent(url)}`;
 
 const DISCORD_THREAD = `${API_BASE}/discord/thread`;
 const DISCORD_KEY = (thread_id: string) =>
@@ -39,11 +40,12 @@ const fetchApi = async <T, B = undefined>({
   }
 
   const url = HOST ? `${HOST}${path}` : `${path}`;
-  console.info(`[fetchApi] Fetching data from: ${url}`);
+  console.debug(`[fetchApi] Fetching data from: ${url}`);
   const options: RequestInit = {
     method,
     headers: body ? { "Content-Type": "application/json" } : undefined,
     body: body ? JSON.stringify(body) : undefined,
+    cache: client ? undefined : "no-store",
   };
 
   const response = await fetch(url, options);

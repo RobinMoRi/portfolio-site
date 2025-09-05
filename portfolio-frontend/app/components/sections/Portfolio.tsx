@@ -30,7 +30,7 @@ async function getRepos() {
 
 const Portfolio = async () => {
   const repos = await getRepos();
-  if (!repos) return <div>Repos not found</div>;
+  if (!repos) return <div className="text-center p-2">Repos not found</div>;
   return (
     <SectionWrapper id={Section.Portfolio} className="h-full" title="Portfolio">
       <PortfolioClient repos={repos} />
