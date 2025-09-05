@@ -39,7 +39,7 @@ const fetchApi = async <T, B = undefined>({
   }
 
   const url = HOST ? `${HOST}${path}` : `${path}`;
-  console.debug(`[fetchApi] Fetching data from: ${url}`);
+  console.info(`[fetchApi] Fetching data from: ${url}`);
   const options: RequestInit = {
     method,
     headers: body ? { "Content-Type": "application/json" } : undefined,

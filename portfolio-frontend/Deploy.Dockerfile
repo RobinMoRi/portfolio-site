@@ -1,3 +1,6 @@
+# build stage
+ENV NEXT_PUBLIC_SERVER_HOST="http://api-prod:8080"
+
 FROM node:18-alpine AS build-stage
 
 WORKDIR /app
