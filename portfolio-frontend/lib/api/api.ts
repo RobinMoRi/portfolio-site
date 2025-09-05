@@ -1,13 +1,6 @@
-const CLIENT_HOST =
-  process.env.NEXT_PUBLIC_CLIENT_HOST &&
-  process.env.NEXT_PUBLIC_CLIENT_HOST !== "undefined"
-    ? process.env.NEXT_PUBLIC_CLIENT_HOST
-    : "";
+const CLIENT_HOST = process.env.NEXT_PUBLIC_CLIENT_HOST || "";
 const SERVER_HOST =
-  process.env.NEXT_PUBLIC_SERVER_HOST &&
-  process.env.NEXT_PUBLIC_SERVER_HOST !== "undefined"
-    ? process.env.NEXT_PUBLIC_SERVER_HOST
-    : "";
+  process.env.NEXT_PUBLIC_SERVER_HOST || "http://api-prod:8080";
 
 const API_BASE = "/api/v1";
 const LOCATION = (long: string, lat: string) =>
