@@ -1,7 +1,3 @@
-# build stage
-ARG NEXT_PUBLIC_CLIENT_HOST
-ARG NEXT_PUBLIC_SERVER_HOST
-
 FROM node:18-alpine AS build-stage
 
 WORKDIR /app

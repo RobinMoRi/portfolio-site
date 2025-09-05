@@ -3,6 +3,7 @@
 This portfolio site is built using the following languages and tools:
 
 ### Frontend
+
 - Nextjs
 - Typescript
 - Prismic
@@ -11,13 +12,15 @@ This portfolio site is built using the following languages and tools:
 - Zustand
 
 ### Backend
+
 - Python
 - Fast API
 - Pydantic
 
 ### Deployment and dev-environment
+
 - Docker, Dockerhub
 - Github workflows
 - Hosted at Digital Ocean
 
-My portfolio can be found here: [romori.se](https://romori.se/)
+My portfolio can be found here: [romori.dev](https://romori.dev/)

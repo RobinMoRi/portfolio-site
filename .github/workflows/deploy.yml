@@ -13,19 +13,6 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
 
-      - name: Create .env file for backend
-        run: |
-          echo "VITE_GITHUB_API_TOKEN=${{ secrets.VITE_GITHUB_API_TOKEN }}" > .env
-          echo "VITE_DISCORD_PROXY_HOST=${{ secrets.VITE_DISCORD_PROXY_HOST }}" >> .env
-          echo "DOCS_USERNAME=${{ secrets.DOCS_USERNAME }}" >> .env
-          echo "DOCS_PASSWORD=${{ secrets.DOCS_PASSWORD }}" >> .env
-          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> .env
-
-      - name: Create .env file for frontend
-        run: |
-          echo "NEXT_PUBLIC_CLIENT_HOST=${{ secrets.NEXT_PUBLIC_CLIENT_HOST }}" > portfolio-frontend/.env
-          echo "NEXT_PUBLIC_SERVER_HOST=${{ secrets.NEXT_PUBLIC_SERVER_HOST }}" >> portfolio-frontend/.env
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
@@ -39,9 +26,6 @@ jobs:
           file: ./portfolio-frontend/Deploy.Dockerfile
           push: true
           tags: romori1993/portfolio-site-frontend-deploy:latest
-          build-args: |
-            NEXT_PUBLIC_CLIENT_HOST=${{ secrets.NEXT_PUBLIC_CLIENT_HOST }}
-            NEXT_PUBLIC_SERVER_HOST=${{ secrets.NEXT_PUBLIC_SERVER_HOST }}
 
       - name: Build and push api Docker image
         uses: docker/build-push-action@v2
@@ -50,11 +34,3 @@ jobs:
           file: ./api/Deploy.Dockerfile
           push: true
           tags: romori1993/portfolio-site-api-deploy:latest
-          build-args: |
-            DISCORD_AUTH_TOKEN=${{ secrets.DISCORD_AUTH_TOKEN }}
-            DISCORD_BOT_ID=${{ secrets.DISCORD_BOT_ID }}
-            DISCORD_CHANNEL_ID=${{ secrets.DISCORD_CHANNEL_ID }}
-            VITE_GITHUB_API_TOKEN=${{ secrets.VITE_GITHUB_API_TOKEN }}
-            DOCS_USERNAME=${{ secrets.DOCS_USERNAME }}
-            DOCS_PASSWORD=${{ secrets.DOCS_PASSWORD }}
-            REDIS_HOST=${{ secrets.REDIS_HOST }}

@@ -3,24 +3,24 @@ Proxy for discord - used to go around discords stupid cors policy
 Now also used for other backend tasks as fetching github and location data
 """
 
-import secrets
 import os
-from fastapi import APIRouter, FastAPI, Depends, HTTPException, status
+import secrets
 from contextlib import asynccontextmanager
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from fastapi_limiter import FastAPILimiter
-from fastapi_limiter.depends import RateLimiter
+from datetime import datetime
+
+import redis.asyncio as redis
+from discord import DiscordApi
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.openapi.utils import get_openapi
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
 from geopy.geocoders import Nominatim
-from datetime import datetime
-import redis.asyncio as redis
-
-from models import InitThreadData, Message, MessageDataResponse, InitThreadResponse
-from discord import DiscordApi
 from github import GithubApi
+from models import InitThreadData, InitThreadResponse, Message, MessageDataResponse
 
 DOCS_USERNAME = os.getenv("DOCS_USERNAME")
 DOCS_PASSWORD = os.getenv("DOCS_PASSWORD")
@@ -48,8 +48,8 @@ security = HTTPBasic()
 origins = [
     "http://localhost",
     "http://localhost:8000",
-    "https://www.romori.se",
-    "https://romori.se",
+    "https://romori.dev",
+    "https://www.romori.dev",
 ]
 
 app.add_middleware(
