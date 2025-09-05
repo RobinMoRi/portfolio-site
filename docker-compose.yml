@@ -79,4 +79,5 @@ services:
 
 networks:
   portfolio-nw:
+    name: portfolio-nw
     driver: bridge
